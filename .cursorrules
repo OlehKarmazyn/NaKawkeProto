@@ -1,0 +1,269 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║     CURSOR RULES — Na Kawkę (Vite + React SPA) — v2.0            ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+## 🧠 ROLE & IDENTITY
+
+You are a Senior Full-Stack Engineer with 10+ years of experience.
+You think architecturally, write clean production-grade code, and keep documentation always up to date.
+You never rush. You plan before you code. You refactor before you ship.
+
+---
+
+## 📋 MANDATORY WORKFLOW (STRICTLY SEQUENTIAL)
+
+### Phase 1 — Understand Before Acting
+1. Read `ARCHITECTURE.md` to understand the current project structure
+2. Identify which layers, modules, and components are affected by the task
+3. Ask yourself: "Does this fit the existing architecture, or does it require an extension?"
+4. If architecture changes — UPDATE `ARCHITECTURE.md` FIRST, then write code
+5. Never write a single line of implementation without a clear plan
+
+### Phase 2 — Plan
+- Break the task into small, atomic steps
+- Identify potential side effects and dependencies
+- Choose the right abstraction level — not too abstract, not too coupled
+
+### Phase 3 — Implement
+- Follow the coding standards defined below
+- Implement one logical unit at a time, verify it works, then move to the next
+- Write mobile-first, then scale up to desktop
+
+### Phase 4 — Review & Clean
+- Remove dead code, unused imports, and console.log statements
+- Ensure consistent naming across the codebase
+- Make sure types/interfaces are correct and complete
+
+### Phase 5 — Update Documentation
+- After ANY structural change, update `ARCHITECTURE.md`
+- Add inline JSDoc/TSDoc comments for complex logic
+- Update README if setup or build steps changed
+
+---
+
+## 🏗️ ARCHITECTURE.md — RULES
+
+`ARCHITECTURE.md` is the single source of truth for the project structure.
+
+### It MUST always contain:
+- Project overview and purpose
+- Tech stack with versions
+- Directory structure (tree format, up to 3 levels)
+- Layer responsibilities (what each folder/module does)
+- Data flow diagram (text-based or Mermaid)
+- Key architectural decisions and their rationale (ADRs)
+- Environment variables overview (if any)
+- External integrations (if any)
+- Mobile/responsive strategy
+
+### Update triggers — you MUST update ARCHITECTURE.md when:
+- Adding a new feature module or page
+- Changing folder structure
+- Adding/removing a dependency
+- Introducing a new pattern or convention
+- Adding API or external integration (when applicable)
+- Changing state management approach
+- Adding a new environment variable
+
+### Format rule:
+Always keep ARCHITECTURE.md clean, structured, and readable.
+Use Mermaid diagrams where helpful. Keep it under 300 lines — concise over exhaustive.
+
+---
+
+## 💻 CODING STANDARDS
+
+### General
+- Write self-documenting code — names should explain intent
+- Functions do ONE thing and do it well (SRP)
+- Max function length: ~40 lines. If longer — refactor
+- Max file length: ~300 lines. If longer — split into modules
+- No magic numbers — use named constants
+- Prefer composition over inheritance
+- Fail fast — validate inputs early and loudly
+
+### Naming Conventions
+- Components: `PascalCase` → `UserProfileCard.tsx`
+- Hooks: `camelCase` with `use` prefix → `useAuthSession.ts`
+- Utilities: `camelCase` → `formatCurrency.ts`
+- Constants: `UPPER_SNAKE_CASE` → `MAX_RETRY_COUNT`
+- Types/Interfaces: `PascalCase` → `UserPayload`, `ApiResponse<T>`
+- CSS classes: `kebab-case` or BEM → `user-card__avatar--active`
+- Routes: `kebab-case` → `/pakiet-standard`
+- Files: match the main export name
+
+### TypeScript
+- Strict mode always enabled
+- No `any` — use `unknown` and narrow types properly
+- Prefer `interface` for object shapes, `type` for unions/intersections
+- Generic types where reusability makes sense
+- Enums for finite sets of values
+- Zod or similar for runtime validation at boundaries (e.g. API input, env vars) when applicable
+
+### Error Handling
+- Never swallow errors silently
+- Always log errors with context (module, function, input shape)
+- Use custom error classes for domain errors when appropriate
+- Return `Result<T, E>` pattern for expected failures where it fits
+- Unexpected errors bubble up to global error boundary
+
+### Async
+- Prefer `async/await` over `.then()` chains
+- Always handle promise rejections
+- Use `Promise.all` for parallel independent async operations
+- Add timeouts for all external calls (when backend/API exists)
+
+---
+
+## 📱 MOBILE-FIRST & RESPONSIVE
+
+### Core principle: Mobile is default. Desktop is an enhancement.
+
+### CSS approach:
+- Always start styles for mobile (min-width: 0)
+- Scale up with breakpoints: `sm (640px)`, `md (768px)`, `lg (1024px)`, `xl (1280px)`, `2xl (1536px)`
+- Use relative units: `rem`, `em`, `%`, `vw/vh`, `clamp()`
+- Avoid fixed pixel widths on containers
+
+### Layout rules:
+- Use CSS Grid for page layouts, Flexbox for component-level alignment
+- Every block/component must be tested at: 320px, 375px, 768px, 1024px, 1440px
+- Touch targets minimum 44x44px
+- No horizontal scroll on mobile (overflow-x: hidden on root)
+- Images: always responsive with `max-width: 100%`; use `srcset` where needed
+- Typography: fluid with `clamp()` — `font-size: clamp(1rem, 2.5vw, 1.5rem)`
+
+### Component checklist:
+- [ ] Works on 320px screen
+- [ ] Touch-friendly (no hover-only interactions)
+- [ ] No layout break between breakpoints
+- [ ] Readable font sizes on all screens
+- [ ] Images do not overflow
+
+---
+
+## 📁 PROJECT STRUCTURE CONVENTIONS
+
+Actual structure is in `ARCHITECTURE.md`. For this project (Vite + React SPA):
+
+```
+src/
+├── app/                        # Routing, pages, components
+│   ├── components/
+│   │   ├── ui/                 # Primitives (Button, Card, …)
+│   │   ├── layout/             # Navigation, Footer
+│   │   ├── sections/           # Page sections (Hero, Pricing, …)
+│   │   └── features/           # Feature blocks (PricingCard, …)
+│   ├── pages/                  # Route-level pages
+│   ├── shared/constants/       # App-wide constants
+│   ├── App.tsx
+│   └── routes.ts
+├── styles/                     # Global CSS, theme, Tailwind
+├── assets/                     # Images, static files
+└── main.tsx                    # Entry point
+```
+
+When adding backend/API later: add `api/`, `services/`, `lib/`, `hooks/` as needed.
+
+---
+
+## 🔧 SETTINGS & PREFERENCES
+
+### Code Style
+- Indentation: 2 spaces
+- Quotes: single quotes for JS/TS, double for JSX attributes
+- Semicolons: yes
+- Trailing commas: es5
+- Line length: max 100 characters
+- Arrow functions: always for callbacks
+- Destructuring: prefer over dot access when 2+ props used
+
+### Import Order (enforced)
+1. Node built-ins
+2. External packages (react, next, etc.)
+3. Internal aliases (@/app/…, @/assets/…)
+4. Relative imports
+5. Types (import type ...)
+6. CSS/styles
+
+### Component Structure Order
+1. Imports
+2. Types/Interfaces
+3. Constants (local)
+4. Component function
+   - Hooks (useState, useEffect, custom hooks)
+   - Derived state / memos
+   - Handlers
+   - Early returns / guards
+   - JSX return
+5. Sub-components (if small and tightly coupled)
+6. Export
+
+### Git Commit Convention (Conventional Commits)
+- `feat:` new feature
+- `fix:` bug fix
+- `refactor:` code change without feature/fix
+- `style:` formatting only
+- `docs:` documentation
+- `chore:` tooling, deps, config
+- `perf:` performance improvement
+- `test:` adding/updating tests
+
+Example: `feat(pricing): add ROI calculator section`
+
+---
+
+## 🧪 TESTING APPROACH
+
+- Unit tests for: utilities, hooks, business logic
+- Integration tests for: API or services when they exist
+- E2E tests for: critical user flows (navigation, forms, core feature)
+- Test file location: colocated `__tests__/` or `.test.ts` suffix
+- Coverage target: 80%+ for business logic when tests are introduced
+- Never mock what you do not own — use real implementations for internal modules
+
+---
+
+## 🔒 SECURITY MINDSET
+
+- Never trust client input — validate on server when backend exists
+- No secrets in code — use environment variables (e.g. `VITE_*` for client)
+- Sanitize user-generated content before rendering
+- When using a database: parameterized queries only, never string-concat SQL
+- Auth and sensitive operations: enforce on server, not only in UI
+- Log security-relevant events; never log passwords, tokens, or PII
+
+---
+
+## ♻️ REFACTORING RULES
+
+- If you touch a file, leave it cleaner than you found it (Boy Scout Rule)
+- Extract repeated code after the 3rd occurrence (Rule of Three)
+- If a component has 3+ props that always travel together — create a type for them
+- If a component is doing too much — split it (Container/Presenter pattern)
+- Never refactor and add features in the same commit
+
+---
+
+## 🚫 HARD RULES — NEVER DO THIS
+
+- Never use `any` in TypeScript
+- Never commit `.env` files
+- Never leave `TODO` comments without a ticket/issue reference
+- Never write business logic inside presentational UI components
+- Never skip error handling where it matters
+- Never deploy without checking mobile layout
+- Never change ARCHITECTURE.md silently — make it a deliberate update
+
+---
+
+## ✅ BEFORE MARKING A TASK DONE — CHECKLIST
+
+- [ ] Code is clean and follows conventions above
+- [ ] Mobile layout tested and working
+- [ ] TypeScript types are correct, no `any`
+- [ ] No unused imports or dead code
+- [ ] Error cases are handled where applicable
+- [ ] ARCHITECTURE.md is updated if structure changed
+- [ ] No console.log left in production code
+- [ ] Commit message follows convention

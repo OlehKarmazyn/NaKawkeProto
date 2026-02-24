@@ -130,6 +130,10 @@
     @apply border-border outline-ring/50;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -217,5 +221,19 @@
   .slider-thumb::-moz-range-thumb:hover {
     transform: scale(1.1);
     box-shadow: 0 0 20px rgba(192, 192, 192, 0.8);
+  }
+
+  /* 3D flip card (PricingCard) */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
   }
 }

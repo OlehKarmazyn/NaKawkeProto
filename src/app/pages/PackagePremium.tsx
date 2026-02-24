@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
 import { ArrowLeft, Check } from 'lucide-react';
-import { Navigation } from '../components/Navigation';
-import { Footer } from '../components/Footer';
-import { MetallicButton } from '../components/MetallicButton';
+import { Navigation } from '@/app/components/layout/Navigation';
+import { Footer } from '@/app/components/layout/Footer';
+import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import premiumImage from '@/assets/premium.png';
 
 export const PackagePremium: React.FC = () => {
