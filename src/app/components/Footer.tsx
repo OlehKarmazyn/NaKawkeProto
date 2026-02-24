@@ -1,16 +1,14 @@
 import React from 'react';
-import { Coffee } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 export const Footer: React.FC = () => {
   return (
-    <footer id="kontakt" className="relative py-16 border-t border-[#C0C0C0]/20">
+    <footer id="kontakt" className="relative py-24 border-t border-[#C0C0C0]/20 border-t-gold-accent">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#C0C0C0] to-[#a8a8a8] rounded-lg flex items-center justify-center">
-                <Coffee className="w-6 h-6 text-black" />
-              </div>
+            <div className="flex items-center gap-3 mb-4">
+              <img src={logo} alt="Na Kawkę" className="h-10 w-auto" />
               <span className="text-xl font-bold text-white">Na Kawkę</span>
             </div>
             <p className="text-white/60 text-sm">

@@ -10,13 +10,11 @@ export const ProfitCalculator: React.FC = () => {
   const pricePerDrink = 8.5;
   const costPerDrink = 2;
   const rentPerMonth = 1000;
-  const marketingPerMonth = 300;
 
   const monthlyRevenue = drinksPerDay * pricePerDrink * 30 * modules;
   const monthlyCosts = drinksPerDay * costPerDrink * 30 * modules;
   const totalRent = rentPerMonth * modules;
-  const totalMarketing = marketingPerMonth * modules;
-  const monthlyProfit = monthlyRevenue - monthlyCosts - totalRent - totalMarketing;
+  const monthlyProfit = monthlyRevenue - monthlyCosts - totalRent;
   const totalProfit = monthlyProfit * months;
 
   return (
@@ -131,13 +129,6 @@ export const ProfitCalculator: React.FC = () => {
             <span className="text-white/70">Produkty</span>
             <span className="text-lg font-semibold text-white/90">
               {monthlyCosts.toLocaleString('pl-PL')} zł
-            </span>
-          </div>
-
-          <div className="flex justify-between items-center">
-            
-            <span className="text-lg font-semibold text-white/90">
-              {totalMarketing.toLocaleString('pl-PL')} zł
             </span>
           </div>
         </div>

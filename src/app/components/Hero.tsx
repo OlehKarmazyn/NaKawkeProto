@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { MetallicButton } from './MetallicButton';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { ChevronDown } from 'lucide-react';
+import heroImage from '@/assets/multi-automats.png';
 
 export const Hero: React.FC = () => {
   return (
@@ -26,7 +26,7 @@ export const Hero: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="inline-block mb-6 px-4 py-2 rounded-full border border-[#C0C0C0]/30 backdrop-blur-sm"
+              className="inline-block mb-6 px-4 py-2 rounded-full border border-[#C0C0C0]/30 border-gold-accent/30 backdrop-blur-sm"
             >
               <span className="text-[#C0C0C0] text-sm font-semibold">AUTONOMICZNY BIZNES KAWOWY</span>
             </motion.div>
@@ -52,15 +52,15 @@ export const Hero: React.FC = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-8 mt-12">
               <div>
-                <div className="text-3xl font-bold text-[#C0C0C0] mb-1">3000 zł</div>
-                <div className="text-sm text-white/60">Średni zysk miesięcznie</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-1">3000 zł</div>
+                <div className="text-sm text-white/60">średni zysk/mies.</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-[#C0C0C0] mb-1">24/7</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-1">24/7</div>
                 <div className="text-sm text-white/60">Praca bez personelu</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-[#C0C0C0] mb-1">0 zł</div>
+                <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-1">0 zł</div>
                 <div className="text-sm text-white/60">Ropalty miesięcznie</div>
               </div>
             </div>
@@ -79,9 +79,9 @@ export const Hero: React.FC = () => {
               
               {/* Image container */}
               <div className="relative rounded-3xl overflow-hidden border border-[#C0C0C0]/20">
-                <ImageWithFallback
-                  src="figma:asset/3ed6568af5cae75da87fb8c4f3b89db7c97fce49.png"
-                  alt="Na Kawkę Coffee Module"
+                <img
+                  src={heroImage}
+                  alt="Na Kawkę — automaty kawowe"
                   className="w-full h-auto"
                 />
                 

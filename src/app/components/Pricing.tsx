@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { PricingCard } from './PricingCard';
 import { MetallicButton } from './MetallicButton';
+import standardImage from '@/assets/simple.png';
+import premiumImage from '@/assets/premium.png';
 
 export const Pricing: React.FC = () => {
   const standardFeatures = [
@@ -43,6 +45,15 @@ export const Pricing: React.FC = () => {
     'Gwarancja na sprzęt'
   ];
 
+  const [ctaName, setCtaName] = useState('');
+  const [ctaPhone, setCtaPhone] = useState('');
+  const [ctaEmail, setCtaEmail] = useState('');
+
+  const handleCtaSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: send to backend or email service
+  };
+
   return (
     <section id="cennik" className="py-24 relative">
       {/* Background effects */}
@@ -76,7 +87,7 @@ export const Pricing: React.FC = () => {
               price="4,500"
               features={standardFeatures}
               isRecommended
-              imageUrl="figma:asset/bbb8d2f9fee95665d7f98a00dee77fd153deb685.png"
+              imageUrl={standardImage}
               detailedSpecs={detailedSpecsStandard}
               detailsLink="/pakiet-standard"
             />
@@ -92,7 +103,7 @@ export const Pricing: React.FC = () => {
               title="Pakiet Premium"
               price="6,500"
               features={premiumFeatures}
-              imageUrl="figma:asset/62111418239e727f100a1e9c8238a0f704c9e6e7.png"
+              imageUrl={premiumImage}
               badge="+ ZIMNE NAPOJE"
               detailedSpecs={detailedSpecsPremium}
               detailsLink="/pakiet-premium"
@@ -100,7 +111,7 @@ export const Pricing: React.FC = () => {
           </motion.div>
         </div>
         
-        {/* CTA Section */}
+        {/* CTA Section — form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -108,29 +119,64 @@ export const Pricing: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center"
         >
-          <div className="backdrop-blur-md bg-gradient-to-r from-[#C0C0C0]/10 via-transparent to-[#C0C0C0]/10 border border-[#C0C0C0]/20 rounded-2xl p-12 max-w-4xl mx-auto">
+          <div className="backdrop-blur-md bg-gradient-to-r from-[#C0C0C0]/10 via-transparent to-[#C0C0C0]/10 border border-[#C0C0C0]/20 rounded-2xl p-12 max-w-2xl mx-auto">
             <h3 className="text-3xl font-bold text-white mb-4">
               Zacznij swój biznes kawowy już dziś
             </h3>
-            <p className="text-white/70 mb-8 max-w-2xl mx-auto">
+            <p className="text-white/70 mb-8 max-w-xl mx-auto">
               Skontaktuj się z nami, aby otrzymać pełny plan zwrotu z inwestycji i poznać terminy dostawy modułów.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <MetallicButton>
-                Otrzymać pełne wyliczenie zwrotu
-              </MetallicButton>
-              <MetallicButton>
-                Poznać terminy zwrotu inwestycji
-              </MetallicButton>
-              <MetallicButton>
-                Rozpocząć swój biznes kawowy
-              </MetallicButton>
-            </div>
+            <form onSubmit={handleCtaSubmit} className="space-y-4 text-left">
+              <div>
+                <label htmlFor="cta-name" className="block text-sm font-medium text-white/80 mb-2">
+                  Imię
+                </label>
+                <input
+                  id="cta-name"
+                  type="text"
+                  value={ctaName}
+                  onChange={(e) => setCtaName(e.target.value)}
+                  placeholder="Jan Kowalski"
+                  className="w-full h-12 px-4 rounded-xl border border-[#C0C0C0]/30 bg-white/5 text-white placeholder:text-white/40 focus:border-[#C0C0C0]/60 focus:outline-none focus:ring-2 focus:ring-[#C0C0C0]/20 transition-colors"
+                />
+              </div>
+              <div>
+                <label htmlFor="cta-phone" className="block text-sm font-medium text-white/80 mb-2">
+                  Numer telefonu
+                </label>
+                <input
+                  id="cta-phone"
+                  type="tel"
+                  value={ctaPhone}
+                  onChange={(e) => setCtaPhone(e.target.value)}
+                  placeholder="+48 123 456 789"
+                  className="w-full h-12 px-4 rounded-xl border border-[#C0C0C0]/30 bg-white/5 text-white placeholder:text-white/40 focus:border-[#C0C0C0]/60 focus:outline-none focus:ring-2 focus:ring-[#C0C0C0]/20 transition-colors"
+                />
+              </div>
+              <div>
+                <label htmlFor="cta-email" className="block text-sm font-medium text-white/80 mb-2">
+                  E-mail
+                </label>
+                <input
+                  id="cta-email"
+                  type="email"
+                  value={ctaEmail}
+                  onChange={(e) => setCtaEmail(e.target.value)}
+                  placeholder="jan@example.com"
+                  className="w-full h-12 px-4 rounded-xl border border-[#C0C0C0]/30 bg-white/5 text-white placeholder:text-white/40 focus:border-[#C0C0C0]/60 focus:outline-none focus:ring-2 focus:ring-[#C0C0C0]/20 transition-colors"
+                />
+              </div>
+              <div className="pt-2">
+                <MetallicButton type="submit" className="w-full">
+                  Otrzymać prezentację
+                </MetallicButton>
+              </div>
+            </form>
           </div>
           
           <div className="mt-12 grid md:grid-cols-3 gap-8 max-w-3xl mx-auto">
             <div>
-              <div className="text-3xl font-bold text-[#C0C0C0] mb-2">4 miesiące</div>
+              <div className="text-3xl font-bold text-[#C0C0C0] mb-2">8–12 miesięcy</div>
               <div className="text-white/60">Średni czas zwrotu</div>
             </div>
             <div>

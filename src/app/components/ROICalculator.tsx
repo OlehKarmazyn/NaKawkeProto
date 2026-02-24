@@ -17,6 +17,7 @@ export const ROICalculator: React.FC = () => {
     { benefit: 'Brak narzuconych dostawców', description: 'Kupujesz składniki tam, gdzie chcesz' },
     { benefit: 'Brak opłat marketingowych', description: 'Twój marketing, Twoja strategia' },
     { benefit: 'Cały zysk w Twojej kieszeni', description: 'Wypracowany kapitał zostaje u Ciebie' },
+    { benefit: 'Pełna niezależność', description: 'Decyzje biznesowe należą tylko do Ciebie' },
   ];
   
   return (
@@ -97,7 +98,7 @@ export const ROICalculator: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-16"
+          className="mb-24"
         >
           <h2 className="text-5xl font-bold text-white mb-6 text-center">
             Dlaczego <span className="text-[#C0C0C0]">bez franczyzy?</span>

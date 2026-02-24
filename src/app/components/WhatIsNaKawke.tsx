@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { GlassCard } from './GlassCard';
 import { CheckCircle2 } from 'lucide-react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import realAutomatImage from '@/assets/real-aoutomat.jpg';
 
 const headlines = [
   'Gotowy biznes kawowy bez franczyzy',
@@ -40,18 +40,18 @@ export const WhatIsNaKawke: React.FC = () => {
                 >
                   <div className="relative rounded-2xl overflow-hidden border border-[#C0C0C0]/30 shadow-2xl">
                     <div className="absolute inset-0 bg-gradient-to-tr from-[#C0C0C0]/20 to-transparent z-10 pointer-events-none" />
-                    <ImageWithFallback
-                      src="https://images.unsplash.com/photo-1763019561640-0d182069fbe5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBjb2ZmZWUlMjBtYWNoaW5lJTIwdmVuZGluZ3xlbnwxfHx8fDE3NzE5MjU2ODl8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                    <img
+                      src={realAutomatImage}
                       alt="Na Kawkę - Autonomiczny moduł kawowy"
                       className="w-full h-[500px] object-cover"
                     />
                   </div>
                   
-                  {/* Floating Badge */}
-                  <div className="absolute -bottom-6 -right-6 bg-gradient-to-br from-[#C0C0C0] via-white to-[#C0C0C0] p-6 rounded-2xl shadow-2xl">
-                    <div className="text-black text-center">
-                      <div className="text-3xl font-bold">3000 zł</div>
-                      <div className="text-sm font-semibold opacity-80">średni zysk/mies.</div>
+                  {/* Floating Badge — dark panel with gold accent like product card */}
+                  <div className="absolute -bottom-6 -right-6 rounded-2xl border border-[#C0C0C0]/20 border-gold-accent bg-[#0A0A0A]/95 backdrop-blur-md px-6 py-5 shadow-[0_0_30px_var(--gold-accent)]">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent">3000 zł</div>
+                      <div className="text-sm font-semibold text-white/80 mt-1">średni zysk/mies.</div>
                     </div>
                   </div>
                 </motion.div>
