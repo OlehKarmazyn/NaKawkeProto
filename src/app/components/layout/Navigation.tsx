@@ -20,6 +20,7 @@ export const Navigation: React.FC = () => {
   }, [scrollY]);
 
   // Scroll spy: активная секция — та, чей верх уже пересёк линию под шапкой (при появлении блока подсвечивается, при уходе — следующая).
+  // Исключение: "kontakt" подсвечивается только когда соответствующий CTA-блок виден во вьюпорте.
   const TRIGGER_OFFSET_PX = 120; // линия под навбаром: секция считается "текущей", когда её top выше этой линии
 
   useEffect(() => {
@@ -35,10 +36,16 @@ export const Navigation: React.FC = () => {
       for (const id of sectionIds) {
         const el = document.getElementById(id);
         if (!el) continue;
-        const top = el.getBoundingClientRect().top;
-        // Последняя секция, чей верх уже прошёл линию — текущая
-        if (top <= TRIGGER_OFFSET_PX) {
-          active = id;
+        const rect = el.getBoundingClientRect();
+
+        if (id === 'kontakt') {
+          // Kontakt: подсветка только когда блок с CTA виден во вьюпорте (заголовок и текст)
+          const isVisible =
+            rect.top < window.innerHeight && rect.bottom > TRIGGER_OFFSET_PX;
+          if (isVisible) active = id;
+        } else {
+          // Остальные секции: классический scroll-spy по линии под шапкой
+          if (rect.top <= TRIGGER_OFFSET_PX) active = id;
         }
       }
       // В самом верху страницы — первая секция
