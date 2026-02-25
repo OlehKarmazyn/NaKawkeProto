@@ -7,7 +7,7 @@ import heroImage from '@/assets/multi-automats.png';
 /** Секция Hero главной страницы: заголовок, оффер, CTA, изображение автоматов. */
 export const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-28">
       {/* Animated background grid */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50" />
 
@@ -23,15 +23,6 @@ export const Hero: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-block mb-6 px-4 py-2 rounded-full border border-[#C0C0C0]/30 border-gold-accent/30 backdrop-blur-sm"
-            >
-              <span className="text-[#C0C0C0] text-sm font-semibold">AUTONOMICZNY BIZNES KAWOWY</span>
-            </motion.div>
-
             <h1 className="text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="text-white">Gotowy biznes kawowy</span>
               <br />
