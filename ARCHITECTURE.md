@@ -159,6 +159,7 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 
 - **HTML:** Semantic elements on every page (`<main>`, `<section aria-label>`, one `<h1>` per page).
 - **Meta:** `<PageMeta>` component via `react-helmet-async` on every page — title, description, OG, Twitter Card — all rendered in the active language.
+- **Default meta in index.html (link preview):** Crawlers used for link preview (Telegram, Facebook, Slack, etc.) often do **not** execute JavaScript. OG meta injected only by React/Helmet is invisible to them. Therefore **default Open Graph and Twitter Card meta tags are placed directly in `index.html`** (title, description, `og:image` with absolute production URL, `og:url`, `og:type`). The default OG image (e.g. `multi-automats.png`) must exist in `public/` so it is served at the absolute URL. Page-specific meta is still set by `<PageMeta>` for clients that run JS.
 - **hreflang:** All three language variants declared on every page (`pl`, `en`, `uk`, `x-default` → `pl`).
 - **Structured data:** JSON-LD — `LocalBusiness` (home), `Product` (package pages), `FAQPage` (FAQ).
 - **robots.txt:** In `public/robots.txt` — allows all bots, references `Sitemap: {VITE_SITE_URL}/sitemap.xml`.
