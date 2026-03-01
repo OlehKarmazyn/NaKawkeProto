@@ -8,6 +8,8 @@ import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { LanguageSwitcher } from '@/app/components/ui/LanguageSwitcher';
 import { NAV_LINKS } from '@/app/shared/constants/navigation';
 
+const PRIVACY_PATH = '/polityka-prywatnosci';
+
 export const Navigation: React.FC = () => {
   const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,6 +17,8 @@ export const Navigation: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const { scrollY } = useScroll();
   const location = useLocation();
+  const isHome = location.pathname === '/';
+  const isPrivacyPage = location.pathname === PRIVACY_PATH;
 
   useEffect(() => {
     return scrollY.on('change', (latest) => {
@@ -22,9 +26,10 @@ export const Navigation: React.FC = () => {
     });
   }, [scrollY]);
 
-  // Scroll spy: active section is the one whose top has crossed the line below the header (on enter it highlights, on leave the next one).
-  // Exception: "kontakt" highlights only when its CTA block is visible in the viewport.
-  const TRIGGER_OFFSET_PX = 120; // line below navbar: section is "current" when its top is above this line
+  // Scroll spy: active section is the one that *contains* the trigger line below the header.
+  // So we switch only when the line actually enters/leaves a section (no flash on short sections).
+  // Exception: "kontakt" highlights when its CTA block is visible in the viewport.
+  const TRIGGER_OFFSET_PX = 120; // line below navbar: section is "current" when this line is inside its bounds
 
   useEffect(() => {
     if (location.pathname !== '/') {
@@ -42,17 +47,41 @@ export const Navigation: React.FC = () => {
         const rect = el.getBoundingClientRect();
 
         if (id === 'kontakt') {
-          // Kontakt: highlight only when the CTA block is visible in the viewport (heading and text)
+          // Kontakt: highlight only when the CTA block is visible in the viewport
           const isVisible =
             rect.top < window.innerHeight && rect.bottom > TRIGGER_OFFSET_PX;
           if (isVisible) active = id;
         } else {
-          // Other sections: classic scroll-spy by the line below the header
-          if (rect.top <= TRIGGER_OFFSET_PX) active = id;
+          // Other sections: section is active when the trigger line (120px from top) lies inside it
+          if (rect.top <= TRIGGER_OFFSET_PX && rect.bottom > TRIGGER_OFFSET_PX) active = id;
         }
       }
-      // At the very top of the page — first section
-      if (active === null && sectionIds.length) active = sectionIds[0];
+      // At the very top — no section contains the line yet → first section
+      if (active === null && sectionIds.length) {
+        const firstEl = document.getElementById(sectionIds[0]);
+        if (firstEl) {
+          const firstRect = firstEl.getBoundingClientRect();
+          if (firstRect.top > TRIGGER_OFFSET_PX) active = sectionIds[0];
+        }
+      }
+      // Scrolled past all sections → keep last section active
+      if (active === null && sectionIds.length) {
+        const lastEl = document.getElementById(sectionIds[sectionIds.length - 1]);
+        if (lastEl) {
+          const lastRect = lastEl.getBoundingClientRect();
+          if (lastRect.bottom <= TRIGGER_OFFSET_PX) active = sectionIds[sectionIds.length - 1];
+        }
+      }
+      // Fallback: line is in a gap (e.g. between sections) — use section whose top is closest above the line
+      if (active === null && sectionIds.length) {
+        for (let i = sectionIds.length - 1; i >= 0; i--) {
+          const el = document.getElementById(sectionIds[i]);
+          if (el && el.getBoundingClientRect().top <= TRIGGER_OFFSET_PX) {
+            active = sectionIds[i];
+            break;
+          }
+        }
+      }
       setActiveSection(active);
     };
 
@@ -119,8 +148,15 @@ export const Navigation: React.FC = () => {
               className="hidden lg:flex items-center gap-8"
             >
               {NAV_LINKS.map((link, index) => {
-                const isActive = activeSection === link.href.slice(1);
-                return (
+                const sectionId = link.href.slice(1);
+                const isActive = activeSection === sectionId;
+                const linkClass = `relative font-medium group transition-colors duration-300 ${
+                  isActive ? 'text-white' : 'text-white/80 hover:text-white'
+                }`;
+                const underlineClass = `absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#C0C0C0] via-gold/50 to-white transition-all duration-300 ${
+                  isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                }`;
+                return isHome ? (
                   <motion.a
                     key={link.id}
                     initial={{ opacity: 0, y: -10 }}
@@ -131,17 +167,22 @@ export const Navigation: React.FC = () => {
                       scrollToSection(link.href);
                     }}
                     href={link.href}
-                    className={`relative font-medium group transition-colors duration-300 ${
-                      isActive ? 'text-white' : 'text-white/80 hover:text-white'
-                    }`}
+                    className={linkClass}
                   >
                     {t(`nav.${link.id}`)}
-                    <span
-                      className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#C0C0C0] via-gold/50 to-white transition-all duration-300 ${
-                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                      }`}
-                    />
+                    <span className={underlineClass} />
                   </motion.a>
+                ) : (
+                  <Link
+                    key={link.id}
+                    to="/"
+                    state={{ scrollTo: sectionId }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={linkClass}
+                  >
+                    {t(`nav.${link.id}`)}
+                    <span className={underlineClass} />
+                  </Link>
                 );
               })}
             </motion.div>
@@ -153,8 +194,21 @@ export const Navigation: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="hidden lg:flex items-center gap-4"
             >
-              <MetallicButton>{t('nav.cta')}</MetallicButton>
-              <LanguageSwitcher />
+              {isHome ? (
+                <MetallicButton onClick={() => scrollToSection('#kontakt')}>
+                  {t('nav.cta')}
+                </MetallicButton>
+              ) : (
+                <Link
+                  to="/"
+                  state={{ scrollTo: 'kontakt' }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="relative px-8 py-4 font-semibold text-black overflow-hidden rounded-lg transition-all duration-300 bg-gradient-to-r from-[#a8a8a8] via-[#C0C0C0] to-[#a8a8a8] hover:shadow-[0_0_30px_rgba(192,192,192,0.6)] hover:scale-105 active:scale-95 inline-block"
+                >
+                  <span className="relative z-10">{t('nav.cta')}</span>
+                </Link>
+              )}
+              {!isPrivacyPage && <LanguageSwitcher />}
             </motion.div>
 
             {/* Mobile Menu Button */}
@@ -182,8 +236,12 @@ export const Navigation: React.FC = () => {
       >
         <div className="flex flex-col p-6 gap-6">
           {NAV_LINKS.map((link, index) => {
-            const isActive = activeSection === link.href.slice(1);
-            return (
+            const sectionId = link.href.slice(1);
+            const isActive = activeSection === sectionId;
+            const itemClass = `py-3 border-b border-[#C0C0C0]/10 font-medium transition-colors duration-300 ${
+              isActive ? 'text-white' : 'text-white/80 hover:text-white'
+            } text-xl`;
+            return isHome ? (
               <motion.a
                 key={link.id}
                 initial={{ opacity: 0, x: 20 }}
@@ -197,18 +255,39 @@ export const Navigation: React.FC = () => {
                   scrollToSection(link.href);
                 }}
                 href={link.href}
-                className={`py-3 border-b border-[#C0C0C0]/10 font-medium transition-colors duration-300 ${
-                  isActive ? 'text-white' : 'text-white/80 hover:text-white'
-                } text-xl`}
+                className={itemClass}
               >
                 {t(`nav.${link.id}`)}
               </motion.a>
+            ) : (
+              <Link
+                key={link.id}
+                to="/"
+                state={{ scrollTo: sectionId }}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={itemClass}
+              >
+                {t(`nav.${link.id}`)}
+              </Link>
             );
           })}
 
           <div className="mt-4 flex flex-col gap-3">
-            <MetallicButton>{t('nav.cta')}</MetallicButton>
-            <LanguageSwitcher />
+            {isHome ? (
+              <MetallicButton onClick={() => scrollToSection('#kontakt')}>
+                {t('nav.cta')}
+              </MetallicButton>
+            ) : (
+              <Link
+                to="/"
+                state={{ scrollTo: 'kontakt' }}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="relative px-8 py-4 font-semibold text-black overflow-hidden rounded-lg transition-all duration-300 bg-gradient-to-r from-[#a8a8a8] via-[#C0C0C0] to-[#a8a8a8] hover:shadow-[0_0_30px_rgba(192,192,192,0.6)] hover:scale-105 active:scale-95 inline-block text-center"
+              >
+                <span className="relative z-10">{t('nav.cta')}</span>
+              </Link>
+            )}
+            {!isPrivacyPage && <LanguageSwitcher />}
           </div>
         </div>
       </motion.div>

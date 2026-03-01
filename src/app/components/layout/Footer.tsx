@@ -18,6 +18,9 @@ export const Footer: React.FC = () => {
     }
   };
 
+  // Phone assembled in JS so it's not in static HTML; data-nosnippet keeps it out of search snippets
+  const phone = '+48' + ' 518' + ' 128' + ' 149';
+
   return (
     <footer className="relative py-12 border-t border-[#C0C0C0]/20 border-t-gold-accent">
       <div className="container mx-auto px-6">
@@ -27,8 +30,23 @@ export const Footer: React.FC = () => {
               <img src={logo} alt={t('footer.logoAlt')} className="h-8 w-auto" />
               <span className="text-lg font-bold text-white">{t('common.siteName')}</span>
             </div>
-            <p className="text-white/60 text-sm leading-snug">
+            <p className="text-white/60 text-sm leading-snug mb-3">
               {t('footer.tagline')}
+            </p>
+            <p className="text-white/70 text-sm">
+              {t('footer.companyName')} &nbsp;|&nbsp; {t('footer.nip')}
+            </p>
+            <p className="text-white/60 text-sm mt-1">
+              {t('footer.address')}
+            </p>
+            <p className="text-white/60 text-sm mt-1">
+              <a href={`mailto:${t('footer.email')}`} className="hover:text-[#C0C0C0] transition-colors">
+                {t('footer.email')}
+              </a>
+              {' · '}
+              <a href={`tel:${phone.replace(/\s/g, '')}`} className="hover:text-[#C0C0C0] transition-colors">
+                <span data-nosnippet>{phone}</span>
+              </a>
             </p>
           </div>
 
@@ -102,19 +120,24 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-white font-semibold mb-2 text-sm">{t('footer.legal')}</h4>
             <ul className="space-y-1 text-white/60 text-sm">
-              <li className="hover:text-[#C0C0C0] transition-colors cursor-pointer">
-                {t('footer.privacy')}
+              <li>
+                <Link to="/polityka-prywatnosci" className="hover:text-[#C0C0C0] transition-colors">
+                  {t('footer.privacy')}
+                </Link>
               </li>
               <li className="hover:text-[#C0C0C0] transition-colors cursor-pointer">{t('footer.terms')}</li>
-              <li className="hover:text-[#C0C0C0] transition-colors cursor-pointer">
-                {t('footer.cookies')}
-              </li>
             </ul>
           </div>
         </div>
 
         <div className="pt-4 border-t border-[#C0C0C0]/10 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-white/40 text-xs">{t('footer.copyright')}</p>
+          <p className="text-white/40 text-xs">
+            <Link to="/polityka-prywatnosci" className="hover:text-[#C0C0C0] transition-colors">
+              {t('footer.privacy')}
+            </Link>
+            {' · '}
+            {t('footer.copyright', { year: new Date().getFullYear() })}
+          </p>
           <div className="flex gap-4">
             <a href="#" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
               Instagram

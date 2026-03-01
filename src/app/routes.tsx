@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const PackageStandard = lazy(() => import('./pages/PackageStandard').then((m) => ({ default: m.PackageStandard })));
 const PackagePremium = lazy(() => import('./pages/PackagePremium').then((m) => ({ default: m.PackagePremium })));
+const Privacy = lazy(() => import('./pages/Privacy').then((m) => ({ default: m.Privacy })));
 
 function PageFallback() {
   const { t } = useTranslation();
@@ -37,6 +38,14 @@ export const router = createBrowserRouter([
     Component: () => (
       <Suspense fallback={<PageFallback />}>
         <PackagePremium />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/polityka-prywatnosci',
+    Component: () => (
+      <Suspense fallback={<PageFallback />}>
+        <Privacy />
       </Suspense>
     ),
   },

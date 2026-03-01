@@ -7,6 +7,8 @@ export interface PageMetaProps {
   description: string;
   canonicalPath: string;
   ogImage?: string;
+  /** When true, adds robots noindex,follow — for legal pages (privacy, terms) that should not appear in search results but remain linkable. */
+  robotsNoIndex?: boolean;
 }
 
 /** Page-level SEO: title, description, canonical, OG, Twitter Card. */
@@ -15,6 +17,7 @@ export const PageMeta: React.FC<PageMetaProps> = ({
   description,
   canonicalPath,
   ogImage = DEFAULT_OG_IMAGE,
+  robotsNoIndex = false,
 }) => {
   const path = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
   const canonical = `${SITE_BASE_URL}${path}`;
@@ -24,6 +27,7 @@ export const PageMeta: React.FC<PageMetaProps> = ({
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
+      {robotsNoIndex && <meta name="robots" content="noindex, follow" />}
       <link rel="canonical" href={canonical} />
       <link rel="alternate" hrefLang="pl" href={canonical} />
       <link rel="alternate" hrefLang="en" href={canonical} />

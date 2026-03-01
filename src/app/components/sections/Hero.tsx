@@ -10,7 +10,7 @@ export const Hero: React.FC = () => {
   const { t } = useTranslation();
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-28"
+      className="relative flex items-center overflow-hidden pt-24 sm:pt-28 pb-24 sm:pb-28"
       aria-label={t('hero.ariaLabel')}
     >
       {/* Animated background grid */}

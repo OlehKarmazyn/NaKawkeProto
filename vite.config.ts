@@ -30,7 +30,7 @@ export default defineConfig({
     figmaAssetPlugin(),
     Sitemap({
       hostname: siteUrl,
-      dynamicRoutes: ['/', '/pakiet-standard', '/pakiet-premium'],
+      dynamicRoutes: ['/', '/pakiet-standard', '/pakiet-premium', '/polityka-prywatnosci'],
     }),
   ],
   resolve: {

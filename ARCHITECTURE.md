@@ -72,7 +72,7 @@ src/
 
 | Layer                      | Responsibility                                         | May import from              |
 |----------------------------|--------------------------------------------------------|------------------------------|
-| `app/pages/`               | Page composition + SEO meta                            | layout, sections, seo, ui    |
+| `app/pages/`               | Page composition + SEO meta (Home, PackageStandard, PackagePremium, Privacy) | layout, sections, seo, ui    |
 | `app/components/ui/`       | Stateless primitives incl. LanguageSwitcher            | types, styles                |
 | `app/components/layout/`   | Header, Footer, navigation + language switcher         | ui, constants                |
 | `app/components/sections/` | Full-width page sections                               | ui, features                 |
@@ -138,7 +138,7 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 - **Translation files:** `src/locales/{pl,en,uk}/translation.json`
 - **Polish is the single source of truth** — all new keys added to `pl` first, then translated to `en` and `uk`
 - **URL strategy:** No language prefix in URL (`/pakiet-standard`, not `/pl/pakiet-standard`). Language stored in `localStorage`. SEO handled via `hreflang` tags.
-- **Switching:** `<LanguageSwitcher>` component in `<Navigation>` — SPA switch, no page reload
+- **Switching:** `<LanguageSwitcher>` component in `<Navigation>` — SPA switch, no page reload. Hidden on `/polityka-prywatnosci` (privacy page is Polish-only).
 - **All visible text** goes through `t('key')` — no hardcoded strings in JSX ever
 - **Dates / numbers / currency** formatted via `Intl` with locale (`pl-PL`, `en-GB`, `uk-UA`)
 
@@ -164,6 +164,7 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 - **robots.txt:** In `public/robots.txt` — allows all bots, references `Sitemap: {VITE_SITE_URL}/sitemap.xml`.
 - **Sitemap:** Auto-generated at build via `vite-plugin-sitemap` (output in `dist/sitemap.xml`). Routes from `vite.config.ts` must match `routes.tsx`.
 - **Canonical:** Set on every page via `<PageMeta>` to prevent duplicate content.
+- **Privacy page:** `/polityka-prywatnosci` — Polish-only legal text, no i18n; linked from Footer. Uses `<meta name="robots" content="noindex, follow">` (page linkable for RODO, not shown in search results).
 - **Fonts:** Self-hosted, preloaded, `font-display: swap`.
 
 ---

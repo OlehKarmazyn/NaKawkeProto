@@ -25,6 +25,10 @@
   },
   "footer": {
     "tagline": "Premium autonomiczne rozwiązania kawowe dla nowoczesnych biznesów.",
+    "companyName": "Ihor Vovchuk",
+    "nip": "NIP: 8982291752",
+    "address": "51-607 Wrocław, ul. Tadeusza Czackiego 57",
+    "email": "nakawke.pl@gmail.com",
     "product": "Produkt",
     "company": "Firma",
     "legal": "Prawne",
@@ -38,7 +42,7 @@
     "privacy": "Polityka Prywatności",
     "terms": "Regulamin",
     "cookies": "Polityka Cookies",
-    "copyright": "© 2026 Na Kawkę. Wszelkie prawa zastrzeżone.",
+    "copyright": "© {{year}} Na Kawkę. Wszelkie prawa zastrzeżone.",
     "logoAlt": "Na Kawkę"
   },
   "common": {

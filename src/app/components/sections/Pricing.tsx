@@ -76,24 +76,24 @@ export const Pricing: React.FC = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#C0C0C0]/5 rounded-full blur-3xl" />
 
       <div className="container mx-auto px-6 relative z-10">
-        <motion.div
-          id="cennik"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16 sm:mb-24"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
-            {t('pricing.title')} <span className="text-[#C0C0C0]">{t('pricing.titleHighlight')}</span>
-          </h2>
-          <p className="text-base sm:text-xl text-white/70 max-w-2xl mx-auto px-0">
-            {t('pricing.subtitle')}
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto mb-16 sm:mb-24">
+        <div id="cennik">
           <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16 sm:mb-24"
+          >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
+              {t('pricing.title')} <span className="text-[#C0C0C0]">{t('pricing.titleHighlight')}</span>
+            </h2>
+            <p className="text-base sm:text-xl text-white/70 max-w-2xl mx-auto px-0">
+              {t('pricing.subtitle')}
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto mb-16 sm:mb-24">
+            <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -128,6 +128,7 @@ export const Pricing: React.FC = () => {
               detailsLink="/pakiet-premium"
             />
           </motion.div>
+        </div>
         </div>
 
         <motion.div
