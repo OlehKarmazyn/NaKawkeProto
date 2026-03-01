@@ -1,6 +1,7 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Outlet } from 'react-router';
 import { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ScrollToTop } from './components/layout/ScrollToTop';
 
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const PackageStandard = lazy(() => import('./pages/PackageStandard').then((m) => ({ default: m.PackageStandard })));
@@ -16,37 +17,52 @@ function PageFallback() {
   );
 }
 
+function RootLayout() {
+  return (
+    <>
+      <ScrollToTop />
+      <Outlet />
+    </>
+  );
+}
+
 export const router = createBrowserRouter([
   {
     path: '/',
-    Component: () => (
-      <Suspense fallback={<PageFallback />}>
-        <Home />
-      </Suspense>
-    ),
-  },
-  {
-    path: '/pakiet-standard',
-    Component: () => (
-      <Suspense fallback={<PageFallback />}>
-        <PackageStandard />
-      </Suspense>
-    ),
-  },
-  {
-    path: '/pakiet-premium',
-    Component: () => (
-      <Suspense fallback={<PageFallback />}>
-        <PackagePremium />
-      </Suspense>
-    ),
-  },
-  {
-    path: '/polityka-prywatnosci',
-    Component: () => (
-      <Suspense fallback={<PageFallback />}>
-        <Privacy />
-      </Suspense>
-    ),
+    Component: RootLayout,
+    children: [
+      {
+        index: true,
+        Component: () => (
+          <Suspense fallback={<PageFallback />}>
+            <Home />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'pakiet-standard',
+        Component: () => (
+          <Suspense fallback={<PageFallback />}>
+            <PackageStandard />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'pakiet-premium',
+        Component: () => (
+          <Suspense fallback={<PageFallback />}>
+            <PackagePremium />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'polityka-prywatnosci',
+        Component: () => (
+          <Suspense fallback={<PageFallback />}>
+            <Privacy />
+          </Suspense>
+        ),
+      },
+    ],
   },
 ]);

@@ -27,9 +27,9 @@ export const Privacy: React.FC = () => {
                 Polityka Prywatności — Na Kawkę
               </h1>
               <p className="text-white/70 text-sm">
-                <strong>Obowiązuje od:</strong> [DATA PUBLIKACJI]
+                <strong>Obowiązuje od:</strong> 25.02.2026
                 <br />
-                <strong>Ostatnia aktualizacja:</strong> [DATA AKTUALIZACJI]
+                <strong>Ostatnia aktualizacja:</strong> 01.03.2026
               </p>
             </header>
 

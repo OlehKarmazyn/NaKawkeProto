@@ -43,6 +43,7 @@
     "terms": "Regulamin",
     "cookies": "Polityka Cookies",
     "copyright": "© {{year}} Na Kawkę. Wszelkie prawa zastrzeżone.",
+    "developedBy": "Stworzone przy pomocy {{company}}",
     "logoAlt": "Na Kawkę"
   },
   "common": {

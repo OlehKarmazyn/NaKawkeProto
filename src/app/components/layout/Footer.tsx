@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
   const phone = '+48' + ' 518' + ' 128' + ' 149';
 
   return (
-    <footer className="relative py-12 border-t border-[#C0C0C0]/20 border-t-gold-accent">
+    <footer className="relative pt-12 pb-6 border-t border-[#C0C0C0]/20 border-t-gold-accent">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-6 mb-6">
           <div>
@@ -131,15 +131,27 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="pt-4 border-t border-[#C0C0C0]/10 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-white/40 text-xs">
-            <Link to="/polityka-prywatnosci" className="hover:text-[#C0C0C0] transition-colors">
-              {t('footer.privacy')}
-            </Link>
-            {' · '}
-            {t('footer.copyright', { year: new Date().getFullYear() })}
-          </p>
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <p className="text-white/40 text-xs">
+              <Link to="/polityka-prywatnosci" className="hover:text-[#C0C0C0] transition-colors">
+                {t('footer.privacy')}
+              </Link>
+              {' · '}
+              {t('footer.copyright', { year: new Date().getFullYear() })}
+            </p>
+            <p className="text-white/40 text-xs">
+              <a
+                href="https://digital-office.pl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#C0C0C0] transition-colors"
+              >
+                {t('footer.developedBy', { company: 'Digital Office' })}
+              </a>
+            </p>
+          </div>
           <div className="flex gap-4">
-            <a href="#" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
+            <a href="https://www.instagram.com/nakawke/" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
               Instagram
             </a>
             <a href="#" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
