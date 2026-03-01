@@ -2,12 +2,12 @@
   "hero": {
     "ariaLabel": "Strona główna — gotowy biznes kawowy",
     "titleLine1": "Gotowy biznes kawowy",
-    "titleLine2": "bez franczyzy i ropalty",
+    "titleLine2": "bez franczyzy i royalty",
     "subtitle": "Twój biznes. Twoje zasady. Twój dochód. Autonomiczna kawiarnia, która pracuje bez sprzedawcy.",
     "cta": "Poznać terminy zwrotu inwestycji",
     "statProfit": "średni zysk/mies.",
     "stat24_7": "Praca bez personelu",
-    "statRopalty": "Ropalty miesięcznie",
+    "statRoyalty": "Royalty miesięcznie",
     "imageAlt": "Na Kawkę — automaty kawowe"
   },
   "nav": {
@@ -58,7 +58,7 @@
     "intro1": "to gotowy moduł samoobsługowej kawiarni.",
     "intro2": "Kupujesz urządzenie, instalujesz w wybranej lokalizacji i zarabiasz na sprzedaży kawy bezpośrednio klientom.",
     "keyPoint1": "Bez franczyzy",
-    "keyPoint2": "Bez ropalty",
+    "keyPoint2": "Bez royalty",
     "keyPoint3": "Bez miesięcznych zobowiązań",
     "imageAlt": "Na Kawkę - Autonomiczny moduł kawowy",
     "statLabel": "średni zysk/mies."
@@ -68,8 +68,8 @@
     "title": "Dlaczego tradycyjny biznes",
     "titleHighlight": "jest trudny?",
     "subtitle": "Na Kawkę – przejmij kontrolę nad swoim kapitałem",
-    "pain1Title": "Wysokie opłaty wstępne i ropalty",
-    "pain1Desc": "Masz dość wysokich opłat wstępnych i miesięcznych ropalty? Twoje pieniądze pracują na franczyzę zamiast na Ciebie.",
+    "pain1Title": "Wysokie opłaty wstępne i royalty",
+    "pain1Desc": "Masz dość wysokich opłat wstępnych i miesięcznych royalty? Twoje pieniądze pracują na franczyzę zamiast na Ciebie.",
     "pain1Impact": "Tysiące miesięcznie",
     "pain2Title": "Duże koszty stałe",
     "pain2Desc": "Boisz się dużych kosztów stałych na start? Tradycyjne kawiarnie wymagają ogromnych nakładów początkowych.",
@@ -120,7 +120,7 @@
     "noFranchise1Benefit": "0 zł opłaty wstępnej",
     "noFranchise1Desc": "Brak kosztów wejścia do franczyzy",
     "noFranchise2Benefit": "0 zł miesięcznych opłat",
-    "noFranchise2Desc": "No Royalty – 100% zysków dla Ciebie",
+    "noFranchise2Desc": "Bez royalty – 100% zysków dla Ciebie",
     "noFranchise3Benefit": "Brak narzuconych dostawców",
     "noFranchise3Desc": "Kupujesz składniki tam, gdzie chcesz",
     "noFranchise4Benefit": "Brak opłat marketingowych",
@@ -131,7 +131,7 @@
     "noFranchise6Desc": "Decyzje biznesowe należą tylko do Ciebie"
   },
   "calculator": {
-    "title": "Rozrachunok zysku",
+    "title": "Obliczenie zysku",
     "modulesLabel": "Liczba modułów",
     "drinksLabel": "Liczba napojów dziennie",
     "monthsLabel": "Liczba miesięcy",
@@ -266,7 +266,7 @@
   },
   "seo": {
     "homeTitle": "Na Kawkę — Autonomiczny biznes kawowy",
-    "homeDescription": "Gotowy biznes kawowy bez franczyzy i ropalty. Autonomiczna kawiarnia 24/7, zwrot inwestycji 8–12 miesięcy. Poznaj pakiety Standard i Premium.",
+    "homeDescription": "Gotowy biznes kawowy bez franczyzy i royalty. Autonomiczna kawiarnia 24/7, zwrot inwestycji 8–12 miesięcy. Poznaj pakiety Standard i Premium.",
     "standardTitle": "Pakiet Standard | Na Kawkę",
     "standardDescription": "Pakiet Standard — Jetinno JL22, 12 napojów, €4,500 netto. Idealny start w autonomicznym biznesie kawowym. Zwrot 8–12 miesięcy.",
     "premiumTitle": "Pakiet Premium | Na Kawkę",
