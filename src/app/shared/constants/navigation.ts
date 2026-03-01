@@ -1,6 +1,6 @@
 /**
- * Константы навигации: ссылки в шапке и подвале, id секций для scroll-spy и якорей.
- * Один источник правды — используется в Navigation и Footer.
+ * Navigation constants: header and footer links, section ids for scroll-spy and anchors.
+ * Single source of truth — used in Navigation and Footer.
  */
 
 export const SECTION_IDS = {
@@ -13,10 +13,11 @@ export const SECTION_IDS = {
 
 export type SectionId = (typeof SECTION_IDS)[keyof typeof SECTION_IDS];
 
-export const NAV_LINKS: { name: string; href: `#${SectionId}` }[] = [
-  { name: 'O nas', href: '#o-nas' },
-  { name: 'Zalety', href: '#zalety' },
-  { name: 'Ekonomia', href: '#ekonomia' },
-  { name: 'Cennik', href: '#cennik' },
-  { name: 'Kontakt', href: '#kontakt' },
+/** Link id matches nav.* translation key. */
+export const NAV_LINKS: { id: keyof typeof SECTION_IDS; href: `#${SectionId}` }[] = [
+  { id: 'about', href: '#o-nas' },
+  { id: 'benefits', href: '#zalety' },
+  { id: 'economics', href: '#ekonomia' },
+  { id: 'pricing', href: '#cennik' },
+  { id: 'contact', href: '#kontakt' },
 ];

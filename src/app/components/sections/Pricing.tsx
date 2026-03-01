@@ -1,63 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { PricingCard } from '@/app/components/features/PricingCard';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
+import { useContactForm } from '@/hooks/useContactForm';
 import standardImage from '@/assets/simple.png';
 import premiumImage from '@/assets/premium.png';
 
-const standardFeatures = [
-  'Gorące napoje espresso',
-  'Autonomiczna praca 24/7',
-  'Najlepsza opłacalność',
-];
-
-const premiumFeatures = [
-  'Gorące i zimne napoje',
-  'Autonomiczna praca 24/7',
-  'Rozszerzona funkcjonalność',
-];
-
-const detailedSpecsStandard = [
-  'Liczba napojów: 12 różnych napojów',
-  'Proste serwisowanie techniczne',
-  'Zwiększona pojemność pojemników',
-  'Jeden pojemnik na ziarnistą kawę — 1,5 kg',
-  'Trzy dodatkowe pojemniki po 2,4 l każdy (na mleko, czekoladę, karmel)',
-  'Dotykowy wybór napojów',
-  'Połączenie Wi-Fi',
-  'Telemetria',
-  'Gwarancja na sprzęt',
-];
-
-const detailedSpecsPremium = [
-  'Liczba napojów: do 24 różnych napojów',
-  'Jeden pojemnik na ziarnistą kawę — 3 kg',
-  'Sześć dodatkowych pojemników po 4 l każdy (mleko, czekolada, karmel, herbata, milkshake)',
-  'Ekran dotykowy: 21,5 cala',
-  'Głośnik — dla wsparcia głosowego',
-  'Lodówka: od +2°C do +8°C',
-  'Stacja syropowa: 4 rodzaje',
-  'Bloki zaparzające: osobno dla kawy (14 g) i herbaty liściastej',
-  'Automatyczne wydawanie kubków: na 300–400 szt.',
-  'Pojemnik na odpady: 20 l',
-  'Połączenie: Wi-Fi, telemetria',
-  'Gwarancja na sprzęt',
-];
-
-/** Секция «Цены»: две карточки тарифов (Standard / Premium) и форма контакта (CTA). */
+/** Pricing section: two plan cards (Standard / Premium) and contact form (CTA). */
 export const Pricing: React.FC = () => {
+  const { t } = useTranslation();
   const [ctaName, setCtaName] = useState('');
   const [ctaPhone, setCtaPhone] = useState('');
   const [ctaEmail, setCtaEmail] = useState('');
+  const { status, errorMessage, submit } = useContactForm();
+  const [submitDisabledUntil, setSubmitDisabledUntil] = useState(0);
+
+  const standardFeatures = [
+    t('pricing.standardFeature1'),
+    t('pricing.standardFeature2'),
+    t('pricing.standardFeature3'),
+  ];
+  const premiumFeatures = [
+    t('pricing.premiumFeature1'),
+    t('pricing.premiumFeature2'),
+    t('pricing.premiumFeature3'),
+  ];
+  const detailedSpecsStandard = [
+    `${t('packagesStandard.spec1Title')}: ${t('packagesStandard.spec1Desc')}`,
+    `${t('packagesStandard.spec2Title')}: ${t('packagesStandard.spec2Desc')}`,
+    `${t('packagesStandard.spec3Title')}: ${t('packagesStandard.spec3Desc')}`,
+    `${t('packagesStandard.spec4Title')}: ${t('packagesStandard.spec4Desc')}`,
+    `${t('packagesStandard.spec5Title')}: ${t('packagesStandard.spec5Desc')}`,
+    `${t('packagesStandard.spec6Title')}: ${t('packagesStandard.spec6Desc')}`,
+    `${t('packagesStandard.spec7Title')}: ${t('packagesStandard.spec7Desc')}`,
+    `${t('packagesStandard.spec8Title')}: ${t('packagesStandard.spec8Desc')}`,
+  ];
+  const detailedSpecsPremium = [
+    `${t('packagesPremium.spec1Title')}: ${t('packagesPremium.spec1Desc')}`,
+    `${t('packagesPremium.spec2Title')}: ${t('packagesPremium.spec2Desc')}`,
+    `${t('packagesPremium.spec3Title')}: ${t('packagesPremium.spec3Desc')}`,
+    `${t('packagesPremium.spec4Title')}: ${t('packagesPremium.spec4Desc')}`,
+    `${t('packagesPremium.spec5Title')}: ${t('packagesPremium.spec5Desc')}`,
+    `${t('packagesPremium.spec6Title')}: ${t('packagesPremium.spec6Desc')}`,
+    `${t('packagesPremium.spec7Title')}: ${t('packagesPremium.spec7Desc')}`,
+    `${t('packagesPremium.spec8Title')}: ${t('packagesPremium.spec8Desc')}`,
+    `${t('packagesPremium.spec9Title')}: ${t('packagesPremium.spec9Desc')}`,
+    `${t('packagesPremium.spec10Title')}: ${t('packagesPremium.spec10Desc')}`,
+    `${t('packagesPremium.spec11Title')}: ${t('packagesPremium.spec11Desc')}`,
+    `${t('packagesPremium.spec12Title')}: ${t('packagesPremium.spec12Desc')}`,
+  ];
+
+  useEffect(() => {
+    if (status === 'success') {
+      setSubmitDisabledUntil(Date.now() + 30_000);
+      setCtaName('');
+      setCtaPhone('');
+      setCtaEmail('');
+    }
+  }, [status]);
 
   const handleCtaSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: send to backend or email service
+    submit({
+      name: ctaName,
+      phone: ctaPhone,
+      message: ctaEmail ? `Email: ${ctaEmail}` : undefined,
+    });
   };
 
+  const isSubmitDisabled = status === 'loading' || Date.now() < submitDisabledUntil;
+
   return (
-    <section className="relative">
-      {/* Background effects */}
+    <section className="relative" aria-label={t('pricing.ariaLabel')}>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#C0C0C0]/5 rounded-full blur-3xl" />
 
       <div className="container mx-auto px-6 relative z-10">
@@ -70,11 +85,10 @@ export const Pricing: React.FC = () => {
           className="text-center mb-16 sm:mb-24"
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
-            Koszt <span className="text-[#C0C0C0]">sprzętu</span>
+            {t('pricing.title')} <span className="text-[#C0C0C0]">{t('pricing.titleHighlight')}</span>
           </h2>
           <p className="text-base sm:text-xl text-white/70 max-w-2xl mx-auto px-0">
-            To nie jest wydatek. To inwestycja w fizyczny środek trwały, który zarabia od pierwszego
-            dnia.
+            {t('pricing.subtitle')}
           </p>
         </motion.div>
 
@@ -87,7 +101,7 @@ export const Pricing: React.FC = () => {
             className="min-w-0"
           >
             <PricingCard
-              title="Pakiet Standard"
+              title={t('pricing.standardTitle')}
               price="4,500"
               features={standardFeatures}
               isRecommended
@@ -105,18 +119,17 @@ export const Pricing: React.FC = () => {
             className="min-w-0"
           >
             <PricingCard
-              title="Pakiet Premium"
+              title={t('pricing.premiumTitle')}
               price="6,500"
               features={premiumFeatures}
               imageUrl={premiumImage}
-              badge="+ ZIMNE NAPOJE"
+              badge={t('pricing.premiumBadge')}
               detailedSpecs={detailedSpecsPremium}
               detailsLink="/pakiet-premium"
             />
           </motion.div>
         </div>
 
-        {/* CTA Section — form (Kontakt) */}
         <motion.div
           id="kontakt"
           initial={{ opacity: 0, y: 30 }}
@@ -127,55 +140,70 @@ export const Pricing: React.FC = () => {
         >
           <div className="backdrop-blur-md bg-gradient-to-r from-[#C0C0C0]/10 via-transparent to-[#C0C0C0]/10 border border-[#C0C0C0]/20 rounded-2xl p-6 sm:p-8 lg:p-12 max-w-2xl mx-auto">
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-              Zacznij swój biznes kawowy już dziś
+              {t('pricing.ctaTitle')}
             </h3>
             <p className="text-white/70 mb-8 max-w-xl mx-auto">
-              Skontaktuj się z nami, aby otrzymać pełny plan zwrotu z inwestycji i poznać terminy
-              dostawy modułów.
+              {t('pricing.ctaSubtitle')}
             </p>
+            {errorMessage && (
+              <p className="mb-4 text-red-400 text-sm" role="alert" aria-live="polite">
+                {errorMessage}
+              </p>
+            )}
+            {status === 'success' && (
+              <p className="mb-4 text-[#C0C0C0] font-medium" role="status" aria-live="polite">
+                {t('form.success')}
+              </p>
+            )}
             <form onSubmit={handleCtaSubmit} className="space-y-4 text-left">
               <div>
                 <label htmlFor="cta-name" className="block text-sm font-medium text-white/80 mb-2">
-                  Imię
+                  {t('form.nameLabel')}
                 </label>
                 <input
                   id="cta-name"
                   type="text"
+                  name="name"
+                  autoComplete="name"
                   value={ctaName}
                   onChange={(e) => setCtaName(e.target.value)}
-                  placeholder="Jan Kowalski"
+                  placeholder={t('form.namePlaceholder')}
                   className="w-full h-12 px-4 rounded-xl border border-[#C0C0C0]/30 bg-white/5 text-white placeholder:text-white/40 focus:border-[#C0C0C0]/60 focus:outline-none focus:ring-2 focus:ring-[#C0C0C0]/20 transition-colors"
                 />
               </div>
               <div>
                 <label htmlFor="cta-phone" className="block text-sm font-medium text-white/80 mb-2">
-                  Numer telefonu
+                  {t('form.phoneLabel')}
                 </label>
                 <input
                   id="cta-phone"
                   type="tel"
+                  name="tel"
+                  autoComplete="tel"
                   value={ctaPhone}
                   onChange={(e) => setCtaPhone(e.target.value)}
-                  placeholder="+48 123 456 789"
+                  placeholder={t('form.phonePlaceholder')}
                   className="w-full h-12 px-4 rounded-xl border border-[#C0C0C0]/30 bg-white/5 text-white placeholder:text-white/40 focus:border-[#C0C0C0]/60 focus:outline-none focus:ring-2 focus:ring-[#C0C0C0]/20 transition-colors"
                 />
               </div>
               <div>
                 <label htmlFor="cta-email" className="block text-sm font-medium text-white/80 mb-2">
-                  E-mail
+                  {t('form.emailLabel')}
                 </label>
                 <input
                   id="cta-email"
                   type="email"
+                  name="email"
+                  autoComplete="email"
                   value={ctaEmail}
                   onChange={(e) => setCtaEmail(e.target.value)}
-                  placeholder="jan@example.com"
+                  placeholder={t('form.emailPlaceholder')}
                   className="w-full h-12 px-4 rounded-xl border border-[#C0C0C0]/30 bg-white/5 text-white placeholder:text-white/40 focus:border-[#C0C0C0]/60 focus:outline-none focus:ring-2 focus:ring-[#C0C0C0]/20 transition-colors"
                 />
               </div>
               <div className="pt-2">
-                <MetallicButton type="submit" className="w-full">
-                  Otrzymać prezentację
+                <MetallicButton type="submit" className="w-full" disabled={isSubmitDisabled}>
+                  {status === 'loading' ? t('form.submitting') : t('form.submit')}
                 </MetallicButton>
               </div>
             </form>
@@ -184,21 +212,21 @@ export const Pricing: React.FC = () => {
           <div className="mt-12 sm:mt-16 mb-12 sm:mb-16 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 max-w-3xl mx-auto text-center">
             <div>
               <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-2">
-                8–12 miesięcy
+                {t('pricing.stat1Value')}
               </div>
-              <div className="text-white/60 text-sm sm:text-base">Średni czas zwrotu</div>
+              <div className="text-white/60 text-sm sm:text-base">{t('pricing.stat1Label')}</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-2">
-                1000 zł
+                {t('pricing.stat2Value')}
               </div>
-              <div className="text-white/60 text-sm sm:text-base">Miesięczny koszt operacyjny</div>
+              <div className="text-white/60 text-sm sm:text-base">{t('pricing.stat2Label')}</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-2">
-                0%
+                {t('pricing.stat3Value')}
               </div>
-              <div className="text-white/60 text-sm sm:text-base">Opłat franczyzowych</div>
+              <div className="text-white/60 text-sm sm:text-base">{t('pricing.stat3Label')}</div>
             </div>
           </div>
         </motion.div>

@@ -1,30 +1,41 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { ProfitCalculator } from '@/app/components/features/ProfitCalculator';
 
-const economicsData = [
-  { metric: 'Koszt produkcji (1 kawa)', value: '~2 zł', highlight: false },
-  { metric: 'Cena sprzedaży', value: '~8,5 zł', highlight: true },
-  { metric: 'Sprzedaż dzienna', value: '25 filiżanek', highlight: false },
-  { metric: 'Czynsz lokalizacji', value: '~1000 zł/mies.', highlight: false },
-  { metric: 'Twój czysty zysk', value: 'ok. 3000 zł/mies.', highlight: true },
-];
+const ECONOMICS_ROW_KEYS = [
+  { metricKey: 'row1Metric', valueKey: 'row1Value', highlight: false },
+  { metricKey: 'row2Metric', valueKey: 'row2Value', highlight: true },
+  { metricKey: 'row3Metric', valueKey: 'row3Value', highlight: false },
+  { metricKey: 'row4Metric', valueKey: 'row4Value', highlight: false },
+  { metricKey: 'row5Metric', valueKey: 'row5Value', highlight: true },
+] as const;
 
-const noFranchise = [
-  { benefit: '0 zł opłaty wstępnej', description: 'Brak kosztów wejścia do franczyzy' },
-  { benefit: '0 zł miesięcznych opłat', description: 'No Royalty – 100% zysków dla Ciebie' },
-  { benefit: 'Brak narzuconych dostawców', description: 'Kupujesz składniki tam, gdzie chcesz' },
-  { benefit: 'Brak opłat marketingowych', description: 'Twój marketing, Twoja strategia' },
-  { benefit: 'Cały zysk w Twojej kieszeni', description: 'Wypracowany kapitał zostaje u Ciebie' },
-  { benefit: 'Pełna niezależność', description: 'Decyzje biznesowe należą tylko do Ciebie' },
-];
+const NO_FRANCHISE_KEYS = [
+  { benefit: 'noFranchise1Benefit', desc: 'noFranchise1Desc' },
+  { benefit: 'noFranchise2Benefit', desc: 'noFranchise2Desc' },
+  { benefit: 'noFranchise3Benefit', desc: 'noFranchise3Desc' },
+  { benefit: 'noFranchise4Benefit', desc: 'noFranchise4Desc' },
+  { benefit: 'noFranchise5Benefit', desc: 'noFranchise5Desc' },
+  { benefit: 'noFranchise6Benefit', desc: 'noFranchise6Desc' },
+] as const;
 
-/** Секция «Экономика»: таблица показателей, калькулятор прибыли, блок «Почему без франшизы». */
+/** Economics section: metrics table, profit calculator, "Why no franchise" block. */
 export const ROICalculator: React.FC = () => {
+  const { t } = useTranslation();
+  const economicsData = ECONOMICS_ROW_KEYS.map((row) => ({
+    metric: t(`economics.${row.metricKey}`),
+    value: t(`economics.${row.valueKey}`),
+    highlight: row.highlight,
+  }));
+  const noFranchise = NO_FRANCHISE_KEYS.map((item) => ({
+    benefit: t(`economics.${item.benefit}`),
+    description: t(`economics.${item.desc}`),
+  }));
+
   return (
-    <section id="ekonomia" className="py-24 relative">
+    <section id="ekonomia" className="py-24 relative" aria-label={t('economics.ariaLabel')}>
       <div className="container mx-auto px-6">
-        {/* Economics Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -33,14 +44,13 @@ export const ROICalculator: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="text-5xl font-bold text-white mb-6">
-            Ekonomia <span className="text-[#C0C0C0]">jednego punktu</span>
+            {t('economics.title')} <span className="text-[#C0C0C0]">{t('economics.titleHighlight')}</span>
           </h2>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            Przejrzyste liczby, które mówią same za siebie
+            {t('economics.subtitle')}
           </p>
         </motion.div>
 
-        {/* Economics Table */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -72,12 +82,11 @@ export const ROICalculator: React.FC = () => {
 
           <div className="mt-6 text-center">
             <p className="text-white/60 text-sm">
-              *Wyliczenia oparte na rzeczywistych danych z działających punktów
+              {t('economics.disclaimer')}
             </p>
           </div>
         </motion.div>
 
-        {/* Interactive Profit Calculator */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -86,10 +95,10 @@ export const ROICalculator: React.FC = () => {
           className="mb-24"
         >
           <h2 className="text-5xl font-bold text-white mb-6 text-center">
-            Kalkulator <span className="text-[#C0C0C0]">zysku</span>
+            {t('economics.calculatorTitle')} <span className="text-[#C0C0C0]">{t('economics.calculatorTitleHighlight')}</span>
           </h2>
           <p className="text-xl text-white/70 max-w-2xl mx-auto text-center mb-12">
-            Dostosuj parametry i zobacz swój potencjalny zysk
+            {t('economics.calculatorSubtitle')}
           </p>
 
           <div className="max-w-6xl mx-auto backdrop-blur-md bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-[#C0C0C0]/20 rounded-2xl p-8 lg:p-12">
@@ -97,7 +106,6 @@ export const ROICalculator: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Why No Franchise Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -105,10 +113,10 @@ export const ROICalculator: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <h2 className="text-5xl font-bold text-white mb-6 text-center">
-            Dlaczego <span className="text-[#C0C0C0]">bez franczyzy?</span>
+            {t('economics.noFranchiseTitle')} <span className="text-[#C0C0C0]">{t('economics.noFranchiseTitleHighlight')}</span>
           </h2>
           <p className="text-xl text-white/70 max-w-2xl mx-auto text-center mb-12">
-            Zatrzymaj 100% wypracowanego zysku
+            {t('economics.noFranchiseSubtitle')}
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">

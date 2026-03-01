@@ -1,33 +1,27 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GlassCard } from '@/app/components/ui/GlassCard';
 import { UserX, TrendingUp, Copy } from 'lucide-react';
 
-const benefits = [
-  {
-    icon: UserX,
-    title: 'Bez personelu',
-    description: 'Brak pensji, brak grafików, brak problemów kadrowych.',
-    highlight: 'Zero kosztów osobowych',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Prosta ekonomia',
-    description: 'Koszt kubka kawy to ok. 2 zł. Sprzedaż za ok. 8,5 zł.',
-    highlight: 'Marża powyżej 60%',
-  },
-  {
-    icon: Copy,
-    title: 'Skalowalność',
-    description: 'Jeden punkt = 3000 zł zysku. Trzy punkty = 9000 zł zysku.',
-    highlight: 'Łatwo powielisz ten model',
-  },
-];
+const BENEFIT_KEYS = [
+  { icon: UserX, key: 'benefit1' },
+  { icon: TrendingUp, key: 'benefit2' },
+  { icon: Copy, key: 'benefit3' },
+] as const;
 
-/** Секция «Автономия и модель бизнеса»: 3 преимущества без франшизы. */
+/** Autonomy and business model section: 3 benefits without franchise. */
 export const Autonomy: React.FC = () => {
+  const { t } = useTranslation();
+  const benefits = BENEFIT_KEYS.map(({ icon, key }) => ({
+    icon,
+    title: t(`autonomy.${key}Title`),
+    description: t(`autonomy.${key}Desc`),
+    highlight: t(`autonomy.${key}Highlight`),
+  }));
+
   return (
-    <section id="zalety" className="py-24 relative">
+    <section id="zalety" className="py-24 relative" aria-labelledby="zalety-heading">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -36,11 +30,11 @@ export const Autonomy: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-white mb-6">
-            Autonomia i <span className="text-[#C0C0C0]">Model Biznesowy</span>
+          <h2 id="zalety-heading" className="text-5xl font-bold text-white mb-6">
+            {t('autonomy.title')} <span className="text-[#C0C0C0]">{t('autonomy.titleHighlight')}</span>
           </h2>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            Biznes, który pracuje na Ciebie, nie odwrotnie
+            {t('autonomy.subtitle')}
           </p>
         </motion.div>
 

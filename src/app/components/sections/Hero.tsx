@@ -1,13 +1,18 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { ChevronDown } from 'lucide-react';
 import heroImage from '@/assets/multi-automats.png';
 
-/** Секция Hero главной страницы: заголовок, оффер, CTA, изображение автоматов. */
+/** Hero section of the main page: headline, offer, CTA, vending machines image. */
 export const Hero: React.FC = () => {
+  const { t } = useTranslation();
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-28">
+    <section
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-28"
+      aria-label={t('hero.ariaLabel')}
+    >
       {/* Animated background grid */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50" />
 
@@ -24,20 +29,19 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="text-white">Gotowy biznes kawowy</span>
+              <span className="text-white">{t('hero.titleLine1')}</span>
               <br />
               <span className="bg-gradient-to-r from-[#C0C0C0] via-white to-[#C0C0C0] bg-clip-text text-transparent">
-                bez franczyzy i ropalty
+                {t('hero.titleLine2')}
               </span>
             </h1>
 
             <p className="text-xl text-white/70 mb-8 max-w-lg">
-              Twój biznes. Twoje zasady. Twój dochód. Autonomiczna kawiarnia, która pracuje bez
-              sprzedawcy.
+              {t('hero.subtitle')}
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <MetallicButton>Poznać terminy zwrotu inwestycji</MetallicButton>
+              <MetallicButton>{t('hero.cta')}</MetallicButton>
             </div>
 
             {/* Stats */}
@@ -46,19 +50,19 @@ export const Hero: React.FC = () => {
                 <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-1">
                   3000 zł
                 </div>
-                <div className="text-sm text-white/60">średni zysk/mies.</div>
+                <div className="text-sm text-white/60">{t('hero.statProfit')}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-1">
                   24/7
                 </div>
-                <div className="text-sm text-white/60">Praca bez personelu</div>
+                <div className="text-sm text-white/60">{t('hero.stat24_7')}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent mb-1">
                   0 zł
                 </div>
-                <div className="text-sm text-white/60">Ropalty miesięcznie</div>
+                <div className="text-sm text-white/60">{t('hero.statRopalty')}</div>
               </div>
             </div>
           </motion.div>
@@ -73,7 +77,18 @@ export const Hero: React.FC = () => {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-[#C0C0C0]/20 to-transparent rounded-3xl blur-3xl" />
               <div className="relative rounded-3xl overflow-hidden border border-[#C0C0C0]/20">
-                <img src={heroImage} alt="Na Kawkę — automaty kawowe" className="w-full h-auto" />
+                <img
+                  src={heroImage}
+                  alt={t('hero.imageAlt')}
+                  width={800}
+                  height={533}
+                  className="w-full h-auto"
+                  loading="eager"
+                  decoding="async"
+                  {...({
+                    fetchpriority: 'high',
+                  } as React.ImgHTMLAttributes<HTMLImageElement>)}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent opacity-60" />
               </div>
             </div>

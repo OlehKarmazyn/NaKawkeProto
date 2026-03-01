@@ -5,7 +5,7 @@ interface GlassCardProps {
   className?: string;
 }
 
-/** Стеклянная карточка с размытием и золотистой обводкой — используется в секциях лендинга. */
+/** Glass card with blur and gold border — used in landing sections. */
 export const GlassCard: React.FC<GlassCardProps> = ({ children, className = '' }) => {
   return (
     <div

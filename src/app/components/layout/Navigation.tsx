@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { motion, useScroll } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
+import { LanguageSwitcher } from '@/app/components/ui/LanguageSwitcher';
 import { NAV_LINKS } from '@/app/shared/constants/navigation';
 
 export const Navigation: React.FC = () => {
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -19,9 +22,9 @@ export const Navigation: React.FC = () => {
     });
   }, [scrollY]);
 
-  // Scroll spy: активная секция — та, чей верх уже пересёк линию под шапкой (при появлении блока подсвечивается, при уходе — следующая).
-  // Исключение: "kontakt" подсвечивается только когда соответствующий CTA-блок виден во вьюпорте.
-  const TRIGGER_OFFSET_PX = 120; // линия под навбаром: секция считается "текущей", когда её top выше этой линии
+  // Scroll spy: active section is the one whose top has crossed the line below the header (on enter it highlights, on leave the next one).
+  // Exception: "kontakt" highlights only when its CTA block is visible in the viewport.
+  const TRIGGER_OFFSET_PX = 120; // line below navbar: section is "current" when its top is above this line
 
   useEffect(() => {
     if (location.pathname !== '/') {
@@ -29,7 +32,7 @@ export const Navigation: React.FC = () => {
       return;
     }
 
-    const sectionIds = NAV_LINKS.map((l) => l.href.slice(1));
+    const sectionIds = NAV_LINKS.map((l) => l.href.slice(1) as string);
 
     const updateActiveSection = () => {
       let active: string | null = null;
@@ -39,16 +42,16 @@ export const Navigation: React.FC = () => {
         const rect = el.getBoundingClientRect();
 
         if (id === 'kontakt') {
-          // Kontakt: подсветка только когда блок с CTA виден во вьюпорте (заголовок и текст)
+          // Kontakt: highlight only when the CTA block is visible in the viewport (heading and text)
           const isVisible =
             rect.top < window.innerHeight && rect.bottom > TRIGGER_OFFSET_PX;
           if (isVisible) active = id;
         } else {
-          // Остальные секции: классический scroll-spy по линии под шапкой
+          // Other sections: classic scroll-spy by the line below the header
           if (rect.top <= TRIGGER_OFFSET_PX) active = id;
         }
       }
-      // В самом верху страницы — первая секция
+      // At the very top of the page — first section
       if (active === null && sectionIds.length) active = sectionIds[0];
       setActiveSection(active);
     };
@@ -99,11 +102,11 @@ export const Navigation: React.FC = () => {
               >
                 <img
                   src={logo}
-                  alt="Na Kawkę Logo"
+                  alt={t('nav.logoAlt')}
                   className="h-10 w-auto filter drop-shadow-[0_0_10px_rgba(192,192,192,0.3)]"
                 />
                 <div className="hidden sm:block">
-                  <div className="text-xl font-bold text-white">Na Kawkę</div>
+                  <div className="text-xl font-bold text-white">{t('common.siteName')}</div>
                 </div>
               </motion.div>
             </Link>
@@ -119,7 +122,7 @@ export const Navigation: React.FC = () => {
                 const isActive = activeSection === link.href.slice(1);
                 return (
                   <motion.a
-                    key={link.name}
+                    key={link.id}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 + index * 0.05 }}
@@ -132,7 +135,7 @@ export const Navigation: React.FC = () => {
                       isActive ? 'text-white' : 'text-white/80 hover:text-white'
                     }`}
                   >
-                    {link.name}
+                    {t(`nav.${link.id}`)}
                     <span
                       className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#C0C0C0] via-gold/50 to-white transition-all duration-300 ${
                         isActive ? 'w-full' : 'w-0 group-hover:w-full'
@@ -143,14 +146,15 @@ export const Navigation: React.FC = () => {
               })}
             </motion.div>
 
-            {/* CTA Button */}
+            {/* CTA + Language dropdown (right of button) */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="hidden lg:block"
+              className="hidden lg:flex items-center gap-4"
             >
-              <MetallicButton>Otrzymać pełne wyliczenie zwrotu</MetallicButton>
+              <MetallicButton>{t('nav.cta')}</MetallicButton>
+              <LanguageSwitcher />
             </motion.div>
 
             {/* Mobile Menu Button */}
@@ -181,7 +185,7 @@ export const Navigation: React.FC = () => {
             const isActive = activeSection === link.href.slice(1);
             return (
               <motion.a
-                key={link.name}
+                key={link.id}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{
                   opacity: isMobileMenuOpen ? 1 : 0,
@@ -197,13 +201,14 @@ export const Navigation: React.FC = () => {
                   isActive ? 'text-white' : 'text-white/80 hover:text-white'
                 } text-xl`}
               >
-                {link.name}
+                {t(`nav.${link.id}`)}
               </motion.a>
             );
           })}
 
-          <div className="mt-4">
-            <MetallicButton>Otrzymać pełne wyliczenie zwrotu</MetallicButton>
+          <div className="mt-4 flex flex-col gap-3">
+            <MetallicButton>{t('nav.cta')}</MetallicButton>
+            <LanguageSwitcher />
           </div>
         </div>
       </motion.div>

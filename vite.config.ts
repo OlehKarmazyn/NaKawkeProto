@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import Sitemap from 'vite-plugin-sitemap'
 
 const FIGMA_ASSET_PLACEHOLDER =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
@@ -20,11 +21,17 @@ function figmaAssetPlugin() {
   }
 }
 
+const siteUrl = process.env.VITE_SITE_URL ?? 'https://nakawke.pl'
+
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
     figmaAssetPlugin(),
+    Sitemap({
+      hostname: siteUrl,
+      dynamicRoutes: ['/', '/pakiet-standard', '/pakiet-premium'],
+    }),
   ],
   resolve: {
     alias: {

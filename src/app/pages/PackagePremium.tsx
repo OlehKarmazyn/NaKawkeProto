@@ -1,94 +1,59 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { ArrowLeft, Check } from 'lucide-react';
 import { Navigation } from '@/app/components/layout/Navigation';
 import { Footer } from '@/app/components/layout/Footer';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
+import { PageMeta } from '@/app/components/seo/PageMeta';
+import { StructuredData } from '@/app/components/seo/StructuredData';
+import { SITE_BASE_URL } from '@/app/shared/constants/seo';
 import premiumImage from '@/assets/premium.png';
 
+const SPEC_KEYS = [
+  'spec1', 'spec2', 'spec3', 'spec4', 'spec5', 'spec6', 'spec7', 'spec8',
+  'spec9', 'spec10', 'spec11', 'spec12',
+] as const;
+const BENEFIT_KEYS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
+
 export const PackagePremium: React.FC = () => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const detailedSpecs = [
-    {
-      title: 'Liczba napojów',
-      description: 'Do 24 różnych napojów - podwójna oferta',
-      icon: '☕'
-    },
-    {
-      title: 'Pojemnik na kawę',
-      description: 'Jeden pojemnik na ziarnistą kawę — 3 kg (2x większy)',
-      icon: '📦'
-    },
-    {
-      title: 'Dodatkowe pojemniki',
-      description: 'Sześć pojemników po 4 l każdy (mleko, czekolada, karmel, herbata, milkshake)',
-      icon: '🥛'
-    },
-    {
-      title: 'Ekran dotykowy',
-      description: 'Duży ekran dotykowy 21,5 cala',
-      icon: '📱'
-    },
-    {
-      title: 'Wsparcie głosowe',
-      description: 'Głośnik dla wsparcia głosowego klientów',
-      icon: '🔊'
-    },
-    {
-      title: 'Lodówka',
-      description: 'Wbudowana lodówka od +2°C do +8°C',
-      icon: '❄️'
-    },
-    {
-      title: 'Stacja syropowa',
-      description: 'Profesjonalna stacja syropowa - 4 rodzaje',
-      icon: '🍯'
-    },
-    {
-      title: 'Bloki zaparzające',
-      description: 'Osobne bloki dla kawy (14 g) i herbaty liściastej',
-      icon: '⚙️'
-    },
-    {
-      title: 'Wydawanie kubków',
-      description: 'Automatyczne wydawanie kubków na 300–400 szt.',
-      icon: '🥤'
-    },
-    {
-      title: 'Pojemnik na odpady',
-      description: 'Duży pojemnik na odpady - 20 l',
-      icon: '🗑️'
-    },
-    {
-      title: 'Łączność i telemetria',
-      description: 'Wi-Fi i zaawansowana telemetria',
-      icon: '📡'
-    },
-    {
-      title: 'Wsparcie',
-      description: 'Pełna gwarancja na sprzęt',
-      icon: '✅'
-    }
-  ];
 
-  const benefits = [
-    'Podwójna oferta napojów - 24 rodzaje',
-    'Większe pojemności - mniej częstych uzupełnień',
-    'Ekran 21,5" - lepsza prezentacja oferty',
-    'Zimne napoje i milkshake - większa atrakcyjność',
-    'Wsparcie głosowe - lepsza obsługa klienta',
-    'Stacja syropowa - personalizacja napojów',
-    'Automatyczne wydawanie kubków - pełna autonomia',
-    'Idealne dla lokalizacji o wysokim ruchu'
-  ];
+  const iconByKey: Record<string, string> = {
+    spec1: '☕', spec2: '📦', spec3: '🥛', spec4: '📱', spec5: '🔊', spec6: '❄️',
+    spec7: '🍯', spec8: '⚙️', spec9: '🥤', spec10: '🗑️', spec11: '📡', spec12: '✅',
+  };
+  const detailedSpecs = SPEC_KEYS.map((key) => ({
+    title: t(`packagesPremium.${key}Title`),
+    description: t(`packagesPremium.${key}Desc`),
+    icon: iconByKey[key] ?? '✅',
+  }));
+  const benefits = BENEFIT_KEYS.map((i) => t(`packagesPremium.benefit${i}`));
+
+  const PRODUCT_SCHEMA = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `Pakiet Premium — ${t('common.siteName')}`,
+    description: t('packages.premiumSubtitle'),
+    url: `${SITE_BASE_URL}/pakiet-premium`,
+    offers: { '@type': 'Offer', price: '6500', priceCurrency: 'EUR' },
+  };
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] overflow-x-hidden">
+      <PageMeta
+        title={t('seo.premiumTitle')}
+        description={t('seo.premiumDescription')}
+        canonicalPath="/pakiet-premium"
+      />
+      <StructuredData schema={PRODUCT_SCHEMA} />
       <Navigation />
-      
+
       <div className="pt-32 pb-24">
         <div className="container mx-auto px-6">
           <motion.div
@@ -96,12 +61,12 @@ export const PackagePremium: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Link 
+            <Link
               to="/#cennik"
               className="inline-flex items-center gap-2 text-[#C0C0C0] hover:text-white transition-colors mb-12"
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Powrót do cennika</span>
+              <span>{t('packages.backToPricing')}</span>
             </Link>
           </motion.div>
 
@@ -112,19 +77,19 @@ export const PackagePremium: React.FC = () => {
             className="max-w-4xl mx-auto text-center mb-16"
           >
             <div className="inline-block bg-[#C0C0C0]/90 text-black px-6 py-2 rounded-full text-sm font-bold mb-6">
-              + ZIMNE NAPOJE
+              {t('packages.premiumBadge')}
             </div>
             <h1 className="text-6xl font-bold text-white mb-6">
-              Pakiet <span className="text-[#C0C0C0]">Premium</span>
+              Pakiet <span className="text-[#C0C0C0]">{t('packages.premium')}</span>
             </h1>
             <p className="text-xl text-white/70 mb-8">
-              Jetinno JL300 - Profesjonalne rozwiązanie dla maksymalnych przychodów
+              {t('packages.premiumSubtitle')}
             </p>
             <div className="flex items-baseline justify-center gap-3">
               <span className="text-7xl font-bold bg-gradient-to-r from-[#C0C0C0] to-white bg-clip-text text-transparent">
                 €6,500
               </span>
-              <span className="text-2xl text-white/60">netto</span>
+              <span className="text-2xl text-white/60">{t('packages.netto')}</span>
             </div>
           </motion.div>
 
@@ -137,13 +102,12 @@ export const PackagePremium: React.FC = () => {
             <div className="relative backdrop-blur-md bg-gradient-to-br from-[#C0C0C0]/10 via-[#a8a8a8]/5 to-[#C0C0C0]/10 border border-[#C0C0C0]/40 rounded-2xl overflow-hidden p-12">
               <img
                 src={premiumImage}
-                alt="Pakiet Premium - Jetinno JL300"
+                alt={t('packages.premiumImageAlt')}
                 className="w-full h-auto max-h-96 object-contain mx-auto"
               />
             </div>
           </motion.div>
 
-          {/* Detailed Specs */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -152,9 +116,9 @@ export const PackagePremium: React.FC = () => {
             className="max-w-6xl mx-auto mb-16"
           >
             <h2 className="text-4xl font-bold text-white mb-12 text-center">
-              Szczegółowe <span className="text-[#C0C0C0]">specyfikacje</span>
+              {t('packages.specsTitle')} <span className="text-[#C0C0C0]">{t('packages.specsTitleHighlight')}</span>
             </h2>
-            
+
             <div className="grid md:grid-cols-2 gap-6">
               {detailedSpecs.map((spec, index) => (
                 <motion.div
@@ -177,7 +141,6 @@ export const PackagePremium: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Benefits */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -186,9 +149,9 @@ export const PackagePremium: React.FC = () => {
             className="max-w-4xl mx-auto mb-16"
           >
             <h2 className="text-4xl font-bold text-white mb-12 text-center">
-              Dlaczego <span className="text-[#C0C0C0]">Premium?</span>
+              {t('packages.whyPremium')} <span className="text-[#C0C0C0]">{t('packages.whyPremiumHighlight')}</span>
             </h2>
-            
+
             <div className="backdrop-blur-md bg-gradient-to-r from-[#C0C0C0]/10 via-transparent to-[#C0C0C0]/10 border border-[#C0C0C0]/20 rounded-2xl p-8">
               <ul className="space-y-4">
                 {benefits.map((benefit, index) => (
@@ -201,7 +164,6 @@ export const PackagePremium: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -210,18 +172,14 @@ export const PackagePremium: React.FC = () => {
             className="max-w-3xl mx-auto text-center backdrop-blur-md bg-gradient-to-r from-[#C0C0C0]/10 via-transparent to-[#C0C0C0]/10 border border-[#C0C0C0]/20 rounded-2xl p-12"
           >
             <h2 className="text-3xl font-bold text-white mb-6">
-              Maksymalizuj swoje przychody
+              {t('packages.ctaPremiumTitle')}
             </h2>
             <p className="text-white/70 mb-8 text-lg">
-              Pakiet Premium to najlepszy wybór dla lokalizacji o wysokim ruchu
+              {t('packages.ctaPremiumText')}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <MetallicButton>
-                Zamówić moduł
-              </MetallicButton>
-              <MetallicButton>
-                Otrzymać pełne wyliczenie zwrotu
-              </MetallicButton>
+              <MetallicButton>{t('packages.orderModule')}</MetallicButton>
+              <MetallicButton>{t('packages.fullCalculation')}</MetallicButton>
             </div>
           </motion.div>
         </div>

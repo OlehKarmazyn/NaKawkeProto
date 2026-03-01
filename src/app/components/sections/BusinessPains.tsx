@@ -1,43 +1,28 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GlassCard } from '@/app/components/ui/GlassCard';
 import { Clock, DollarSign, Users, TrendingDown } from 'lucide-react';
 
-const pains = [
-  {
-    icon: Clock,
-    title: 'Wysokie opłaty wstępne i ropalty',
-    description:
-      'Masz dość wysokich opłat wstępnych i miesięcznych ropalty? Twoje pieniądze pracują na franczyzę zamiast na Ciebie.',
-    impact: 'Tysięce miesięcznie',
-  },
-  {
-    icon: DollarSign,
-    title: 'Duże koszty stałe',
-    description:
-      'Boisz się dużych kosztów stałych na start? Tradycyjne kawiarnie wymagają ogromnych nakładów początkowych.',
-    impact: 'Ryzyko kapitałowe',
-  },
-  {
-    icon: Users,
-    title: 'Problemy kadrowe',
-    description:
-      'Nie chcesz być zależny od humorów i zwolnień lekarskich pracowników? Pensje, grafiki, ZUS to ciągły ból głowy.',
-    impact: 'Brak kontroli',
-  },
-  {
-    icon: TrendingDown,
-    title: 'Nieprzejrzysta ekonomia',
-    description:
-      'Szukasz modelu biznesowego z przejrzystą ekonomią? Ukryte koszty i narzuceni dostawcy niszczą marże.',
-    impact: 'Niska rentowność',
-  },
-];
+const PAIN_KEYS = [
+  { icon: Clock, key: 'pain1' },
+  { icon: DollarSign, key: 'pain2' },
+  { icon: Users, key: 'pain3' },
+  { icon: TrendingDown, key: 'pain4' },
+] as const;
 
-/** Секция «Боли бизнеса»: почему традиционный бизнес сложен (4 карточки). */
+/** Business pains section: why traditional business is hard (4 cards). */
 export const BusinessPains: React.FC = () => {
+  const { t } = useTranslation();
+  const pains = PAIN_KEYS.map(({ icon, key }) => ({
+    icon,
+    title: t(`pains.${key}Title`),
+    description: t(`pains.${key}Desc`),
+    impact: t(`pains.${key}Impact`),
+  }));
+
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden" aria-label={t('pains.ariaLabel')}>
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -47,10 +32,10 @@ export const BusinessPains: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="text-5xl font-bold text-white mb-6">
-            Dlaczego tradycyjny biznes <span className="text-[#C0C0C0]">jest trudny?</span>
+            {t('pains.title')} <span className="text-[#C0C0C0]">{t('pains.titleHighlight')}</span>
           </h2>
           <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            Na Kawkę – przejmij kontrolę nad swoim kapitałem
+            {t('pains.subtitle')}
           </p>
         </motion.div>
 

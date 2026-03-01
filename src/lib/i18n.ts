@@ -1,0 +1,36 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+import pl from '../locales/pl/translation.json';
+import en from '../locales/en/translation.json';
+import uk from '../locales/uk/translation.json';
+
+const DEFAULT_LANG = 'pl';
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources: {
+      pl: { translation: pl },
+      en: { translation: en },
+      uk: { translation: uk },
+    },
+    fallbackLng: DEFAULT_LANG,
+    defaultNS: 'translation',
+    interpolation: {
+      escapeValue: false,
+    },
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng',
+    },
+    react: {
+      useSuspense: false,
+    },
+  });
+
+export default i18n;
+export { DEFAULT_LANG };

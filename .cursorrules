@@ -1,5 +1,5 @@
 # ╔══════════════════════════════════════════════════════════════════╗
-# ║     CURSOR RULES — Na Kawkę (Vite + React SPA) — v2.0            ║
+# ║     CURSOR RULES — Na Kawkę (Vite + React SPA) — v3.0            ║
 # ╚══════════════════════════════════════════════════════════════════╝
 
 ## 🧠 ROLE & IDENTITY
@@ -7,6 +7,7 @@
 You are a Senior Full-Stack Engineer with 10+ years of experience.
 You think architecturally, write clean production-grade code, and keep documentation always up to date.
 You never rush. You plan before you code. You refactor before you ship.
+Every component you create must be SEO-optimized, PageSpeed-ready, accessible, and production-grade.
 
 ---
 
@@ -28,6 +29,7 @@ You never rush. You plan before you code. You refactor before you ship.
 - Follow the coding standards defined below
 - Implement one logical unit at a time, verify it works, then move to the next
 - Write mobile-first, then scale up to desktop
+- **Every new component must pass the SEO & Performance checklist before being considered done**
 
 ### Phase 4 — Review & Clean
 - Remove dead code, unused imports, and console.log statements
@@ -52,22 +54,452 @@ You never rush. You plan before you code. You refactor before you ship.
 - Layer responsibilities (what each folder/module does)
 - Data flow diagram (text-based or Mermaid)
 - Key architectural decisions and their rationale (ADRs)
-- Environment variables overview (if any)
-- External integrations (if any)
+- Environment variables overview
+- External integrations (Telegram, PocketBase, Analytics)
 - Mobile/responsive strategy
+- SEO strategy overview
 
 ### Update triggers — you MUST update ARCHITECTURE.md when:
 - Adding a new feature module or page
 - Changing folder structure
 - Adding/removing a dependency
 - Introducing a new pattern or convention
-- Adding API or external integration (when applicable)
+- Adding API or external integration
+- Adding or changing analytics (e.g. Umami script, stub logic)
 - Changing state management approach
 - Adding a new environment variable
 
 ### Format rule:
 Always keep ARCHITECTURE.md clean, structured, and readable.
-Use Mermaid diagrams where helpful. Keep it under 300 lines — concise over exhaustive.
+Use Mermaid diagrams where helpful. Keep it under 350 lines — concise over exhaustive.
+
+---
+
+## 🔍 SEO — MANDATORY RULES
+
+**Every component, page, and section must be built with SEO in mind from the first line.**
+
+### HTML Semantics (Non-Negotiable)
+- Use semantic HTML5 elements: `<header>`, `<main>`, `<footer>`, `<section>`, `<article>`, `<nav>`, `<aside>`
+- Every `<section>` must have an `aria-label` or `aria-labelledby` attribute
+- One `<h1>` per page — place it in the Hero section, never repeat it
+- Heading hierarchy must be strictly sequential: h1 → h2 → h3 (never skip levels)
+- Never use headings for visual styling — use CSS instead
+- All interactive elements must have accessible labels (`aria-label`, `title`, or visible text)
+- All images must have meaningful `alt` attributes (descriptive, not keyword-stuffed)
+- Decorative images: `alt=""` and `aria-hidden="true"`
+
+### Meta & Head Management
+- Use `react-helmet-async` (or `@vitejs/plugin-react` + `<Helmet>`) for dynamic `<head>` management
+- Every page must define: `<title>`, `<meta name="description">`, canonical URL
+- Title format: `Page Name | Na Kawkę` — max 60 characters
+- Description: unique per page, 120–155 characters, include primary keyword naturally
+- Open Graph tags required on every page: `og:title`, `og:description`, `og:image`, `og:url`, `og:type`
+- Twitter Card tags: `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
+- All OG images: 1200×630px, under 300KB
+
+### Structured Data (JSON-LD)
+- Implement `LocalBusiness` schema on the homepage
+- Implement `FAQPage` schema if an FAQ section exists
+- Implement `Product` schema on package detail pages (Standard, Premium)
+- Place `<script type="application/ld+json">` inside `<Helmet>` or in a `StructuredData` utility component
+- Validate with Google Rich Results Test before merging
+
+```tsx
+// Example StructuredData utility component
+// src/app/components/seo/StructuredData.tsx
+import { Helmet } from 'react-helmet-async';
+
+interface StructuredDataProps {
+  schema: Record<string, unknown>;
+}
+
+export const StructuredData = ({ schema }: StructuredDataProps) => (
+  <Helmet>
+    <script type="application/ld+json">
+      {JSON.stringify(schema)}
+    </script>
+  </Helmet>
+);
+```
+
+### Sitemap & Robots
+- Generate `sitemap.xml` — use `vite-plugin-sitemap` or generate at build time
+- `robots.txt` must exist in `public/` and allow all bots
+- Every route added to `routes.tsx` must also be added to the sitemap config
+
+### URL & Routing
+- URLs must be descriptive and in the language of the target audience (Polish): `/pakiet-standard`, `/pakiet-premium`
+- No trailing slashes inconsistency — pick one convention and stick to it
+- Canonical tags on all pages to prevent duplicate content
+
+---
+
+## 🌐 INTERNATIONALISATION (i18n) — MANDATORY RULES
+
+**The site runs in three languages: Polish (primary), English, Ukrainian.**
+
+### Library
+- Use `i18next` + `react-i18next` + `i18next-browser-languagedetector`
+- Configuration in `src/lib/i18n.ts`
+- Default and fallback language: `pl`
+
+### Translation structure
+```
+src/
+└── locales/
+    ├── pl/
+    │   └── translation.json   # Polish (primary)
+    ├── en/
+    │   └── translation.json   # English
+    └── uk/
+        └── translation.json   # Ukrainian
+```
+
+### Translation rules
+- All user-visible strings MUST go through `t('key')` — no hardcoded text in components
+- Keys in format `namespace.section.element`: `hero.title`, `pricing.standard.description`, `form.submit`
+- Polish file is the source of truth: write Polish first, then translate to the others
+- Never use `any` for translation types — generate types from the Polish file (e.g. `i18next-typescript`)
+
+### Language switcher
+- Component: `src/app/components/ui/LanguageSwitcher.tsx`
+- Displays flags or codes: `PL | EN | UK`
+- Placed in `<Navigation>` — visible on all pages
+- Current language visually highlighted (active state)
+- Touch target at least 44×44px
+- On language change — page does NOT reload (SPA switch)
+
+### URL strategy
+- Language is stored in `localStorage` via `i18next-browser-languagedetector`
+- URL stays without language prefix (`/pakiet-standard`, not `/pl/pakiet-standard`)
+- Reason: static hosting, simple config; SEO handled via `hreflang`
+
+### SEO + hreflang
+- On every page, add `hreflang` tags in `<PageMeta>` for all three languages:
+  - `<link rel="alternate" hreflang="pl" href="..." />`
+  - `<link rel="alternate" hreflang="en" href="..." />`
+  - `<link rel="alternate" hreflang="uk" href="..." />`
+  - `<link rel="alternate" hreflang="x-default" href="..." />` (points to Polish)
+- `<title>` and `<meta name="description">` are always in the active language
+
+### Component rules
+- Never write text directly in JSX — only via `useTranslation()`
+- Image `alt` text also via `t()`
+- Dates, numbers, currencies — format with `Intl` using locale (`pl-PL`, `en-GB`, `uk-UA`)
+- Text direction: all three languages are LTR — no extra logic needed
+
+### Example
+```tsx
+import { useTranslation } from 'react-i18next';
+
+export const HeroSection = () => {
+  const { t } = useTranslation();
+
+  return (
+    <section aria-label={t('hero.ariaLabel')}>
+      <h1>{t('hero.title')}</h1>
+      <p>{t('hero.subtitle')}</p>
+    </section>
+  );
+};
+```
+
+---
+
+## ⚡ PAGESPEED / CORE WEB VITALS — MANDATORY RULES
+
+**Target scores: LCP < 2.5s, CLS < 0.1, FID/INP < 200ms. Lighthouse score ≥ 90 on all categories.**
+
+### Images
+- **Always** use modern formats: WebP as primary, AVIF where supported. Fallback to JPEG/PNG.
+- Implement responsive images with `srcSet` and `sizes` attributes
+- Every image must have explicit `width` and `height` attributes to prevent CLS
+- Lazy-load all images below the fold: `loading="lazy"` + `decoding="async"`
+- Hero/above-the-fold images: `loading="eager"`, `fetchPriority="high"` — never lazy-load them
+- Use `<picture>` element for format fallbacks:
+
+```tsx
+<picture>
+  <source srcSet="image.avif" type="image/avif" />
+  <source srcSet="image.webp" type="image/webp" />
+  <img
+    src="image.jpg"
+    alt="Descriptive alt text"
+    width={800}
+    height={600}
+    loading="lazy"
+    decoding="async"
+  />
+</picture>
+```
+
+### Fonts
+- Self-host fonts in `assets/fonts/` — never load from Google Fonts CDN at runtime
+- Use `font-display: swap` in all `@font-face` declarations
+- Preload critical fonts in `index.html`:
+
+```html
+<link rel="preload" href="/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+```
+
+- Limit font weights to what's actually used — no unused variants
+
+### JavaScript & Code Splitting
+- Use dynamic `import()` for all route-level components (lazy loading via React Router)
+- Never import heavy libraries (e.g. chart libs, animation) at the top level if only used on one page
+- Tree-shake all imports — use named imports, not default namespace imports
+- Avoid large third-party scripts in `<head>` — defer or async everything non-critical
+- Use `React.memo` for expensive pure components, `useMemo`/`useCallback` where genuinely needed
+
+### CSS & Rendering
+- Tailwind's PurgeCSS is active in production — do not generate class names dynamically (string interpolation)
+- Avoid `@import` in CSS — use `@layer` and direct `@tailwind` directives
+- No render-blocking CSS — critical styles can be inlined in `index.html` if needed
+- Avoid large layout shifts: always define container dimensions before content loads (use skeleton loaders)
+
+### Preloading & Resource Hints
+- Add to `index.html` for critical resources:
+
+```html
+<link rel="preconnect" href="https://your-pocketbase-domain.com">
+<link rel="dns-prefetch" href="https://your-pocketbase-domain.com">
+```
+
+### Caching & Build Output
+- Configure Vite for long-term asset caching (content hashes in filenames — this is default)
+- Static assets in `public/` should be served with long cache headers (configure on host)
+- Set `Cache-Control: public, max-age=31536000, immutable` for all hashed assets
+
+### Performance Checklist (per component)
+- [ ] No layout shift introduced (CLS)
+- [ ] Images have explicit `width` and `height`
+- [ ] Images are lazy-loaded (except above-the-fold)
+- [ ] No blocking scripts added
+- [ ] No large CSS bundles introduced
+- [ ] Animations use `transform` / `opacity` only (GPU-composited layers)
+
+---
+
+## 📬 TELEGRAM FORM INTEGRATION — RULES
+
+### Architecture
+- Form submission logic lives in `src/services/telegram.ts`
+- Never put API tokens or chat IDs in component code
+- All Telegram credentials go in `.env` (never committed):
+
+```env
+VITE_TELEGRAM_BOT_TOKEN=your_bot_token
+VITE_TELEGRAM_CHAT_ID=your_chat_id
+```
+
+### Service Layer (`src/services/telegram.ts`)
+
+```ts
+const TELEGRAM_API = `https://api.telegram.org/bot${import.meta.env.VITE_TELEGRAM_BOT_TOKEN}`;
+
+export interface LeadPayload {
+  name: string;
+  phone: string;
+  message?: string;
+  packageType?: 'standard' | 'premium';
+}
+
+export async function sendLeadToTelegram(payload: LeadPayload): Promise<void> {
+  const text = formatLeadMessage(payload);
+
+  const response = await fetch(`${TELEGRAM_API}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: import.meta.env.VITE_TELEGRAM_CHAT_ID,
+      text,
+      parse_mode: 'HTML',
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Telegram API error: ${error.description}`);
+  }
+}
+
+function formatLeadMessage(payload: LeadPayload): string {
+  return [
+    `<b>🆕 Nowa zgłoszenie — Na Kawkę</b>`,
+    `👤 Imię: ${payload.name}`,
+    `📞 Telefon: ${payload.phone}`,
+    payload.packageType ? `📦 Pakiet: ${payload.packageType}` : '',
+    payload.message ? `💬 Wiadomość: ${payload.message}` : '',
+  ].filter(Boolean).join('\n');
+}
+```
+
+### Form Component Rules
+- Use a custom `useContactForm` hook — keep all form state and submission logic there
+- Validate inputs client-side before sending (required fields, phone format, etc.)
+- Show clear loading, success, and error states
+- Implement rate limiting on the UI (disable submit button for 30s after success)
+- Sanitize all user input before including it in the message
+- Form fields must have proper `<label>` elements linked via `htmlFor` — required for SEO and a11y
+- Add `autocomplete` attributes to form inputs for UX (`name`, `tel`, `email`)
+
+### Hook Pattern (`src/hooks/useContactForm.ts`)
+
+```ts
+interface ContactFormState {
+  status: 'idle' | 'loading' | 'success' | 'error';
+  errorMessage: string | null;
+}
+
+export function useContactForm() {
+  const [state, setState] = useState<ContactFormState>({ status: 'idle', errorMessage: null });
+
+  const submit = async (payload: LeadPayload) => {
+    setState({ status: 'loading', errorMessage: null });
+    try {
+      await sendLeadToTelegram(payload);
+      // Also save to PocketBase — see PocketBase rules
+      await saveLeadToPocketBase(payload);
+      setState({ status: 'success', errorMessage: null });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      console.error('[useContactForm] submission failed:', message);
+      setState({ status: 'error', errorMessage: 'Something went wrong. Please try again.' });
+    }
+  };
+
+  return { ...state, submit };
+}
+```
+
+---
+
+## 🗄️ POCKETBASE INTEGRATION — RULES
+
+### Purpose
+PocketBase is used as a lightweight backend-as-a-service for:
+- Storing all form submissions (leads) for admin review
+- Enabling admins to update lead status (new → contacted → closed)
+- Future-proofing: content edits (packages, pricing) without code changes
+
+### Architecture
+- PocketBase SDK lives in `src/lib/pocketbase.ts` — singleton instance
+- All PocketBase calls go through `src/services/leads.ts`
+- Never call PocketBase directly from components — always through the service layer
+
+### Setup (`src/lib/pocketbase.ts`)
+
+```ts
+import PocketBase from 'pocketbase';
+
+// Singleton — one instance for the whole app
+export const pb = new PocketBase(import.meta.env.VITE_POCKETBASE_URL);
+
+// Auto-refresh token if using admin auth
+pb.autoCancellation(false);
+```
+
+### Environment Variables
+
+```env
+VITE_POCKETBASE_URL=https://your-pocketbase-instance.com
+```
+
+### Collection Structure
+
+**Collection: `leads`**
+
+| Field         | Type     | Required | Notes                              |
+|--------------|----------|----------|------------------------------------|
+| `name`        | Text     | ✅       | Applicant name                     |
+| `phone`       | Text     | ✅       | Phone number                       |
+| `package_type`| Select   | ❌       | `standard` / `premium`             |
+| `message`     | Text     | ❌       | Optional message                   |
+| `status`      | Select   | ✅       | `new` / `contacted` / `closed`     |
+| `source`      | Text     | ❌       | UTM or page slug                   |
+| `created`     | DateTime | auto     | Auto-set by PocketBase             |
+
+### Service Layer (`src/services/leads.ts`)
+
+```ts
+import { pb } from '@/lib/pocketbase';
+import type { LeadPayload } from './telegram';
+
+export interface Lead extends LeadPayload {
+  id: string;
+  status: 'new' | 'contacted' | 'closed';
+  created: string;
+}
+
+export async function saveLeadToPocketBase(payload: LeadPayload): Promise<Lead> {
+  return pb.collection('leads').create<Lead>({
+    ...payload,
+    status: 'new',
+  });
+}
+
+export async function updateLeadStatus(id: string, status: Lead['status']): Promise<Lead> {
+  return pb.collection('leads').update<Lead>(id, { status });
+}
+```
+
+### Data Flow: Form Submission
+
+```
+User fills form
+  → useContactForm.submit(payload)
+    → sendLeadToTelegram(payload)   [notify admin immediately]
+    → saveLeadToPocketBase(payload) [persist for future reference]
+    → setState('success')
+```
+
+Both operations run in sequence. If Telegram fails — the lead is still saved to PocketBase. If PocketBase fails — the admin was still notified via Telegram. Handle partial failures gracefully.
+
+### Error Strategy
+- Log both failures separately with context
+- Show the user a generic error message — never expose API errors
+- Consider wrapping both in `Promise.allSettled` if you want parallel execution:
+
+```ts
+const [telegramResult, pbResult] = await Promise.allSettled([
+  sendLeadToTelegram(payload),
+  saveLeadToPocketBase(payload),
+]);
+
+if (telegramResult.status === 'rejected') {
+  console.error('[form] Telegram failed:', telegramResult.reason);
+}
+if (pbResult.status === 'rejected') {
+  console.error('[form] PocketBase failed:', pbResult.reason);
+}
+
+// Only show error to user if BOTH failed
+if (telegramResult.status === 'rejected' && pbResult.status === 'rejected') {
+  throw new Error('Both integrations failed');
+}
+```
+
+---
+
+## 📊 ANALYTICS (UMAMI) — RULES
+
+### Purpose
+Umami is used for privacy-friendly analytics (visits, page views) on the production site.
+
+### Implementation
+- Analytics script is loaded via the `Analytics` component in `src/app/components/seo/Analytics.tsx`.
+- The component is mounted once in `App.tsx` and injects the Umami script into `<head>`.
+
+### Stub when running locally
+- **When the project runs locally** (`pnpm dev` / `vite`), the analytics script must **not** run.
+- The component checks `import.meta.env.DEV`: if `true` (development), it does not inject the script — no tracking in local/dev environment.
+- In production build (`vite build`), `import.meta.env.DEV` is `false` and the script is loaded as usual.
+- Do not add the analytics script to `index.html` — it would run in all environments. Keep the conditional injection in the `Analytics` component.
+
+### Script
+- URL: `https://umami.digital-office.pl/script.js`
+- Website ID is set in `Analytics.tsx` via `data-website-id`. No env var required for the public ID.
 
 ---
 
@@ -84,10 +516,11 @@ Use Mermaid diagrams where helpful. Keep it under 300 lines — concise over exh
 
 ### Naming Conventions
 - Components: `PascalCase` → `UserProfileCard.tsx`
-- Hooks: `camelCase` with `use` prefix → `useAuthSession.ts`
+- Hooks: `camelCase` with `use` prefix → `useContactForm.ts`
+- Services: `camelCase` → `telegram.ts`, `leads.ts`
 - Utilities: `camelCase` → `formatCurrency.ts`
 - Constants: `UPPER_SNAKE_CASE` → `MAX_RETRY_COUNT`
-- Types/Interfaces: `PascalCase` → `UserPayload`, `ApiResponse<T>`
+- Types/Interfaces: `PascalCase` → `LeadPayload`, `ApiResponse<T>`
 - CSS classes: `kebab-case` or BEM → `user-card__avatar--active`
 - Routes: `kebab-case` → `/pakiet-standard`
 - Files: match the main export name
@@ -98,7 +531,7 @@ Use Mermaid diagrams where helpful. Keep it under 300 lines — concise over exh
 - Prefer `interface` for object shapes, `type` for unions/intersections
 - Generic types where reusability makes sense
 - Enums for finite sets of values
-- Zod or similar for runtime validation at boundaries (e.g. API input, env vars) when applicable
+- Zod for runtime validation at form submission boundaries
 
 ### Error Handling
 - Never swallow errors silently
@@ -110,8 +543,8 @@ Use Mermaid diagrams where helpful. Keep it under 300 lines — concise over exh
 ### Async
 - Prefer `async/await` over `.then()` chains
 - Always handle promise rejections
-- Use `Promise.all` for parallel independent async operations
-- Add timeouts for all external calls (when backend/API exists)
+- Use `Promise.allSettled` for parallel independent async operations where partial failure is acceptable
+- Add timeouts for all external calls (Telegram API, PocketBase)
 
 ---
 
@@ -128,9 +561,9 @@ Use Mermaid diagrams where helpful. Keep it under 300 lines — concise over exh
 ### Layout rules:
 - Use CSS Grid for page layouts, Flexbox for component-level alignment
 - Every block/component must be tested at: 320px, 375px, 768px, 1024px, 1440px
-- Touch targets minimum 44x44px
-- No horizontal scroll on mobile (overflow-x: hidden on root)
-- Images: always responsive with `max-width: 100%`; use `srcset` where needed
+- Touch targets minimum 44×44px
+- No horizontal scroll on mobile (`overflow-x: hidden` on root)
+- Images: always responsive with `max-width: 100%`; use `srcSet` where needed
 - Typography: fluid with `clamp()` — `font-size: clamp(1rem, 2.5vw, 1.5rem)`
 
 ### Component checklist:
@@ -144,26 +577,47 @@ Use Mermaid diagrams where helpful. Keep it under 300 lines — concise over exh
 
 ## 📁 PROJECT STRUCTURE CONVENTIONS
 
-Actual structure is in `ARCHITECTURE.md`. For this project (Vite + React SPA):
-
 ```
 src/
-├── app/                        # Routing, pages, components
+├── app/
 │   ├── components/
-│   │   ├── ui/                 # Primitives (Button, Card, …)
-│   │   ├── layout/             # Navigation, Footer
-│   │   ├── sections/           # Page sections (Hero, Pricing, …)
-│   │   └── features/           # Feature blocks (PricingCard, …)
-│   ├── pages/                  # Route-level pages
-│   ├── shared/constants/       # App-wide constants
+│   │   ├── ui/                   # Primitives (Button, Card, Input, …)
+│   │   ├── layout/               # Navigation, Footer, PageWrapper
+│   │   ├── sections/             # Page sections (Hero, Pricing, ROICalculator, ContactForm…)
+│   │   ├── features/             # Feature blocks (PricingCard, ProfitCalculator…)
+│   │   ├── seo/                  # SEO components (StructuredData, PageMeta, CanonicalLink)
+│   │   └── figma/                # Figma-related (ImageWithFallback)
+│   ├── pages/                    # Route-level pages
+│   ├── shared/
+│   │   └── constants/            # navigation.ts, seo.ts, packages.ts
 │   ├── App.tsx
-│   └── routes.ts
-├── styles/                     # Global CSS, theme, Tailwind
-├── assets/                     # Images, static files
-└── main.tsx                    # Entry point
+│   └── routes.tsx
+│
+├── hooks/                        # Custom hooks (useContactForm, useRoiCalc…)
+├── services/                     # External integrations (telegram.ts, leads.ts)
+├── lib/                          # SDK instances (pocketbase.ts)
+├── types/                        # Shared TypeScript types/interfaces
+├── styles/                       # globals: index.css, tailwind.css, theme.css, fonts.css
+├── assets/
+│   ├── images/                   # WebP/AVIF images
+│   └── fonts/                    # Self-hosted font files
+└── main.tsx
 ```
 
-When adding backend/API later: add `api/`, `services/`, `lib/`, `hooks/` as needed.
+---
+
+## ♿ ACCESSIBILITY (a11y) — REQUIRED
+
+Accessibility is not optional — it also directly impacts SEO ranking.
+
+- All images have meaningful `alt` text
+- All form inputs have associated `<label>` elements
+- Interactive elements are keyboard-navigable (correct `tabIndex`, visible focus rings)
+- Color contrast meets WCAG AA (4.5:1 for body text, 3:1 for large text)
+- Modals/dialogs trap focus and can be closed with Escape
+- Use `aria-live` regions for dynamic content (form success/error messages)
+- Don't rely on color alone to convey meaning
+- Test with a screen reader (VoiceOver / NVDA) before merging
 
 ---
 
@@ -180,10 +634,10 @@ When adding backend/API later: add `api/`, `services/`, `lib/`, `hooks/` as need
 
 ### Import Order (enforced)
 1. Node built-ins
-2. External packages (react, next, etc.)
-3. Internal aliases (@/app/…, @/assets/…)
+2. External packages (react, pocketbase, react-helmet-async…)
+3. Internal aliases (`@/app/…`, `@/services/…`, `@/lib/…`, `@/hooks/…`)
 4. Relative imports
-5. Types (import type ...)
+5. Types (`import type ...`)
 6. CSS/styles
 
 ### Component Structure Order
@@ -209,29 +663,29 @@ When adding backend/API later: add `api/`, `services/`, `lib/`, `hooks/` as need
 - `perf:` performance improvement
 - `test:` adding/updating tests
 
-Example: `feat(pricing): add ROI calculator section`
-
----
-
-## 🧪 TESTING APPROACH
-
-- Unit tests for: utilities, hooks, business logic
-- Integration tests for: API or services when they exist
-- E2E tests for: critical user flows (navigation, forms, core feature)
-- Test file location: colocated `__tests__/` or `.test.ts` suffix
-- Coverage target: 80%+ for business logic when tests are introduced
-- Never mock what you do not own — use real implementations for internal modules
+Example: `feat(leads): add PocketBase lead persistence`
 
 ---
 
 ## 🔒 SECURITY MINDSET
 
-- Never trust client input — validate on server when backend exists
-- No secrets in code — use environment variables (e.g. `VITE_*` for client)
-- Sanitize user-generated content before rendering
-- When using a database: parameterized queries only, never string-concat SQL
-- Auth and sensitive operations: enforce on server, not only in UI
-- Log security-relevant events; never log passwords, tokens, or PII
+- Never store API tokens in code — always `VITE_*` env vars
+- Never log `payload` objects that might contain PII (phone numbers, names)
+- Sanitize form input before sending to Telegram (strip HTML tags)
+- PocketBase: use collection-level access rules — public write for leads, admin-only read
+- Rate-limit form submissions on the UI side (disable submit for 30s after success)
+- Never expose PocketBase admin credentials in client code
+- When displaying any user-supplied content — sanitize before render
+
+---
+
+## 🧪 TESTING APPROACH
+
+- Unit tests for: `formatLeadMessage`, form validators, utility functions
+- Integration tests for: `useContactForm` hook (mock Telegram + PocketBase)
+- E2E tests for: form submission flow (fill → submit → success message)
+- Test file location: colocated `__tests__/` or `.test.ts` suffix
+- Coverage target: 80%+ for `services/` and `hooks/`
 
 ---
 
@@ -253,17 +707,49 @@ Example: `feat(pricing): add ROI calculator section`
 - Never write business logic inside presentational UI components
 - Never skip error handling where it matters
 - Never deploy without checking mobile layout
-- Never change ARCHITECTURE.md silently — make it a deliberate update
+- Never change `ARCHITECTURE.md` silently — make it a deliberate update
+- Never load fonts from external CDNs at runtime
+- Never lazy-load above-the-fold images
+- Never generate Tailwind class names dynamically via string concatenation
+- Never call PocketBase or Telegram API directly from a component
+- Never expose raw API errors to the user
 
 ---
 
 ## ✅ BEFORE MARKING A TASK DONE — CHECKLIST
 
+### Code Quality
 - [ ] Code is clean and follows conventions above
-- [ ] Mobile layout tested and working
 - [ ] TypeScript types are correct, no `any`
 - [ ] No unused imports or dead code
-- [ ] Error cases are handled where applicable
-- [ ] ARCHITECTURE.md is updated if structure changed
-- [ ] No console.log left in production code
+- [ ] Error cases are handled (both Telegram and PocketBase)
+- [ ] No `console.log` left in production code
 - [ ] Commit message follows convention
+
+### SEO
+- [ ] Correct heading hierarchy (h1 → h2 → h3, one h1 per page)
+- [ ] All images have meaningful `alt` attributes
+- [ ] `<PageMeta>` component used on every page (title, description, OG tags)
+- [ ] Semantic HTML elements used (`<section>`, `<article>`, etc.)
+- [ ] Structured data (JSON-LD) added where applicable
+- [ ] New route added to sitemap config
+
+### Performance (PageSpeed)
+- [ ] Images in WebP/AVIF with fallbacks, explicit `width` and `height`
+- [ ] Above-the-fold images use `loading="eager"` + `fetchPriority="high"`
+- [ ] Below-fold images use `loading="lazy"` + `decoding="async"`
+- [ ] No new render-blocking resources introduced
+- [ ] Animations use only `transform` / `opacity`
+- [ ] No large dynamic imports on critical path
+- [ ] Lighthouse score ≥ 90 verified locally
+
+### Accessibility
+- [ ] All form inputs have `<label>` elements
+- [ ] Keyboard navigation works
+- [ ] Color contrast meets WCAG AA
+- [ ] `aria-live` region for form feedback
+
+### Mobile
+- [ ] Mobile layout tested and working (320px minimum)
+- [ ] Touch targets ≥ 44×44px
+- [ ] No horizontal scroll

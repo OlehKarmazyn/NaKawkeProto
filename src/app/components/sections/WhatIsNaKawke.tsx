@@ -1,22 +1,23 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GlassCard } from '@/app/components/ui/GlassCard';
 import { CheckCircle2 } from 'lucide-react';
 import realAutomatImage from '@/assets/real-aoutomat.jpg';
 
-const headlines = [
-  'Gotowy biznes kawowy bez franczyzy',
-  'Autonomiczna kawiarnia z zyskiem około 3000 zł miesięcznie',
-  'Twój biznes. Twoje zasady. Twój dochód',
-  'Samoobsługowa kawiarnia nowej generacji',
-];
-
-const keyPoints = ['Bez franczyzy', 'Bez ropalty', 'Bez miesięcznych zobowiązań'];
-
-/** Секция «О нас»: что такое Na Kawkę, ключевые тезисы, изображение. */
+/** About section: what Na Kawkę is, key points, image. */
 export const WhatIsNaKawke: React.FC = () => {
+  const { t } = useTranslation();
+  const headlines = [
+    t('about.headline1'),
+    t('about.headline2'),
+    t('about.headline3'),
+    t('about.headline4'),
+  ];
+  const keyPoints = [t('about.keyPoint1'), t('about.keyPoint2'), t('about.keyPoint3')];
+
   return (
-    <section id="o-nas" className="py-24 relative">
+    <section id="o-nas" className="py-24 relative" aria-labelledby="o-nas-heading">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -27,7 +28,6 @@ export const WhatIsNaKawke: React.FC = () => {
           >
             <GlassCard>
               <div className="grid lg:grid-cols-2 gap-12 items-center">
-                {/* Image Section */}
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -39,7 +39,7 @@ export const WhatIsNaKawke: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-tr from-[#C0C0C0]/20 to-transparent z-10 pointer-events-none" />
                     <img
                       src={realAutomatImage}
-                      alt="Na Kawkę - Autonomiczny moduł kawowy"
+                      alt={t('about.imageAlt')}
                       className="w-full h-[500px] object-cover"
                     />
                   </div>
@@ -49,18 +49,18 @@ export const WhatIsNaKawke: React.FC = () => {
                       <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent">
                         3000 zł
                       </div>
-                      <div className="text-sm font-semibold text-white/80 mt-1">średni zysk/mies.</div>
+                      <div className="text-sm font-semibold text-white/80 mt-1">{t('about.statLabel')}</div>
                     </div>
                   </div>
                 </motion.div>
 
-                {/* Content Section */}
                 <motion.div
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.3 }}
                 >
+                  <h2 id="o-nas-heading" className="sr-only">{t('about.ariaLabel')}</h2>
                   <div className="space-y-4 mb-8">
                     {headlines.map((headline, index) => (
                       <motion.div
@@ -79,12 +79,10 @@ export const WhatIsNaKawke: React.FC = () => {
 
                   <div className="border-t border-[#C0C0C0]/20 pt-6 mb-6">
                     <p className="text-white/90 text-base leading-relaxed mb-3">
-                      <span className="text-[#C0C0C0] font-bold">Na Kawkę</span> - to gotowy moduł
-                      samoobsługowej kawiarni.
+                      <span className="text-[#C0C0C0] font-bold">{t('common.siteName')}</span> - {t('about.intro1')}
                     </p>
                     <p className="text-white/80 text-base leading-relaxed">
-                      Kupujesz urządzenie, instalujesz w wybranej lokalizacji i zarabiasz na
-                      sprzedaży kawy bezpośrednio klientom.
+                      {t('about.intro2')}
                     </p>
                   </div>
 

@@ -1,53 +1,53 @@
 # Na Kawkę
 
-Landing page — autonomiczny biznes kawowy (Vite + React).
+Landing page — autonomous coffee business (Vite + React).
 
-## Локальный запуск
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Или:
+Or:
 
 ```bash
 npm start
 ```
 
-Откройте http://localhost:5173
+Open http://localhost:5173
 
-## Сборка
+## Build
 
 ```bash
 npm run build
 ```
 
-Статика собирается в папку **dist/**.
+Static output is written to **dist/**.
 
-Проверка продакшен-сборки локально:
+To verify production build locally:
 
 ```bash
 npm run preview
 ```
 
-## Деплой на Coolify
+## Deploy on Coolify
 
 - **Build command:** `npm run build`
 - **Output directory:** `dist`
-- **Start command:** не нужен для статики; выберите тип приложения «Static» и укажите корень `dist`.
+- **Start command:** not needed for static; choose app type «Static» and set root to `dist`.
 
-Nixpacks распознаёт проект по `package.json` и Vite как Node.js приложение. Для статического хостинга после сборки раздаётся содержимое `dist/`.
+Nixpacks detects the project via `package.json` and Vite as a Node.js app. For static hosting, the contents of `dist/` are served after build.
 
-### SPA и React Router
+### SPA and React Router
 
-В проекте используется React Router (маршруты `/`, `/pakiet-standard`, `/pakiet-premium`). Чтобы при прямом переходе и обновлении страницы не было 404:
+The project uses React Router (routes `/`, `/pakiet-standard`, `/pakiet-premium`). To avoid 404 on direct navigation and page refresh:
 
-- В Coolify для статики включите опцию **SPA / History fallback**, если она есть, или
-- Используйте `public/_redirects` (формат Netlify): при деплое на Netlify-like хостинг файл копируется в `dist/` и обрабатывается автоматически.
-- Для своего nginx добавьте в конфиг: `try_files $uri $uri/ /index.html;`
-- Пример полного конфига nginx для Docker: см. `nginx.conf.example` в корне проекта.
+- In Coolify for static apps enable **SPA / History fallback** if available, or
+- Use `public/_redirects` (Netlify format): on Netlify-like hosting the file is copied to `dist/` and handled automatically.
+- For your own nginx add to config: `try_files $uri $uri/ /index.html;`
+- Full nginx config example for Docker: see `nginx.conf.example` in the project root.
 
-## Ассеты из Figma
+## Assets from Figma
 
-Импорты `figma:asset/...` при сборке подменяются прозрачным плейсхолдером. Для продакшена замените их на реальные URL или положите файлы в `public/` и укажите пути вида `/имя-файла.png`.
+Imports `figma:asset/...` are replaced with a transparent placeholder at build time. For production replace them with real URLs or put files in `public/` and use paths like `/filename.png`.

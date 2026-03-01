@@ -5,7 +5,7 @@ interface MetallicButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
   variant?: 'primary' | 'secondary';
 }
 
-/** Кнопка в стиле металлик (серебро/золото) — основной CTA на лендинге. */
+/** Metallic-style button (silver/gold) — primary CTA on the landing. */
 export const MetallicButton: React.FC<MetallicButtonProps> = ({
   children,
   variant = 'primary',

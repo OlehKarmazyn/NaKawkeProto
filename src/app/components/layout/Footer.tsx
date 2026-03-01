@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo.png';
 import { SECTION_IDS } from '@/app/shared/constants/navigation';
 
 export const Footer: React.FC = () => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -22,16 +24,16 @@ export const Footer: React.FC = () => {
         <div className="grid md:grid-cols-4 gap-6 mb-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <img src={logo} alt="Na Kawkę" className="h-8 w-auto" />
-              <span className="text-lg font-bold text-white">Na Kawkę</span>
+              <img src={logo} alt={t('footer.logoAlt')} className="h-8 w-auto" />
+              <span className="text-lg font-bold text-white">{t('common.siteName')}</span>
             </div>
             <p className="text-white/60 text-sm leading-snug">
-              Premium autonomiczne rozwiązania kawowe dla nowoczesnych biznesów.
+              {t('footer.tagline')}
             </p>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-2 text-sm">Produkt</h4>
+            <h4 className="text-white font-semibold mb-2 text-sm">{t('footer.product')}</h4>
             <ul className="space-y-1 text-white/60 text-sm">
               <li>
                 <a
@@ -39,7 +41,7 @@ export const Footer: React.FC = () => {
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.benefits)}
                 >
-                  Zalety
+                  {t('footer.benefits')}
                 </a>
               </li>
               <li>
@@ -48,7 +50,7 @@ export const Footer: React.FC = () => {
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.pricing)}
                 >
-                  Cennik
+                  {t('footer.pricing')}
                 </a>
               </li>
               <li>
@@ -57,24 +59,24 @@ export const Footer: React.FC = () => {
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.economics)}
                 >
-                  Ekonomia
+                  {t('footer.economics')}
                 </a>
               </li>
               <li>
                 <Link to="/pakiet-standard" className="hover:text-[#C0C0C0] transition-colors">
-                  Pakiet Standard
+                  {t('footer.packageStandard')}
                 </Link>
               </li>
               <li>
                 <Link to="/pakiet-premium" className="hover:text-[#C0C0C0] transition-colors">
-                  Pakiet Premium
+                  {t('footer.packagePremium')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-2 text-sm">Firma</h4>
+            <h4 className="text-white font-semibold mb-2 text-sm">{t('footer.company')}</h4>
             <ul className="space-y-1 text-white/60 text-sm">
               <li>
                 <a
@@ -82,7 +84,7 @@ export const Footer: React.FC = () => {
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.about)}
                 >
-                  O nas
+                  {t('footer.about')}
                 </a>
               </li>
               <li>
@@ -91,28 +93,28 @@ export const Footer: React.FC = () => {
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.contact)}
                 >
-                  Kontakt
+                  {t('footer.contact')}
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-2 text-sm">Prawne</h4>
+            <h4 className="text-white font-semibold mb-2 text-sm">{t('footer.legal')}</h4>
             <ul className="space-y-1 text-white/60 text-sm">
               <li className="hover:text-[#C0C0C0] transition-colors cursor-pointer">
-                Polityka Prywatności
+                {t('footer.privacy')}
               </li>
-              <li className="hover:text-[#C0C0C0] transition-colors cursor-pointer">Regulamin</li>
+              <li className="hover:text-[#C0C0C0] transition-colors cursor-pointer">{t('footer.terms')}</li>
               <li className="hover:text-[#C0C0C0] transition-colors cursor-pointer">
-                Polityka Cookies
+                {t('footer.cookies')}
               </li>
             </ul>
           </div>
         </div>
 
         <div className="pt-4 border-t border-[#C0C0C0]/10 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-white/40 text-xs">© 2026 Na Kawkę. Wszelkie prawa zastrzeżone.</p>
+          <p className="text-white/40 text-xs">{t('footer.copyright')}</p>
           <div className="flex gap-4">
             <a href="#" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
               Instagram

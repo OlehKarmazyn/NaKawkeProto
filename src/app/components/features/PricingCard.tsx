@@ -15,7 +15,7 @@ interface PricingCardProps {
   detailsLink: string;
 }
 
-/** Карточка тарифа с flip-стороной (лицевая — кратко, оборот — спецификации). Стили 3D в theme.css. */
+/** Plan card with flip side (front — summary, back — specs). 3D styles in theme.css. */
 export const PricingCard: React.FC<PricingCardProps> = ({
   title,
   price,
