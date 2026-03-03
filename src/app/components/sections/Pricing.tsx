@@ -210,18 +210,12 @@ export const Pricing: React.FC = () => {
             </form>
           </div>
 
-          <div className="mt-12 sm:mt-16 mb-12 sm:mb-16 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 max-w-3xl mx-auto text-center">
+          <div className="mt-12 sm:mt-16 mb-12 sm:mb-16 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 max-w-3xl mx-auto text-center">
             <div>
               <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#87AEA6] to-[#D8D8D8] bg-clip-text text-transparent mb-2">
                 {t('pricing.stat1Value')}
               </div>
               <div className="text-white/60 text-sm sm:text-base">{t('pricing.stat1Label')}</div>
-            </div>
-            <div>
-              <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#87AEA6] to-[#D8D8D8] bg-clip-text text-transparent mb-2">
-                {t('pricing.stat2Value')}
-              </div>
-              <div className="text-white/60 text-sm sm:text-base">{t('pricing.stat2Label')}</div>
             </div>
             <div>
               <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-[#87AEA6] to-[#D8D8D8] bg-clip-text text-transparent mb-2">

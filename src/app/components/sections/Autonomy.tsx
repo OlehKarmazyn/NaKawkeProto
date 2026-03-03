@@ -49,9 +49,9 @@ export const Autonomy: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
               >
-                <GlassCard className="h-full">
-                  <div className="mb-6 w-16 h-16 rounded-xl bg-gradient-to-br from-[#C0C0C0]/30 to-[#C0C0C0]/10 flex items-center justify-center mx-auto">
-                    <Icon className="w-8 h-8 text-[#C0C0C0]" />
+                <GlassCard className="h-full bg-gradient-to-br from-[#181818] via-[#9C9C9C] to-[#181818] border-none hover:border-none hover:shadow-none">
+                  <div className="mb-6 w-16 h-16 rounded-xl bg-gradient-to-br from-[#D4D4D4] to-[#111111] flex items-center justify-center mx-auto">
+                    <Icon className="w-8 h-8 text-white" />
                   </div>
 
                   <h3 className="text-2xl font-bold text-white mb-4 text-center">{benefit.title}</h3>
@@ -60,7 +60,7 @@ export const Autonomy: React.FC = () => {
                   </p>
 
                   <div className="pt-4 border-t border-[#C0C0C0]/20 text-center">
-                    <span className="text-[#C0C0C0] font-bold">{benefit.highlight}</span>
+                    <span className="text-white font-bold">{benefit.highlight}</span>
                   </div>
                 </GlassCard>
               </motion.div>

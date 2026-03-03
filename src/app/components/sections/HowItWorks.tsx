@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { ShoppingCart, MapPin, Package, Cog, TrendingUp } from 'lucide-react';
 
@@ -64,7 +64,7 @@ export const HowItWorks: React.FC = () => {
                     </div>
 
                     <div className="relative z-10">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#C0C0C0]/30 to-[#C0C0C0]/10 flex items-center justify-center mb-4 group-hover:shadow-[0_0_20px_rgba(192,192,192,0.3)] transition-all duration-300">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#C0C0C0]/[0.52] to-[#C0C0C0]/[0.05] flex items-center justify-center mb-4 group-hover:shadow-[0_0_20px_rgba(192,192,192,0.3)] transition-all duration-300">
                         <Icon className="w-6 h-6 text-[#C0C0C0]" />
                       </div>
 
@@ -96,7 +96,10 @@ export const HowItWorks: React.FC = () => {
         >
           <div className="backdrop-blur-md bg-gradient-to-r from-[#C0C0C0]/10 via-transparent to-[#C0C0C0]/10 border border-[#C0C0C0]/20 rounded-2xl p-8 max-w-3xl mx-auto">
             <p className="text-white/80 text-lg">
-              {t('howItWorks.cta')}
+              <Trans
+                i18nKey="howItWorks.cta"
+                components={{ strong: <span className="font-bold" /> }}
+              />
             </p>
           </div>
         </motion.div>

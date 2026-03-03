@@ -110,6 +110,7 @@
     "row3Value": "25 cups",
     "row4Value": "~1000 zł/month",
     "row5Value": "3000 zł",
+    "row5ValueTable": "approx. 3000 zł/month",
     "disclaimer": "*Calculations based on real data from operating locations",
     "calculatorTitle": "Profit",
     "calculatorTitleHighlight": "calculator",
@@ -128,7 +129,13 @@
     "noFranchise5Benefit": "All profit in your pocket",
     "noFranchise5Desc": "Earned capital stays with you",
     "noFranchise6Benefit": "Full independence",
-    "noFranchise6Desc": "Business decisions are yours only"
+    "noFranchise6Desc": "Business decisions are yours only",
+    "noFranchise7Benefit": "Equipment warranty",
+    "noFranchise7Desc": "Full protection for your machines",
+    "noFranchise8Benefit": "Service support",
+    "noFranchise8Desc": "Care before and after installation",
+    "noFranchise9Benefit": "Ready-made supplies",
+    "noFranchise9Desc": "Access to proven ingredients"
   },
   "calculator": {
     "title": "Profit calculation",
@@ -183,7 +190,7 @@
     "step4Description": "The module prepares and sells coffee automatically — without staff and constant involvement.",
     "step5Title": "Receive profit",
     "step5Description": "You receive income from every sale and scale the model as you wish.",
-    "cta": "Ready to start? The whole process from purchase to first profit takes less than 30 days."
+    "cta": "Ready to start? The whole process from purchase to first profit takes <strong>less than 30 days</strong>."
   },
   "form": {
     "nameLabel": "Name",

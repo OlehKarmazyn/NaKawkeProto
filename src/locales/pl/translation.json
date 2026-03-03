@@ -110,6 +110,7 @@
     "row3Value": "25 filiżanek",
     "row4Value": "~1000 zł/mies.",
     "row5Value": "3000 zł",
+    "row5ValueTable": "ok. 3000 zł/mies.",
     "disclaimer": "*Wyliczenia oparte na rzeczywistych danych z działających punktów",
     "calculatorTitle": "Kalkulator",
     "calculatorTitleHighlight": "zysku",
@@ -128,7 +129,13 @@
     "noFranchise5Benefit": "Cały zysk w Twojej kieszeni",
     "noFranchise5Desc": "Wypracowany kapitał zostaje u Ciebie",
     "noFranchise6Benefit": "Pełna niezależność",
-    "noFranchise6Desc": "Decyzje biznesowe należą tylko do Ciebie"
+    "noFranchise6Desc": "Decyzje biznesowe należą tylko do Ciebie",
+    "noFranchise7Benefit": "Gwarancja na sprzęt",
+    "noFranchise7Desc": "Pełna ochrona Twoich urządzeń",
+    "noFranchise8Benefit": "Wsparcie serwisowe",
+    "noFranchise8Desc": "Opieka przed i po instalacji",
+    "noFranchise9Benefit": "Gotowe zaopatrzenie",
+    "noFranchise9Desc": "Dostęp do sprawdzonych składników"
   },
   "calculator": {
     "title": "Obliczenie zysku",
@@ -183,7 +190,7 @@
     "step4Description": "Moduł przygotowuje i sprzedaje kawę automatycznie — bez personelu i stałej ingerencji.",
     "step5Title": "Otrzymanie zysku",
     "step5Description": "Otrzymujesz dochód z każdej sprzedaży i skalujesz model według własnego uznania.",
-    "cta": "Gotowy, aby zacząć? Cały proces od zakupu do pierwszego zysku zajmuje mniej niż 30 dni."
+    "cta": "Gotowy, aby zacząć? Cały proces od zakupu do pierwszego zysku zajmuje <strong>mniej niż 30 dni</strong>."
   },
   "form": {
     "nameLabel": "Imię",

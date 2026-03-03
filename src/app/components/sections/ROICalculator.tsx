@@ -8,7 +8,7 @@ const ECONOMICS_ROW_KEYS = [
   { metricKey: 'row2Metric', valueKey: 'row2Value', highlight: true },
   { metricKey: 'row3Metric', valueKey: 'row3Value', highlight: false },
   { metricKey: 'row4Metric', valueKey: 'row4Value', highlight: false },
-  { metricKey: 'row5Metric', valueKey: 'row5Value', highlight: true },
+  { metricKey: 'row5Metric', valueKey: 'row5ValueTable', highlight: true },
 ] as const;
 
 const NO_FRANCHISE_KEYS = [
@@ -18,6 +18,9 @@ const NO_FRANCHISE_KEYS = [
   { benefit: 'noFranchise4Benefit', desc: 'noFranchise4Desc' },
   { benefit: 'noFranchise5Benefit', desc: 'noFranchise5Desc' },
   { benefit: 'noFranchise6Benefit', desc: 'noFranchise6Desc' },
+  { benefit: 'noFranchise7Benefit', desc: 'noFranchise7Desc' },
+  { benefit: 'noFranchise8Benefit', desc: 'noFranchise8Desc' },
+  { benefit: 'noFranchise9Benefit', desc: 'noFranchise9Desc' },
 ] as const;
 
 /** Economics section: metrics table, profit calculator, "Why no franchise" block. */
@@ -68,9 +71,7 @@ export const ROICalculator: React.FC = () => {
                       className={`border-b border-[#C0C0C0]/10 hover:bg-white/5 transition-colors ${row.highlight ? 'bg-[#C0C0C0]/5' : ''}`}
                     >
                       <td className="px-8 py-5 text-white font-medium text-lg">{row.metric}</td>
-                      <td
-                        className={`px-8 py-5 text-right text-lg font-bold ${row.highlight ? 'text-[#C0C0C0]' : 'text-white/80'}`}
-                      >
+                      <td className="px-8 py-5 text-right text-lg font-bold text-[#ADD3C7]">
                         {row.value}
                       </td>
                     </tr>
