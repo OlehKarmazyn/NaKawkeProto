@@ -29,7 +29,7 @@
 | i18n                     | i18next + react-i18next + i18next-browser-languagedetector          | —       |
 | Backend-as-a-service     | PocketBase SDK                                                      | —       |
 | Notifications            | Telegram Bot API                                                    | —       |
-| Deployment               | Static (Coolify / Netlify)                                          | —       |
+| Deployment               | Static (Coolify / Netlify); optional pre-built Docker image (CI/CD)  | —       |
 
 ---
 
@@ -55,9 +55,9 @@ src/
 ├── services/                     # telegram.ts, leads.ts
 ├── lib/                          # pocketbase.ts, i18n.ts
 ├── locales/
-│   ├── pl/translation.json       # польский — основной, эталон
-│   ├── en/translation.json       # английский
-│   └── uk/translation.json       # украинский
+│   ├── pl/translation.json       # Polish — primary, source of truth
+│   ├── en/translation.json       # English
+│   └── uk/translation.json       # Ukrainian
 ├── types/                        # Lead, Package, ApiResponse…
 ├── styles/                       # index.css, tailwind.css, theme.css, fonts.css
 ├── assets/
@@ -180,6 +180,15 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 | `VITE_SITE_URL`           | `constants/seo.ts`, sitemap  | Base URL for canonical / OG / sitemap |
 
 > ⚠️ Never commit `.env` to version control. Provide `.env.example` with placeholder values.
+
+---
+
+## 🚀 CI/CD and pre-built Docker image
+
+- **Workflow:** `.github/workflows/build-and-push.yml` — on push to `main` (or manual dispatch) builds a Docker image and pushes it to **GitHub Container Registry** (`ghcr.io/<owner>/<repo>:latest`).
+- **Build args:** All `VITE_*` variables are passed from GitHub Actions **Secrets** into the image at build time; the resulting image is self-contained.
+- **Coolify:** Use application type **Docker Image**, set image to `ghcr.io/<owner>/<repo>:latest`. The server only pulls and runs the image (no build step). For private repos, add ghcr.io registry credentials in Coolify (GitHub token with `read:packages`).
+- **Dockerfile:** Multi-stage — Node (pnpm) builds the Vite app, nginx serves `dist/`. SPA fallback is in `nginx.conf` (`try_files $uri $uri/ /index.html`).
 
 ---
 

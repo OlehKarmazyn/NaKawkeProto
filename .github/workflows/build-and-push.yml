@@ -1,0 +1,51 @@
+# Build Docker image on GitHub Actions and push to GitHub Container Registry.
+# Coolify can pull this image and run it without building on the server.
+
+name: Build and push Docker image
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Image name (lowercase for ghcr.io)
+        id: image
+        run: echo "name=${{ env.REGISTRY }}/${{ github.repository }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.image.outputs.name }}:latest
+            ${{ steps.image.outputs.name }}:${{ github.sha }}
+          build-args: |
+            VITE_TELEGRAM_BOT_TOKEN=${{ secrets.VITE_TELEGRAM_BOT_TOKEN }}
+            VITE_TELEGRAM_CHAT_ID=${{ secrets.VITE_TELEGRAM_CHAT_ID }}
+            VITE_POCKETBASE_URL=${{ secrets.VITE_POCKETBASE_URL }}
+            VITE_SITE_URL=${{ secrets.VITE_SITE_URL }}
