@@ -106,7 +106,7 @@ export const Navigation: React.FC = () => {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'backdrop-blur-xl bg-[#0A0A0A]/80 border-b border-[#C0C0C0]/20 shadow-[0_1px_0_0_var(--gold-accent)] shadow-2xl'
+            ? 'backdrop-blur-xl bg-[#0A0A0A]/80 border-b border-[#C0C0C0]/20 shadow-2xl'
             : 'bg-transparent'
         }`}
       >
@@ -153,7 +153,7 @@ export const Navigation: React.FC = () => {
                 const linkClass = `relative font-medium group transition-colors duration-300 ${
                   isActive ? 'text-white' : 'text-white/80 hover:text-white'
                 }`;
-                const underlineClass = `absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#C0C0C0] via-gold/50 to-white transition-all duration-300 ${
+                const underlineClass = `absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#C0C0C0] to-white transition-all duration-300 ${
                   isActive ? 'w-full' : 'w-0 group-hover:w-full'
                 }`;
                 return isHome ? (

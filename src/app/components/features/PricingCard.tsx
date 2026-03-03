@@ -46,10 +46,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             relative w-full flex flex-col backdrop-blur-md rounded-2xl overflow-hidden
             border transition-all duration-300 backface-hidden
             ${isRecommended
-              ? 'bg-gradient-to-br from-[#C0C0C0]/10 via-[#a8a8a8]/5 to-[#C0C0C0]/10 border-[#C0C0C0]/40 border-gold-accent shadow-[0_0_40px_rgba(192,192,192,0.2)]'
+              ? 'bg-gradient-to-br from-[#C0C0C0]/10 via-[#a8a8a8]/5 to-[#C0C0C0]/10 border-[#C0C0C0]/40 shadow-[0_0_40px_rgba(192,192,192,0.2)]'
               : 'bg-white/5 border-[#C0C0C0]/20'
             }
-            hover:border-[#C0C0C0]/60 hover:border-gold-accent hover:shadow-[0_0_30px_rgba(192,192,192,0.15)]
+            hover:border-[#C0C0C0]/60 hover:shadow-[0_0_30px_rgba(192,192,192,0.15)]
           `}
           style={{ backfaceVisibility: 'hidden' }}
         >

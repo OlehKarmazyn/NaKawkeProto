@@ -2,34 +2,33 @@ import React from 'react';
 
 interface MetallicButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary';
 }
 
-/** Metallic-style button (silver/gold) — primary CTA on the landing. */
+/** Primary CTA pill-style button used across the landing. */
 export const MetallicButton: React.FC<MetallicButtonProps> = ({
   children,
-  variant = 'primary',
   className = '',
   ...props
 }) => {
   return (
     <button
       className={`
-        relative px-8 py-4 font-semibold text-black overflow-hidden
-        rounded-lg transition-all duration-300
-        ${variant === 'primary'
-          ? 'bg-gradient-to-r from-[#a8a8a8] via-[#C0C0C0] to-[#a8a8a8]'
-          : 'bg-gradient-to-r from-[#888888] via-[#a0a0a0] to-[#888888]'
-        }
-        hover:shadow-[0_0_30px_rgba(192,192,192,0.6)]
-        hover:scale-105
-        active:scale-95
+        inline-flex items-center justify-center text-center py-[15px] px-[31px]
+        rounded-2xl border-0
+        shadow-[0_2px_8px_rgba(0,0,0,0.15)]
+        transition-transform duration-200
+        hover:shadow-[0_4px_16px_rgba(0,0,0,0.2)] hover:-translate-y-px
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#87AEA6]
         ${className}
       `}
+      style={{
+        background: 'linear-gradient(180deg, #666666, #D6D6D6, #666666)',
+      }}
       {...props}
     >
-      <span className="relative z-10">{children}</span>
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-700" />
+      <span className="text-black text-base font-bold leading-6">
+        {children}
+      </span>
     </button>
   );
 };

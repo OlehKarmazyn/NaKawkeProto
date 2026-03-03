@@ -3,18 +3,119 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GlassCard } from '@/app/components/ui/GlassCard';
 import { CheckCircle2 } from 'lucide-react';
-import realAutomatImage from '@/assets/real-aoutomat.jpg';
+import mainMachineImage from '@/assets/main-machine.webp';
 
-/** About section: what Na Kawkę is, key points, image. */
-export const WhatIsNaKawke: React.FC = () => {
+interface BulletPointProps {
+  text: string;
+}
+
+const BulletPoint: React.FC<BulletPointProps> = ({ text }) => (
+  <div className="flex items-center self-stretch mb-4 gap-[7px] w-full max-md:max-w-full">
+    <div className="bg-white w-2 h-2 rounded-[26843500px]" />
+    <div className="flex flex-1 flex-col pr-8">
+      <span className="text-[#ADD2C7] text-base leading-relaxed">
+        {text}
+      </span>
+    </div>
+  </div>
+);
+
+interface BenefitItemProps {
+  text: string;
+}
+
+const BenefitItem: React.FC<BenefitItemProps> = ({ text }) => (
+  <div className="flex flex-wrap gap-3 items-center w-full rounded-xl min-h-[50px] max-md:max-w-full">
+    <CheckCircle2 className="w-5 h-5 text-[var(--color-gold)] flex-shrink-0" />
+    <div className="flex flex-col justify-center items-start self-stretch py-px my-auto">
+      <div className="z-10 max-md:max-w-full text-white font-semibold">
+        {text}
+      </div>
+    </div>
+  </div>
+);
+
+const BusinessDescription: React.FC = () => {
   const { t } = useTranslation();
-  const headlines = [
+
+  return (
+    <section className="pt-6 mt-7 w-full leading-7 text-gray-200 border-t border-white/10 max-md:max-w-full">
+      <div className="flex gap-2.5 justify-center items-center w-full max-md:max-w-full">
+        <p className="flex-1 self-stretch my-auto basis-0 max-md:max-w-full text-base leading-relaxed">
+          <span className="font-semibold" style={{ color: 'var(--color-gold)' }}>
+            {t('common.siteName')}
+          </span>{' '}
+          <span className="font-normal text-white/90">
+            {t('about.intro1')}{' '}
+            {t('about.intro2')}
+          </span>
+        </p>
+      </div>
+    </section>
+  );
+};
+
+const BenefitsList: React.FC = () => {
+  const { t } = useTranslation();
+  const benefits = [
+    t('about.keyPoint1'),
+    t('about.keyPoint2'),
+    t('about.keyPoint3'),
+  ];
+
+  return (
+    <section className="pt-3 mt-7 w-full font-semibold border-t border-white/10 min-h-[173px] max-md:max-w-full">
+      <div className="space-y-3">
+        {benefits.map((benefit) => (
+          <BenefitItem key={benefit} text={benefit} />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const ProfitCard: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="absolute bottom-4 right-4 z-10">
+      <div className="min-w-[11rem] h-24 px-6 bg-gradient-to-b from-[#b0b0b0] via-white to-[#b0b0b0] rounded-2xl shadow-2xl inline-flex flex-col justify-center items-center text-black text-center">
+        <div className="flex flex-col items-center">
+          <div className="text-center justify-start text-black text-3xl font-bold leading-9 whitespace-nowrap">
+            {t('economics.row5Value')}
+          </div>
+          <div className="opacity-80 mt-1">
+            <div className="text-center justify-start text-black text-sm font-semibold leading-5">
+              {t('about.statLabel')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const BusinessFeatures: React.FC = () => {
+  const { t } = useTranslation();
+  const features = [
     t('about.headline1'),
     t('about.headline2'),
     t('about.headline3'),
     t('about.headline4'),
   ];
-  const keyPoints = [t('about.keyPoint1'), t('about.keyPoint2'), t('about.keyPoint3')];
+
+  return (
+    <div className="w-full text-lg leading-none max-md:max-w-full">
+      {features.map((feature) => (
+        <BulletPoint key={feature} text={feature} />
+      ))}
+    </div>
+  );
+};
+
+/** About section: what Na Kawkę is, key points, image. */
+export const WhatIsNaKawke: React.FC = () => {
+  const { t } = useTranslation();
 
   return (
     <section id="o-nas" className="py-24 relative" aria-labelledby="o-nas-heading">
@@ -33,24 +134,15 @@ export const WhatIsNaKawke: React.FC = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.2 }}
-                  className="relative"
+                  className="relative flex justify-center"
                 >
-                  <div className="relative rounded-2xl overflow-hidden border border-[#C0C0C0]/30 shadow-2xl">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[#C0C0C0]/20 to-transparent z-10 pointer-events-none" />
+                  <div className="relative inline-block">
                     <img
-                      src={realAutomatImage}
+                      src={mainMachineImage}
                       alt={t('about.imageAlt')}
-                      className="w-full h-[500px] object-cover"
+                      className="w-full max-w-sm h-auto rounded-2xl"
                     />
-                  </div>
-
-                  <div className="absolute -bottom-6 -right-6 rounded-2xl border border-[#C0C0C0]/20 border-gold-accent bg-[#0A0A0A]/95 backdrop-blur-md px-6 py-5 shadow-[0_0_30px_var(--gold-accent)]">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold bg-gradient-to-r from-[#C0C0C0] via-gold to-[#C0C0C0] bg-clip-text text-transparent">
-                        3000 zł
-                      </div>
-                      <div className="text-sm font-semibold text-white/80 mt-1">{t('about.statLabel')}</div>
-                    </div>
+                    <ProfitCard />
                   </div>
                 </motion.div>
 
@@ -59,48 +151,15 @@ export const WhatIsNaKawke: React.FC = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.3 }}
+                  className="text-base font-bold text-white"
                 >
-                  <h2 id="o-nas-heading" className="sr-only">{t('about.ariaLabel')}</h2>
-                  <div className="space-y-4 mb-8">
-                    {headlines.map((headline, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                        className="flex items-start gap-3"
-                      >
-                        <div className="w-2 h-2 rounded-full bg-[#C0C0C0] mt-2 flex-shrink-0" />
-                        <h3 className="text-lg font-bold text-white leading-tight">{headline}</h3>
-                      </motion.div>
-                    ))}
-                  </div>
+                  <h2 id="o-nas-heading" className="sr-only">
+                    {t('about.ariaLabel')}
+                  </h2>
 
-                  <div className="border-t border-[#C0C0C0]/20 pt-6 mb-6">
-                    <p className="text-white/90 text-base leading-relaxed mb-3">
-                      <span className="text-[#C0C0C0] font-bold">{t('common.siteName')}</span> - {t('about.intro1')}
-                    </p>
-                    <p className="text-white/80 text-base leading-relaxed">
-                      {t('about.intro2')}
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    {keyPoints.map((point, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
-                        className="flex items-center gap-3 bg-white/5 px-4 py-3 rounded-lg border border-[#C0C0C0]/20"
-                      >
-                        <CheckCircle2 className="w-5 h-5 text-[#C0C0C0] flex-shrink-0" />
-                        <span className="text-white font-semibold">{point}</span>
-                      </motion.div>
-                    ))}
-                  </div>
+                  <BusinessFeatures />
+                  <BusinessDescription />
+                  <BenefitsList />
                 </motion.div>
               </div>
             </GlassCard>

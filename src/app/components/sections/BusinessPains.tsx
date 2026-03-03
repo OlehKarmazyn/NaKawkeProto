@@ -39,7 +39,7 @@ export const BusinessPains: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {pains.map((pain, index) => {
             const Icon = pain.icon;
             return (
@@ -50,16 +50,31 @@ export const BusinessPains: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <GlassCard>
-                  <div className="mb-4 w-12 h-12 rounded-lg bg-gradient-to-br from-[#C0C0C0]/20 to-[#C0C0C0]/5 flex items-center justify-center">
+                <GlassCard className="h-full flex flex-col">
+                  <div className="mb-4 w-12 h-12 rounded-[14px] bg-gradient-to-br from-[#C0C0C0]/[0.52] to-[#C0C0C0]/[0.05] flex items-center justify-center">
                     <Icon className="w-6 h-6 text-[#C0C0C0]" />
                   </div>
 
                   <h3 className="text-xl font-bold text-white mb-3">{pain.title}</h3>
                   <p className="text-white/60 mb-4 text-sm leading-relaxed">{pain.description}</p>
 
-                  <div className="pt-4 border-t border-[#C0C0C0]/10">
-                    <span className="text-red-400 font-semibold text-sm">{pain.impact}</span>
+                  <div className="mt-auto pt-4 border-t border-[#C0C0C0]/10">
+                    {(() => {
+                      const trimmed = pain.impact.trim();
+                      if (!trimmed) {
+                        return null;
+                      }
+
+                      const [firstWord, ...restWords] = trimmed.split(' ');
+                      const restText = restWords.join(' ');
+
+                      return (
+                        <span className="text-sm text-white break-words">
+                          <span className="text-[#87AEA6] font-semibold">{firstWord}</span>
+                          {restText ? ` ${restText}` : null}
+                        </span>
+                      );
+                    })()}
                   </div>
                 </GlassCard>
               </motion.div>

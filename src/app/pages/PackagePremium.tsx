@@ -9,7 +9,7 @@ import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { PageMeta } from '@/app/components/seo/PageMeta';
 import { StructuredData } from '@/app/components/seo/StructuredData';
 import { SITE_BASE_URL } from '@/app/shared/constants/seo';
-import premiumImage from '@/assets/premium.png';
+import premiumImage from '@/assets/main-machine.webp';
 
 const SPEC_KEYS = [
   'spec1', 'spec2', 'spec3', 'spec4', 'spec5', 'spec6', 'spec7', 'spec8',

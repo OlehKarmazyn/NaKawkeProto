@@ -7,6 +7,7 @@ import { Hero } from '@/app/components/sections/Hero';
 import { WhatIsNaKawke } from '@/app/components/sections/WhatIsNaKawke';
 import { BusinessPains } from '@/app/components/sections/BusinessPains';
 import { Autonomy } from '@/app/components/sections/Autonomy';
+import { HowItWorks } from '@/app/components/sections/HowItWorks';
 import { ROICalculator } from '@/app/components/sections/ROICalculator';
 import { Pricing } from '@/app/components/sections/Pricing';
 import { PageMeta } from '@/app/components/seo/PageMeta';
@@ -51,6 +52,7 @@ export const Home: React.FC = () => {
       <WhatIsNaKawke />
       <BusinessPains />
       <Autonomy />
+      <HowItWorks />
       <ROICalculator />
       <Pricing />
       <Footer />

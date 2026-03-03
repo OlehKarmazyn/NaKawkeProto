@@ -25,8 +25,8 @@
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: oklch(0.708 0 0);
-  --gold: #E0A96B;
-  --gold-accent: rgba(224, 169, 107, 0.1);
+  --gold: #87AEA6;
+  --gold-accent: rgba(135, 174, 166, 0.1);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -63,8 +63,8 @@
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
   --ring: oklch(0.439 0 0);
-  --gold: #E0A96B;
-  --gold-accent: rgba(224, 169, 107, 0.1);
+  --gold: #87AEA6;
+  --gold-accent: rgba(135, 174, 166, 0.1);
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --chart-1: oklch(0.488 0.243 264.376);

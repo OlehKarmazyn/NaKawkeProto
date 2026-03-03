@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
   const phone = '+48' + ' 518' + ' 128' + ' 149';
 
   return (
-    <footer className="relative pt-12 pb-6 border-t border-[#C0C0C0]/20 border-t-gold-accent">
+    <footer className="relative pt-12 pb-6 border-t border-[#C0C0C0]/20">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-6 mb-6">
           <div>
