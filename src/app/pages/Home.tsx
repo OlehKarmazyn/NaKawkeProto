@@ -7,6 +7,7 @@ import { Hero } from '@/app/components/sections/Hero';
 import { WhatIsNaKawke } from '@/app/components/sections/WhatIsNaKawke';
 import { BusinessPains } from '@/app/components/sections/BusinessPains';
 import { Autonomy } from '@/app/components/sections/Autonomy';
+import { FranchiseComparison } from '@/app/components/sections/FranchiseComparison';
 import { HowItWorks } from '@/app/components/sections/HowItWorks';
 import { ROICalculator } from '@/app/components/sections/ROICalculator';
 import { Pricing } from '@/app/components/sections/Pricing';
@@ -14,7 +15,7 @@ import { PageMeta } from '@/app/components/seo/PageMeta';
 import { StructuredData } from '@/app/components/seo/StructuredData';
 import { SITE_BASE_URL } from '@/app/shared/constants/seo';
 
-/** Home page: landing composed of sections (Hero → About → Pains → Autonomy → Economics/calculator → Pricing → Contact). */
+/** Home page: landing composed of sections (Hero → About → Pains → Autonomy → FranchiseComparison → HowItWorks → Economics → Pricing → Contact). */
 export const Home: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
@@ -52,6 +53,7 @@ export const Home: React.FC = () => {
       <WhatIsNaKawke />
       <BusinessPains />
       <Autonomy />
+      <FranchiseComparison />
       <HowItWorks />
       <ROICalculator />
       <Pricing />
