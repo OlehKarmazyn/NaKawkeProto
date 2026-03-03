@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { GlassCard } from '@/app/components/ui/GlassCard';
 import { CheckCircle2 } from 'lucide-react';
-import mainMachineImage from '@/assets/main-machine.webp';
+import mainMachineImage from '@/assets/simple-automat.webp';
 
 interface BulletPointProps {
   text: string;

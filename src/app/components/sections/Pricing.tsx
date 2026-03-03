@@ -4,8 +4,8 @@ import { motion } from 'motion/react';
 import { PricingCard } from '@/app/components/features/PricingCard';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { useContactForm } from '@/hooks/useContactForm';
-import standardImage from '@/assets/simple.png';
-import premiumImage from '@/assets/main-machine.webp';
+import standardImage from '@/assets/simple-automat.webp';
+import premiumImage from '@/assets/premium-automat.webp';
 
 /** Pricing section: two plan cards (Standard / Premium) and contact form (CTA). */
 export const Pricing: React.FC = () => {

@@ -24,7 +24,7 @@ import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { PageMeta } from '@/app/components/seo/PageMeta';
 import { StructuredData } from '@/app/components/seo/StructuredData';
 import { SITE_BASE_URL } from '@/app/shared/constants/seo';
-import premiumImage from '@/assets/premium.png';
+import premiumImage from '@/assets/premium-automat.webp';
 
 const SPEC_KEYS = [
   // Order aligned with provided spec list:

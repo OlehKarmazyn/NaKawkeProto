@@ -100,7 +100,7 @@ Use Mermaid diagrams where helpful. Keep it under 350 lines — concise over exh
 
 ### Default meta in index.html (link preview: Telegram, Facebook, etc.)
 - Crawlers used for link preview (Telegram, Facebook, Slack, etc.) often fetch the initial HTML **without executing JavaScript**. OG meta injected only via React/Helmet is then invisible to them.
-- **Always** put a default set of Open Graph and Twitter Card meta tags **directly in `index.html`** (title, description, `og:image` with **absolute URL**, `og:url`, `og:type`). Use the production base URL (e.g. `https://nakawke.pl/`) and the default OG image (e.g. `/multi-automats.png` → `https://nakawke.pl/multi-automats.png`). The same image file must be available in `public/` so it is served at that URL.
+- **Always** put a default set of Open Graph and Twitter Card meta tags **directly in `index.html`** (title, description, `og:image` with **absolute URL**, `og:url`, `og:type`). Use the production base URL (e.g. `https://nakawke.pl/`) and the default OG image (e.g. `/multi-automats.webp` → `https://nakawke.pl/multi-automats.webp`). The same image file must be available in `public/` so it is served at that URL.
 - Page-specific meta is still set by `<PageMeta>` for clients that run JS; the static meta in `index.html` ensures link preview works when the shared URL is fetched by bots.
 
 ### Structured Data (JSON-LD)

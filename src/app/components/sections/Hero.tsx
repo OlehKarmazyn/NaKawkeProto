@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { ChevronDown } from 'lucide-react';
-import heroMainContainer from '@/assets/main-Container.webp';
+import heroMainContainer from '@/assets/multi-automats.webp';
 
 /** Hero section of the main page: headline, offer, CTA, vending machines image. */
 export const Hero: React.FC = () => {
