@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { motion, useScroll } from 'motion/react';
 import { Menu, X } from 'lucide-react';
@@ -17,6 +17,7 @@ export const Navigation: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const { scrollY } = useScroll();
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === '/';
   const isPrivacyPage = location.pathname === PRIVACY_PATH;
 
@@ -194,20 +195,19 @@ export const Navigation: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="hidden lg:flex items-center gap-4"
             >
-              {isHome ? (
-                <MetallicButton onClick={() => scrollToSection('#kontakt')}>
-                  {t('nav.cta')}
-                </MetallicButton>
-              ) : (
-                <Link
-                  to="/"
-                  state={{ scrollTo: 'kontakt' }}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="relative px-8 py-4 font-semibold text-black overflow-hidden rounded-lg transition-all duration-300 bg-gradient-to-r from-[#a8a8a8] via-[#C0C0C0] to-[#a8a8a8] hover:shadow-[0_0_30px_rgba(192,192,192,0.6)] hover:scale-105 active:scale-95 inline-block"
-                >
-                  <span className="relative z-10">{t('nav.cta')}</span>
-                </Link>
-              )}
+              <MetallicButton
+                type="button"
+                onClick={() => {
+                  if (isHome) {
+                    scrollToSection('#kontakt');
+                  } else {
+                    setIsMobileMenuOpen(false);
+                    navigate('/', { state: { scrollTo: 'kontakt' } });
+                  }
+                }}
+              >
+                {t('nav.cta')}
+              </MetallicButton>
               {!isPrivacyPage && <LanguageSwitcher />}
             </motion.div>
 
@@ -273,20 +273,20 @@ export const Navigation: React.FC = () => {
           })}
 
           <div className="mt-4 flex flex-col gap-3">
-            {isHome ? (
-              <MetallicButton onClick={() => scrollToSection('#kontakt')}>
-                {t('nav.cta')}
-              </MetallicButton>
-            ) : (
-              <Link
-                to="/"
-                state={{ scrollTo: 'kontakt' }}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="relative px-8 py-4 font-semibold text-black overflow-hidden rounded-lg transition-all duration-300 bg-gradient-to-r from-[#a8a8a8] via-[#C0C0C0] to-[#a8a8a8] hover:shadow-[0_0_30px_rgba(192,192,192,0.6)] hover:scale-105 active:scale-95 inline-block text-center"
-              >
-                <span className="relative z-10">{t('nav.cta')}</span>
-              </Link>
-            )}
+            <MetallicButton
+              type="button"
+              className="w-full"
+              onClick={() => {
+                if (isHome) {
+                  scrollToSection('#kontakt');
+                } else {
+                  setIsMobileMenuOpen(false);
+                  navigate('/', { state: { scrollTo: 'kontakt' } });
+                }
+              }}
+            >
+              {t('nav.cta')}
+            </MetallicButton>
             {!isPrivacyPage && <LanguageSwitcher />}
           </div>
         </div>

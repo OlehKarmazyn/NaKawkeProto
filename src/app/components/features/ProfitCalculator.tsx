@@ -59,7 +59,7 @@ export const ProfitCalculator: React.FC = () => {
             type="range"
             min="10"
             max="210"
-            step="10"
+            step="1"
             value={drinksPerDay}
             onChange={(e) => setDrinksPerDay(Number(e.target.value))}
             className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb"
