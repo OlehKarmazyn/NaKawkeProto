@@ -1,8 +1,23 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
-import { ArrowLeft, Check } from 'lucide-react';
+import {
+  ArrowLeft,
+  Boxes,
+  Check,
+  Cog,
+  Coffee,
+  CupSoda,
+  Droplets,
+  ShieldCheck,
+  Smartphone,
+  Snowflake,
+  Trash2,
+  Wifi,
+  Volume2,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Navigation } from '@/app/components/layout/Navigation';
 import { Footer } from '@/app/components/layout/Footer';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
@@ -12,26 +27,73 @@ import { SITE_BASE_URL } from '@/app/shared/constants/seo';
 import premiumImage from '@/assets/premium.png';
 
 const SPEC_KEYS = [
-  'spec1', 'spec2', 'spec3', 'spec4', 'spec5', 'spec6', 'spec7', 'spec8',
-  'spec9', 'spec10', 'spec11', 'spec12',
+  // Order aligned with provided spec list:
+  // 1) Liczba napojów
+  // 2) Dodatkowe pojemniki
+  // 3) Wsparcie głosowe
+  // 4) Stacja syropowa
+  // 5) Wydawanie kubków
+  // 6) Łączność i telemetria
+  // 7) Pojemnik na kawę
+  // 8) Ekran dotykowy
+  // 9) Lodówka
+  // 10) Bloki zaparzające
+  // 11) Pojemnik na odpady
+  // 12) Wsparcie
+  'spec1',
+  'spec3',
+  'spec5',
+  'spec7',
+  'spec9',
+  'spec11',
+  'spec2',
+  'spec4',
+  'spec6',
+  'spec8',
+  'spec10',
+  'spec12',
 ] as const;
 const BENEFIT_KEYS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
 
+const SPEC_ICON_MAP: Record<(typeof SPEC_KEYS)[number], LucideIcon> = {
+  // 1) Liczba napojów
+  spec1: Coffee,
+  // 2) Dodatkowe pojemniki
+  spec3: Boxes,
+  // 3) Wsparcie głosowe
+  spec5: Volume2,
+  // 4) Stacja syropowa
+  spec7: Droplets,
+  // 5) Wydawanie kubków
+  spec9: CupSoda,
+  // 6) Łączność i telemetria
+  spec11: Wifi,
+  // 7) Pojemnik na kawę
+  spec2: Boxes,
+  // 8) Ekran dotykowy
+  spec4: Smartphone,
+  // 9) Lodówka
+  spec6: Snowflake,
+  // 10) Bloki zaparzające
+  spec8: Cog,
+  // 11) Pojemnik na odpady
+  spec10: Trash2,
+  // 12) Wsparcie
+  spec12: ShieldCheck,
+};
+
 export const PackagePremium: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const iconByKey: Record<string, string> = {
-    spec1: '☕', spec2: '📦', spec3: '🥛', spec4: '📱', spec5: '🔊', spec6: '❄️',
-    spec7: '🍯', spec8: '⚙️', spec9: '🥤', spec10: '🗑️', spec11: '📡', spec12: '✅',
-  };
   const detailedSpecs = SPEC_KEYS.map((key) => ({
     title: t(`packagesPremium.${key}Title`),
     description: t(`packagesPremium.${key}Desc`),
-    icon: iconByKey[key] ?? '✅',
+    icon: SPEC_ICON_MAP[key],
   }));
   const benefits = BENEFIT_KEYS.map((i) => t(`packagesPremium.benefit${i}`));
 
@@ -120,24 +182,29 @@ export const PackagePremium: React.FC = () => {
             </h2>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {detailedSpecs.map((spec, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="backdrop-blur-md bg-white/5 border border-[#C0C0C0]/20 rounded-xl p-6 hover:border-[#C0C0C0]/40 hover:bg-white/10 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="text-4xl">{spec.icon}</span>
-                    <div>
-                      <h3 className="text-xl font-bold text-white mb-2">{spec.title}</h3>
-                      <p className="text-white/70">{spec.description}</p>
+              {detailedSpecs.map((spec, index) => {
+                const Icon = spec.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    className="group backdrop-blur-md bg-white/5 border border-[#C0C0C0]/20 rounded-xl p-6 hover:border-[#C0C0C0]/40 hover:bg-white/10 transition-all duration-300"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#C0C0C0]/[0.52] to-[#C0C0C0]/[0.05] flex items-center justify-center mb-2 group-hover:shadow-[0_0_20px_rgba(192,192,192,0.3)] transition-all duration-300 flex-shrink-0">
+                        <Icon className="w-6 h-6 text-[#C0C0C0]" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-2">{spec.title}</h3>
+                        <p className="text-white/70">{spec.description}</p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
 
@@ -178,8 +245,18 @@ export const PackagePremium: React.FC = () => {
               {t('packages.ctaPremiumText')}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <MetallicButton>{t('packages.orderModule')}</MetallicButton>
-              <MetallicButton>{t('packages.fullCalculation')}</MetallicButton>
+              <MetallicButton
+                type="button"
+                onClick={() => navigate('/', { state: { scrollTo: 'kontakt' } })}
+              >
+                {t('packages.orderModule')}
+              </MetallicButton>
+              <MetallicButton
+                type="button"
+                onClick={() => navigate('/', { state: { scrollTo: 'kontakt' } })}
+              >
+                {t('packages.fullCalculation')}
+              </MetallicButton>
             </div>
           </motion.div>
         </div>

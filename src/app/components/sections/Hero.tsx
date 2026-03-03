@@ -41,7 +41,7 @@ export const Hero: React.FC = () => {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <MetallicButton>{t('hero.cta')}</MetallicButton>
+              <MetallicButton>{t('nav.cta')}</MetallicButton>
             </div>
 
             {/* Stats */}

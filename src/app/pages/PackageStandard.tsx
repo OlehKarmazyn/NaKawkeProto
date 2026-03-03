@@ -1,8 +1,19 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
-import { ArrowLeft, Check } from 'lucide-react';
+import {
+  ArrowLeft,
+  BarChart3,
+  Check,
+  Coffee,
+  Package,
+  ShieldCheck,
+  Smartphone,
+  Wifi,
+  Wrench,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Navigation } from '@/app/components/layout/Navigation';
 import { Footer } from '@/app/components/layout/Footer';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
@@ -12,12 +23,40 @@ import { SITE_BASE_URL } from '@/app/shared/constants/seo';
 import standardImage from '@/assets/main-machine.webp';
 
 const SPEC_KEYS = [
-  'spec1', 'spec2', 'spec3', 'spec4', 'spec5', 'spec6', 'spec7', 'spec8',
+  // Order aligned with provided spec list:
+  // 1) Liczba napojów
+  // 2) Pojemnik na kawę
+  // 3) Interface
+  // 4) Monitoring
+  // 5) Serwisowanie
+  // 6) Dodatkowe pojemniki
+  // 7) Łączność
+  // 8) Wsparcie
+  'spec1',
+  'spec3',
+  'spec5',
+  'spec7',
+  'spec2',
+  'spec4',
+  'spec6',
+  'spec8',
 ] as const;
 const BENEFIT_KEYS = [1, 2, 3, 4, 5, 6] as const;
 
+const SPEC_ICON_MAP: Record<(typeof SPEC_KEYS)[number], LucideIcon> = {
+  spec1: Coffee,
+  spec2: Wrench,
+  spec3: Package,
+  spec4: Package,
+  spec5: Smartphone,
+  spec6: Wifi,
+  spec7: BarChart3,
+  spec8: ShieldCheck,
+};
+
 export const PackageStandard: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -26,7 +65,7 @@ export const PackageStandard: React.FC = () => {
   const detailedSpecs = SPEC_KEYS.map((key) => ({
     title: t(`packagesStandard.${key}Title`),
     description: t(`packagesStandard.${key}Desc`),
-    icon: key === 'spec1' ? '☕' : key === 'spec2' ? '🔧' : key === 'spec3' ? '📦' : key === 'spec4' ? '🥛' : key === 'spec5' ? '📱' : key === 'spec6' ? '📡' : key === 'spec7' ? '📊' : '✅',
+    icon: SPEC_ICON_MAP[key],
   }));
   const benefits = BENEFIT_KEYS.map((i) => t(`packagesStandard.benefit${i}`));
 
@@ -115,24 +154,29 @@ export const PackageStandard: React.FC = () => {
             </h2>
 
             <div className="grid md:grid-cols-2 gap-6">
-              {detailedSpecs.map((spec, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  className="backdrop-blur-md bg-white/5 border border-[#C0C0C0]/20 rounded-xl p-6 hover:border-[#C0C0C0]/40 hover:bg-white/10 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="text-4xl">{spec.icon}</span>
-                    <div>
-                      <h3 className="text-xl font-bold text-white mb-2">{spec.title}</h3>
-                      <p className="text-white/70">{spec.description}</p>
+              {detailedSpecs.map((spec, index) => {
+                const Icon = spec.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    className="group backdrop-blur-md bg-white/5 border border-[#C0C0C0]/20 rounded-xl p-6 hover:border-[#C0C0C0]/40 hover:bg-white/10 transition-all duration-300"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#C0C0C0]/[0.52] to-[#C0C0C0]/[0.05] flex items-center justify-center mb-2 group-hover:shadow-[0_0_20px_rgba(192,192,192,0.3)] transition-all duration-300 flex-shrink-0">
+                        <Icon className="w-6 h-6 text-[#C0C0C0]" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-2">{spec.title}</h3>
+                        <p className="text-white/70">{spec.description}</p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
 
@@ -173,8 +217,18 @@ export const PackageStandard: React.FC = () => {
               {t('packages.ctaStandardText')}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <MetallicButton>{t('packages.orderModule')}</MetallicButton>
-              <MetallicButton>{t('packages.fullCalculation')}</MetallicButton>
+              <MetallicButton
+                type="button"
+                onClick={() => navigate('/', { state: { scrollTo: 'kontakt' } })}
+              >
+                {t('packages.orderModule')}
+              </MetallicButton>
+              <MetallicButton
+                type="button"
+                onClick={() => navigate('/', { state: { scrollTo: 'kontakt' } })}
+              >
+                {t('packages.fullCalculation')}
+              </MetallicButton>
             </div>
           </motion.div>
         </div>
