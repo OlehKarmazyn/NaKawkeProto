@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router';
 import { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.webp';
 import { ScrollToTop } from './components/layout/ScrollToTop';
 import { LangLayout } from './components/layout/LangLayout';
 
