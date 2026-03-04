@@ -66,7 +66,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
           <div className="relative flex-shrink-0 h-48 sm:h-64 lg:h-72 pt-4 flex items-center justify-center bg-gradient-to-b from-white/5 to-transparent">
             {isRecommended && (
               <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gradient-to-r from-[#a8a8a8] via-[#C0C0C0] to-[#a8a8a8] text-black px-2.5 py-1 sm:px-3 rounded-lg text-xs font-bold z-10">
-                POLECANE
+                {t('packages.recommended')}
               </div>
             )}
             <ImageWithFallback
@@ -86,11 +86,11 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{title}</h3>
 
             <div className="mb-3 sm:mb-4">
-              <div className="text-sm text-white/60 mb-1">Koszt sprzętu</div>
+              <div className="text-sm text-white/60 mb-1">{t('packages.equipmentCost')}</div>
               <span className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#C0C0C0] to-white bg-clip-text text-transparent">
                 €{price}
               </span>
-              <span className="text-white/60 ml-2 text-sm">netto</span>
+              <span className="text-white/60 ml-2 text-sm">{t('packages.netto')}</span>
             </div>
 
             <ul className="space-y-2 mb-2">
@@ -112,7 +112,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
                   type="button"
                   className="flex-1 min-w-0 px-4 py-2.5 rounded-xl border border-[#C0C0C0]/30 text-white/90 hover:bg-[#C0C0C0]/10 hover:border-[#C0C0C0]/50 transition-all duration-300 flex items-center justify-center gap-2 group text-sm"
                 >
-                  <span className="truncate">Zobacz specyfikacje</span>
+                  <span className="truncate">{t('packages.viewSpecs')}</span>
                   <RotateCcw className="w-4 h-4 flex-shrink-0 group-hover:rotate-180 transition-transform duration-300" />
                 </button>
                 <Link
@@ -120,7 +120,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
                   onClick={(e) => e.stopPropagation()}
                   className="flex-1 min-w-0 px-4 py-2.5 rounded-xl border border-[#C0C0C0]/30 text-white/90 hover:bg-[#C0C0C0]/10 hover:border-[#C0C0C0]/50 transition-all duration-300 flex items-center justify-center gap-2 group text-sm"
                 >
-                  <span className="truncate">Szczegółowe specyfikacje</span>
+                  <span className="truncate">{t('packages.detailedSpecsLink')}</span>
                   <ChevronRight className="w-4 h-4 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -157,7 +157,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             </div>
 
             <div className="text-sm text-[#C0C0C0]/80 mb-4 font-semibold">
-              Skrócony przegląd specyfikacji
+              {t('packages.specsOverview')}
             </div>
 
             <div className="flex-grow overflow-y-auto space-y-3 sm:space-y-4 mb-4 sm:mb-6">
@@ -173,11 +173,11 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             </div>
 
             <div className="border-t border-[#C0C0C0]/20 pt-4 sm:pt-6" onClick={(e) => e.stopPropagation()}>
-              <div className="text-sm text-white/60 mb-2">Koszt sprzętu</div>
+              <div className="text-sm text-white/60 mb-2">{t('packages.equipmentCost')}</div>
               <span className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#C0C0C0] to-white bg-clip-text text-transparent">
                 €{price}
               </span>
-              <span className="text-white/60 ml-2">netto</span>
+              <span className="text-white/60 ml-2">{t('packages.netto')}</span>
 
               <MetallicButton className="w-full mt-4">{t('packages.orderModule')}</MetallicButton>
               <Link

@@ -13,8 +13,8 @@ interface BulletPointProps {
 }
 
 const BulletPoint: React.FC<BulletPointProps> = ({ boldText, restText }) => (
-  <div className="flex items-center self-stretch gap-[7px] w-full max-md:max-w-full" style={{ lineHeight: `${BULLET_LINE_HEIGHT}px` }}>
-    <div className="bg-white w-2 h-2 rounded-[26843500px] shrink-0" />
+  <div className="flex items-start self-stretch gap-[7px] w-full max-md:max-w-full" style={{ lineHeight: `${BULLET_LINE_HEIGHT}px` }}>
+    <div className="bg-white w-2 h-2 rounded-[26843500px] shrink-0 mt-[6px]" />
     <div
       className="flex-1 min-w-0 pr-8"
       style={{ lineHeight: `${BULLET_LINE_HEIGHT}px`, letterSpacing: 0 }}
