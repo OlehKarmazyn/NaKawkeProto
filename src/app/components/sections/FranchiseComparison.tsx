@@ -47,7 +47,8 @@ export const FranchiseComparison: React.FC = () => {
         {/* Comparison Table */}
         <div className="max-w-6xl mx-auto mb-20">
           <div className="bg-gradient-to-br from-white/5 via-white/[0.02] to-white/5 border border-[#C0C0C0]/20">
-            <div className="grid grid-cols-3 gap-6 p-6 border-b border-[#C0C0C0]/20 bg-gradient-to-r from-[#C0C0C0]/10 to-transparent">
+            {/* Desktop header */}
+            <div className="hidden md:grid grid-cols-3 gap-6 p-6 border-b border-[#C0C0C0]/20 bg-gradient-to-r from-[#C0C0C0]/10 to-transparent">
               <div className="font-bold text-white/60">{t('franchiseComparison.tableCriteria')}</div>
               <div className="font-bold text-[#C0C0C0] text-center">
                 <span className="inline-flex items-center gap-2" aria-hidden="true">
@@ -67,22 +68,54 @@ export const FranchiseComparison: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="grid grid-cols-3 gap-6 p-6 border-b border-[#C0C0C0]/10 hover:bg-white/5 transition-colors duration-300 last:border-b-0"
+                className="border-b border-[#C0C0C0]/10 hover:bg-white/5 transition-colors duration-300 last:border-b-0"
               >
-                <div className="text-white font-medium">
-                  {t(`franchiseComparison.row${rowNum}Feature`)}
+                {/* Mobile layout: feature on top, then two columns */}
+                <div className="block md:hidden p-6">
+                  <div className="text-white font-medium mb-4 text-center">
+                    {t(`franchiseComparison.row${rowNum}Feature`)}
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 items-start">
+                    <div className="text-center">
+                      <span className="inline-flex items-start gap-2 text-[#C0C0C0] font-bold">
+                        <Check className="w-5 h-5 text-green-400 shrink-0" aria-hidden="true" />
+                        <span className="text-sm md:text-base break-words">
+                          {t(`franchiseComparison.row${rowNum}NaKawke`)}
+                        </span>
+                      </span>
+                    </div>
+                    <div className="text-center">
+                      <span className="inline-flex items-start gap-2 text-white/60">
+                        <X className="w-5 h-5 text-red-400 shrink-0" aria-hidden="true" />
+                        <span className="text-sm md:text-base break-words">
+                          {t(`franchiseComparison.row${rowNum}Franchise`)}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <span className="inline-flex items-center gap-2 text-[#C0C0C0] font-bold">
-                    <Check className="w-5 h-5 text-green-400 shrink-0" aria-hidden="true" />
-                    <span>{t(`franchiseComparison.row${rowNum}NaKawke`)}</span>
-                  </span>
-                </div>
-                <div className="text-center">
-                  <span className="inline-flex items-center gap-2 text-white/60">
-                    <X className="w-5 h-5 text-red-400 shrink-0" aria-hidden="true" />
-                    <span>{t(`franchiseComparison.row${rowNum}Franchise`)}</span>
-                  </span>
+
+                {/* Desktop layout: classic 3-column table row */}
+                <div className="hidden md:grid grid-cols-3 gap-6 p-6 items-center">
+                  <div className="text-white font-medium">
+                    {t(`franchiseComparison.row${rowNum}Feature`)}
+                  </div>
+                  <div className="text-center">
+                    <span className="inline-flex items-center gap-2 text-[#C0C0C0] font-bold">
+                      <Check className="w-5 h-5 text-green-400 shrink-0" aria-hidden="true" />
+                      <span className="break-words">
+                        {t(`franchiseComparison.row${rowNum}NaKawke`)}
+                      </span>
+                    </span>
+                  </div>
+                  <div className="text-center">
+                    <span className="inline-flex items-center gap-2 text-white/60">
+                      <X className="w-5 h-5 text-red-400 shrink-0" aria-hidden="true" />
+                      <span className="break-words">
+                        {t(`franchiseComparison.row${rowNum}Franchise`)}
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             ))}
