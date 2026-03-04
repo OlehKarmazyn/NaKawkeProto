@@ -42,7 +42,9 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         `}
         style={{
           transformStyle: 'preserve-3d',
+          WebkitTransformStyle: 'preserve-3d',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          WebkitTransform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
         {/* FRONT SIDE — relative so card height is driven by content; click flips to back */}
@@ -60,7 +62,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             }
             hover:border-[#C0C0C0]/60 hover:shadow-[0_0_30px_rgba(192,192,192,0.15)]
           `}
-          style={{ backfaceVisibility: 'hidden' }}
+          style={{
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
         >
           {/* Image — larger area for automats, responsive height */}
           <div className="relative flex-shrink-0 h-48 sm:h-64 lg:h-72 pt-4 flex items-center justify-center bg-gradient-to-b from-white/5 to-transparent">
@@ -142,6 +147,8 @@ export const PricingCard: React.FC<PricingCardProps> = ({
           style={{
             backfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
+            WebkitBackfaceVisibility: 'hidden',
+            WebkitTransform: 'rotateY(180deg)',
           }}
         >
           <div className="p-4 sm:p-6 lg:p-8 h-full flex flex-col">
