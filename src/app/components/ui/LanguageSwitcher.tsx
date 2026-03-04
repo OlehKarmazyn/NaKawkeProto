@@ -1,7 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { ChevronDown } from 'lucide-react';
+import { langPath, pathWithoutLang } from '@/hooks/useLangPath';
 
 const LANGUAGES = [
   { code: 'pl', label: 'PL' },
@@ -9,11 +11,23 @@ const LANGUAGES = [
   { code: 'uk', label: 'UK' },
 ] as const;
 
-/** Language switcher: dropdown with PL / EN / UK. Touch target ≥ 44×44px. SPA switch, no reload. */
+/** Language switcher: dropdown with PL / EN / UK. Navigates to /:lang/current-path. Touch target ≥ 44×44px. */
 export const LanguageSwitcher: React.FC = () => {
   const { i18n, t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
   const current =
     LANGUAGES.find(({ code }) => i18n.language?.startsWith(code)) ?? LANGUAGES[0];
+
+  const handleSelect = (code: string) => {
+    const path = pathWithoutLang(location.pathname);
+    const newPath = langPath(code, path);
+    if (location.search) {
+      navigate(`${newPath}${location.search}`, { replace: false });
+    } else {
+      navigate(newPath, { replace: false });
+    }
+  };
 
   return (
     <DropdownMenu.Root>
@@ -41,7 +55,7 @@ export const LanguageSwitcher: React.FC = () => {
             return (
               <DropdownMenu.Item
                 key={code}
-                onSelect={() => i18n.changeLanguage(code)}
+                onSelect={() => handleSelect(code)}
                 className="min-h-[44px] px-4 flex items-center cursor-pointer outline-none font-medium text-white/90 hover:text-white hover:bg-white/10 focus:bg-white/10 data-[highlight]:bg-white/10 transition-colors"
                 role="option"
                 aria-selected={isActive}

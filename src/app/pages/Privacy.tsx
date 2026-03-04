@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { useLangPath } from '@/hooks/useLangPath';
 import { Navigation } from '@/app/components/layout/Navigation';
 import { Footer } from '@/app/components/layout/Footer';
 import { PageMeta } from '@/app/components/seo/PageMeta';
@@ -10,6 +11,7 @@ import { SITE_NAME } from '@/app/shared/constants/seo';
  * Strona prawna, nie tłumaczona na EN/UK.
  */
 export const Privacy: React.FC = () => {
+  const path = useLangPath();
   return (
     <div className="min-h-screen bg-[#0A0A0A] overflow-x-hidden">
       <PageMeta
@@ -266,7 +268,7 @@ export const Privacy: React.FC = () => {
           </article>
 
           <p className="mt-12 pt-6 border-t border-[#C0C0C0]/20">
-            <Link to="/" className="text-[#C0C0C0] hover:text-white transition-colors">
+            <Link to={path('/')} className="text-[#C0C0C0] hover:text-white transition-colors">
               ← Powrót na stronę główną {SITE_NAME}
             </Link>
           </p>

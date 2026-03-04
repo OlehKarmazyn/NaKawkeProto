@@ -7,8 +7,9 @@ import logo from '@/assets/logo.png';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { LanguageSwitcher } from '@/app/components/ui/LanguageSwitcher';
 import { NAV_LINKS } from '@/app/shared/constants/navigation';
+import { useLangPath, pathWithoutLang } from '@/hooks/useLangPath';
 
-const PRIVACY_PATH = '/polityka-prywatnosci';
+const PRIVACY_PATH = 'polityka-prywatnosci';
 
 export const Navigation: React.FC = () => {
   const { t } = useTranslation();
@@ -18,8 +19,10 @@ export const Navigation: React.FC = () => {
   const { scrollY } = useScroll();
   const location = useLocation();
   const navigate = useNavigate();
-  const isHome = location.pathname === '/';
-  const isPrivacyPage = location.pathname === PRIVACY_PATH;
+  const path = useLangPath();
+  const pathWithoutLangSeg = pathWithoutLang(location.pathname);
+  const isHome = pathWithoutLangSeg === '/' || pathWithoutLangSeg === '';
+  const isPrivacyPage = location.pathname.endsWith(PRIVACY_PATH);
 
   useEffect(() => {
     return scrollY.on('change', (latest) => {
@@ -33,7 +36,7 @@ export const Navigation: React.FC = () => {
   const TRIGGER_OFFSET_PX = 120; // line below navbar: section is "current" when this line is inside its bounds
 
   useEffect(() => {
-    if (location.pathname !== '/') {
+    if (!isHome) {
       setActiveSection(null);
       return;
     }
@@ -89,7 +92,7 @@ export const Navigation: React.FC = () => {
     updateActiveSection();
     window.addEventListener('scroll', updateActiveSection, { passive: true });
     return () => window.removeEventListener('scroll', updateActiveSection);
-  }, [location.pathname]);
+  }, [isHome]);
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -115,9 +118,9 @@ export const Navigation: React.FC = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link
-              to="/"
+              to={path('/')}
               onClick={() => {
-                if (location.pathname === '/') {
+                if (isHome) {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
                 setIsMobileMenuOpen(false);
@@ -176,7 +179,7 @@ export const Navigation: React.FC = () => {
                 ) : (
                   <Link
                     key={link.id}
-                    to="/"
+                    to={path('/')}
                     state={{ scrollTo: sectionId }}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={linkClass}
@@ -202,7 +205,7 @@ export const Navigation: React.FC = () => {
                     scrollToSection('#kontakt');
                   } else {
                     setIsMobileMenuOpen(false);
-                    navigate('/', { state: { scrollTo: 'kontakt' } });
+                    navigate(path('/'), { state: { scrollTo: 'kontakt' } });
                   }
                 }}
               >
@@ -262,7 +265,7 @@ export const Navigation: React.FC = () => {
             ) : (
               <Link
                 key={link.id}
-                to="/"
+                to={path('/')}
                 state={{ scrollTo: sectionId }}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={itemClass}
@@ -281,7 +284,7 @@ export const Navigation: React.FC = () => {
                   scrollToSection('#kontakt');
                 } else {
                   setIsMobileMenuOpen(false);
-                  navigate('/', { state: { scrollTo: 'kontakt' } });
+                  navigate(path('/'), { state: { scrollTo: 'kontakt' } });
                 }
               }}
             >

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import {
@@ -22,6 +22,7 @@ import { Navigation } from '@/app/components/layout/Navigation';
 import { Footer } from '@/app/components/layout/Footer';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { PageMeta } from '@/app/components/seo/PageMeta';
+import { useLangPath } from '@/hooks/useLangPath';
 import { StructuredData } from '@/app/components/seo/StructuredData';
 import { SITE_BASE_URL } from '@/app/shared/constants/seo';
 import premiumImage from '@/assets/premium-automat.webp';
@@ -85,6 +86,8 @@ const SPEC_ICON_MAP: Record<(typeof SPEC_KEYS)[number], LucideIcon> = {
 export const PackagePremium: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const path = useLangPath();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -102,7 +105,7 @@ export const PackagePremium: React.FC = () => {
     '@type': 'Product',
     name: `Pakiet Premium — ${t('common.siteName')}`,
     description: t('packages.premiumSubtitle'),
-    url: `${SITE_BASE_URL}/pakiet-premium`,
+    url: `${SITE_BASE_URL}${pathname}`,
     offers: { '@type': 'Offer', price: '6500', priceCurrency: 'EUR' },
   };
 
@@ -124,7 +127,7 @@ export const PackagePremium: React.FC = () => {
             transition={{ duration: 0.5 }}
           >
             <Link
-              to="/#cennik"
+              to={path('/#cennik')}
               className="inline-flex items-center gap-2 text-[#C0C0C0] hover:text-white transition-colors mb-12"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -142,7 +145,7 @@ export const PackagePremium: React.FC = () => {
               {t('packages.premiumBadge')}
             </div>
             <h1 className="text-6xl font-bold text-white mb-6">
-              Pakiet <span className="text-[#C0C0C0]">{t('packages.premium')}</span>
+              {t('packages.packageLabel')} <span className="text-[#C0C0C0]">{t('packages.premium')}</span>
             </h1>
             <p className="text-xl text-white/70 mb-8">
               {t('packages.premiumSubtitle')}
@@ -247,13 +250,13 @@ export const PackagePremium: React.FC = () => {
             <div className="flex flex-wrap gap-4 justify-center">
               <MetallicButton
                 type="button"
-                onClick={() => navigate('/', { state: { scrollTo: 'kontakt' } })}
+                onClick={() => navigate(path('/'), { state: { scrollTo: 'kontakt' } })}
               >
                 {t('packages.orderModule')}
               </MetallicButton>
               <MetallicButton
                 type="button"
-                onClick={() => navigate('/', { state: { scrollTo: 'kontakt' } })}
+                onClick={() => navigate(path('/'), { state: { scrollTo: 'kontakt' } })}
               >
                 {t('packages.fullCalculation')}
               </MetallicButton>

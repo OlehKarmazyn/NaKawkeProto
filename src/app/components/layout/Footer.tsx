@@ -3,18 +3,21 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo.png';
 import { SECTION_IDS } from '@/app/shared/constants/navigation';
+import { useLangPath, pathWithoutLang } from '@/hooks/useLangPath';
 
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const path = useLangPath();
+  const isHome = pathWithoutLang(pathname) === '/' || pathWithoutLang(pathname) === '';
 
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     e.preventDefault();
-    if (pathname === '/') {
+    if (isHome) {
       document.querySelector(`#${hash}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
-      navigate(`/#${hash}`, { state: { scrollTo: hash } });
+      navigate(`${path('/')}#${hash}`, { state: { scrollTo: hash } });
     }
   };
 
@@ -55,7 +58,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-1 text-white/60 text-sm">
               <li>
                 <a
-                  href={`/#${SECTION_IDS.benefits}`}
+                  href={`${path('/')}#${SECTION_IDS.benefits}`}
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.benefits)}
                 >
@@ -64,7 +67,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href={`/#${SECTION_IDS.pricing}`}
+                  href={`${path('/')}#${SECTION_IDS.pricing}`}
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.pricing)}
                 >
@@ -73,7 +76,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href={`/#${SECTION_IDS.economics}`}
+                  href={`${path('/')}#${SECTION_IDS.economics}`}
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.economics)}
                 >
@@ -81,12 +84,12 @@ export const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
-                <Link to="/pakiet-standard" className="hover:text-[#C0C0C0] transition-colors">
+                <Link to={path('/pakiet-standard')} className="hover:text-[#C0C0C0] transition-colors">
                   {t('footer.packageStandard')}
                 </Link>
               </li>
               <li>
-                <Link to="/pakiet-premium" className="hover:text-[#C0C0C0] transition-colors">
+                <Link to={path('/pakiet-premium')} className="hover:text-[#C0C0C0] transition-colors">
                   {t('footer.packagePremium')}
                 </Link>
               </li>
@@ -98,7 +101,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-1 text-white/60 text-sm">
               <li>
                 <a
-                  href={`/#${SECTION_IDS.about}`}
+                  href={`${path('/')}#${SECTION_IDS.about}`}
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.about)}
                 >
@@ -107,7 +110,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href={`/#${SECTION_IDS.contact}`}
+                  href={`${path('/')}#${SECTION_IDS.contact}`}
                   className="hover:text-[#C0C0C0] transition-colors"
                   onClick={(e) => handleAnchorClick(e, SECTION_IDS.contact)}
                 >
@@ -121,7 +124,7 @@ export const Footer: React.FC = () => {
             <h4 className="text-white font-semibold mb-2 text-sm">{t('footer.legal')}</h4>
             <ul className="space-y-1 text-white/60 text-sm">
               <li>
-                <Link to="/polityka-prywatnosci" className="hover:text-[#C0C0C0] transition-colors">
+                <Link to={path('/polityka-prywatnosci')} className="hover:text-[#C0C0C0] transition-colors">
                   {t('footer.privacy')}
                 </Link>
               </li>
@@ -133,7 +136,7 @@ export const Footer: React.FC = () => {
         <div className="pt-4 border-t border-[#C0C0C0]/10 flex flex-col md:flex-row justify-between items-center gap-3">
           <div className="flex flex-col items-center md:items-start gap-1">
             <p className="text-white/40 text-xs">
-              <Link to="/polityka-prywatnosci" className="hover:text-[#C0C0C0] transition-colors">
+              <Link to={path('/polityka-prywatnosci')} className="hover:text-[#C0C0C0] transition-colors">
                 {t('footer.privacy')}
               </Link>
               {' · '}

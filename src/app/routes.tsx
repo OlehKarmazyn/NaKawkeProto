@@ -1,8 +1,9 @@
-import { createBrowserRouter, Outlet } from 'react-router';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router';
 import { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo.png';
 import { ScrollToTop } from './components/layout/ScrollToTop';
+import { LangLayout } from './components/layout/LangLayout';
 
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const PackageStandard = lazy(() => import('./pages/PackageStandard').then((m) => ({ default: m.PackageStandard })));
@@ -35,35 +36,45 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: () => (
-          <Suspense fallback={<PageFallback />}>
-            <Home />
-          </Suspense>
-        ),
+        element: <Navigate to="/pl/" replace />,
       },
       {
-        path: 'pakiet-standard',
-        Component: () => (
-          <Suspense fallback={<PageFallback />}>
-            <PackageStandard />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'pakiet-premium',
-        Component: () => (
-          <Suspense fallback={<PageFallback />}>
-            <PackagePremium />
-          </Suspense>
-        ),
-      },
-      {
-        path: 'polityka-prywatnosci',
-        Component: () => (
-          <Suspense fallback={<PageFallback />}>
-            <Privacy />
-          </Suspense>
-        ),
+        path: ':lang',
+        Component: LangLayout,
+        children: [
+          {
+            index: true,
+            Component: () => (
+              <Suspense fallback={<PageFallback />}>
+                <Home />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'pakiet-standard',
+            Component: () => (
+              <Suspense fallback={<PageFallback />}>
+                <PackageStandard />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'pakiet-premium',
+            Component: () => (
+              <Suspense fallback={<PageFallback />}>
+                <PackagePremium />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'polityka-prywatnosci',
+            Component: () => (
+              <Suspense fallback={<PageFallback />}>
+                <Privacy />
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },

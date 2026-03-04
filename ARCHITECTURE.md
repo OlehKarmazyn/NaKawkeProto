@@ -26,7 +26,7 @@
 | UI primitives            | Radix UI                                                            | —       |
 | SEO / Head mgmt          | react-helmet-async                                                  | —       |
 | Form validation          | Zod                                                                 | —       |
-| i18n                     | i18next + react-i18next + i18next-browser-languagedetector          | —       |
+| i18n                     | i18next + react-i18next (language from URL)                          | —       |
 | Backend-as-a-service     | PocketBase SDK                                                      | —       |
 | Notifications            | Telegram Bot API                                                    | —       |
 | Deployment               | Static (Coolify / Netlify); optional pre-built Docker image (CI/CD)  | —       |
@@ -104,10 +104,10 @@ graph TD
 ### Language Switching
 ```mermaid
 graph TD
-    U[User clicks LanguageSwitcher] --> I[i18n.changeLanguage]
-    I --> LS[localStorage updated by detector]
-    I --> R[React re-renders with new translations]
-    R --> M[PageMeta updates title + description + hreflang]
+    U[User clicks LanguageSwitcher] --> N[navigate to /:lang/current-path]
+    N --> R[React Router loads route]
+    R --> L[useLangFromUrl sets i18n.changeLanguage]
+    L --> M[PageMeta updates title + description + hreflang]
 ```
 
 ### Contact Form Submission
@@ -133,12 +133,12 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 ## 🌐 Internationalisation Strategy
 
 - **Languages:** `pl` (default + fallback), `en`, `uk`
-- **Library:** `i18next` + `react-i18next` + `i18next-browser-languagedetector`
+- **Library:** `i18next` + `react-i18next` (language set from URL; no browser detector)
 - **Config:** `src/lib/i18n.ts` — initialised once, imported in `main.tsx` before `<App />`
 - **Translation files:** `src/locales/{pl,en,uk}/translation.json`
 - **Polish is the single source of truth** — all new keys added to `pl` first, then translated to `en` and `uk`
-- **URL strategy:** No language prefix in URL (`/pakiet-standard`, not `/pl/pakiet-standard`). Language stored in `localStorage`. SEO handled via `hreflang` tags.
-- **Switching:** `<LanguageSwitcher>` component in `<Navigation>` — SPA switch, no page reload. Hidden on `/polityka-prywatnosci` (privacy page is Polish-only).
+- **URL strategy:** Language prefix in URL: `/pl/`, `/en/`, `/uk/`. Root `/` redirects to `/pl/`. All routes live under `/:lang/` (e.g. `/pl/pakiet-standard`). No `localStorage` for language — URL is the single source of truth. Better SEO indexing per language.
+- **Switching:** `<LanguageSwitcher>` in `<Navigation>` — navigates to `/:lang/current-path`, SPA switch, no reload. Hidden on `/pl/polityka-prywatnosci` (privacy page is Polish-only).
 - **All visible text** goes through `t('key')` — no hardcoded strings in JSX ever
 - **Dates / numbers / currency** formatted via `Intl` with locale (`pl-PL`, `en-GB`, `uk-UA`)
 
@@ -160,12 +160,12 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 - **HTML:** Semantic elements on every page (`<main>`, `<section aria-label>`, one `<h1>` per page).
 - **Meta:** `<PageMeta>` component via `react-helmet-async` on every page — title, description, OG, Twitter Card — all rendered in the active language.
 - **Default meta in index.html (link preview):** Crawlers used for link preview (Telegram, Facebook, Slack, etc.) often do **not** execute JavaScript. OG meta injected only by React/Helmet is invisible to them. Therefore **default Open Graph and Twitter Card meta tags are placed directly in `index.html`** (title, description, `og:image` with absolute production URL, `og:url`, `og:type`). The default OG image (e.g. `multi-automats.webp`) must exist in `public/` so it is served at the absolute URL. Page-specific meta is still set by `<PageMeta>` for clients that run JS.
-- **hreflang:** All three language variants declared on every page (`pl`, `en`, `uk`, `x-default` → `pl`).
+- **hreflang:** All three language variants with distinct URLs on every page: `pl` → `https://nakawke.pl/pl/...`, `en` → `https://nakawke.pl/en/...`, `uk` → `https://nakawke.pl/uk/...`, `x-default` → `https://nakawke.pl/pl/...`.
 - **Structured data:** JSON-LD — `LocalBusiness` (home), `Product` (package pages), `FAQPage` (FAQ).
 - **robots.txt:** In `public/robots.txt` — allows all bots, references `Sitemap: {VITE_SITE_URL}/sitemap.xml`.
 - **Sitemap:** Auto-generated at build via `vite-plugin-sitemap` (output in `dist/sitemap.xml`). Routes from `vite.config.ts` must match `routes.tsx`.
 - **Canonical:** Set on every page via `<PageMeta>` to prevent duplicate content.
-- **Privacy page:** `/polityka-prywatnosci` — Polish-only legal text, no i18n; linked from Footer. Uses `<meta name="robots" content="noindex, follow">` (page linkable for RODO, not shown in search results).
+- **Privacy page:** `/pl/polityka-prywatnosci` only — Polish-only legal text. Access via `/en/polityka-prywatnosci` or `/uk/polityka-prywatnosci` redirects to `/pl/polityka-prywatnosci`. Uses `<meta name="robots" content="noindex, follow">` (page linkable for RODO, not shown in search results).
 - **Fonts:** Self-hosted, preloaded, `font-display: swap`.
 
 ---
@@ -253,10 +253,10 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 **Decision:** Use `react-helmet-async` for all `<head>` meta management.  
 **Reason:** Supports SSR if ever needed; clean per-page API; avoids direct DOM manipulation.
 
-### ADR-008: i18next without language prefix in URL
-**Decision:** Language stored in `localStorage`, URLs without `/pl/`, `/en/`, `/uk/` prefixes.  
-**Reason:** Static hosting without server-side routing per language; simpler Vite and React Router config.  
-**Trade-off:** Search engines don't index separate URLs per language — compensated by `hreflang` tags on all pages.  
+### ADR-008: Language-prefixed URLs (revised)
+**Decision:** Language prefix in URL: `/pl/`, `/en/`, `/uk/`. Root `/` redirects to `/pl/`. Language is read from the URL param only (no `localStorage`).  
+**Reason:** Better SEO — search engines index separate URLs per language; `hreflang` points to real alternate URLs. Shareable, bookmarkable language-specific links.  
+**Trade-off:** All internal links and sitemap must include the lang prefix; nginx (or host) redirects `/` to `/pl/`.  
 **Alternative considered:** Subdomains (`en.nakawke.pl`) — rejected as overengineered for current scale.
 
 ---
@@ -269,6 +269,7 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 | 2025-03-01 | v2.0 — Added Telegram, PocketBase, SEO strategy, services/hooks layers, new ADRs.  |
 | 2025-03-01 | v3.0 — Added i18n (PL/EN/UK), LanguageSwitcher, hreflang, locales/ directory, `lang` field in leads collection, ADR-008. |
 | 2025-03-01 | Umami analytics added; script loaded only in production; stub when running locally (no script in dev). |
+| 2026-03-04 | v3.1 — Migrated to language-prefixed URLs (`/pl/`, `/en/`, `/uk/`). Root `/` redirects to `/pl/`. Removed localStorage as language source. ADR-008 revised. Sitemap and hreflang updated for per-language URLs. Privacy page only at `/pl/polityka-prywatnosci`. |
 
 ---
 

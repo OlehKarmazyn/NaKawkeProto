@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import { useLangPath } from '@/hooks/useLangPath';
 import { PricingCard } from '@/app/components/features/PricingCard';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { useContactForm } from '@/hooks/useContactForm';
@@ -10,6 +11,7 @@ import premiumImage from '@/assets/premium-automat.webp';
 /** Pricing section: two plan cards (Standard / Premium) and contact form (CTA). */
 export const Pricing: React.FC = () => {
   const { t } = useTranslation();
+  const path = useLangPath();
   const [ctaName, setCtaName] = useState('');
   const [ctaPhone, setCtaPhone] = useState('');
   const [ctaEmail, setCtaEmail] = useState('');
@@ -107,7 +109,7 @@ export const Pricing: React.FC = () => {
               isRecommended
               imageUrl={standardImage}
               detailedSpecs={detailedSpecsStandard}
-              detailsLink="/pakiet-standard"
+              detailsLink={path('/pakiet-standard')}
             />
           </motion.div>
 
@@ -125,7 +127,7 @@ export const Pricing: React.FC = () => {
               imageUrl={premiumImage}
               badge={t('pricing.premiumBadge')}
               detailedSpecs={detailedSpecsPremium}
-              detailsLink="/pakiet-premium"
+              detailsLink={path('/pakiet-premium')}
             />
           </motion.div>
         </div>
