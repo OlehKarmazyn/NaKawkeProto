@@ -1,6 +1,7 @@
 import { createBrowserRouter, Outlet } from 'react-router';
 import { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
+import logo from '@/assets/logo.png';
 import { ScrollToTop } from './components/layout/ScrollToTop';
 
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
@@ -11,7 +12,8 @@ const Privacy = lazy(() => import('./pages/Privacy').then((m) => ({ default: m.P
 function PageFallback() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center" aria-label={t('nav.loadingAria')}>
+    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center gap-3" aria-label={t('nav.loadingAria')}>
+      <img src={logo} alt="" className="h-8 w-auto" width={96} height={32} aria-hidden="true" />
       <span className="text-white/60">{t('nav.loading')}</span>
     </div>
   );

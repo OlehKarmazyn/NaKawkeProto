@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Check, ChevronRight, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
@@ -26,7 +27,11 @@ export const PricingCard: React.FC<PricingCardProps> = ({
   detailedSpecs,
   detailsLink,
 }) => {
+  const { t } = useTranslation();
   const [isFlipped, setIsFlipped] = useState(false);
+
+  const flipToBack = () => setIsFlipped(true);
+  const flipToFront = () => setIsFlipped(false);
 
   return (
     <div className="perspective-1000">
@@ -40,10 +45,14 @@ export const PricingCard: React.FC<PricingCardProps> = ({
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
-        {/* FRONT SIDE — relative so card height is driven by content */}
+        {/* FRONT SIDE — relative so card height is driven by content; click flips to back */}
         <div
+          role="button"
+          tabIndex={0}
+          onClick={flipToBack}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipToBack(); } }}
           className={`
-            relative w-full flex flex-col backdrop-blur-md rounded-2xl overflow-hidden
+            relative w-full flex flex-col backdrop-blur-md rounded-2xl overflow-hidden cursor-pointer
             border transition-all duration-300 backface-hidden
             ${isRecommended
               ? 'bg-gradient-to-br from-[#C0C0C0]/10 via-[#a8a8a8]/5 to-[#C0C0C0]/10 border-[#C0C0C0]/40 shadow-[0_0_40px_rgba(192,192,192,0.2)]'
@@ -93,12 +102,14 @@ export const PricingCard: React.FC<PricingCardProps> = ({
               ))}
             </ul>
 
-            {/* Buttons — stack on mobile */}
+            {/* Buttons — stack on mobile; order + link stopPropagation so they do not flip card */}
             <div className="space-y-2">
-              <MetallicButton className="w-full">Zamówić moduł</MetallicButton>
+              <div onClick={(e) => e.stopPropagation()}>
+                <MetallicButton className="w-full">{t('packages.orderModule')}</MetallicButton>
+              </div>
               <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
                 <button
-                  onClick={() => setIsFlipped(true)}
+                  type="button"
                   className="flex-1 min-w-0 px-4 py-2.5 rounded-xl border border-[#C0C0C0]/30 text-white/90 hover:bg-[#C0C0C0]/10 hover:border-[#C0C0C0]/50 transition-all duration-300 flex items-center justify-center gap-2 group text-sm"
                 >
                   <span className="truncate">Zobacz specyfikacje</span>
@@ -106,6 +117,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
                 </button>
                 <Link
                   to={detailsLink}
+                  onClick={(e) => e.stopPropagation()}
                   className="flex-1 min-w-0 px-4 py-2.5 rounded-xl border border-[#C0C0C0]/30 text-white/90 hover:bg-[#C0C0C0]/10 hover:border-[#C0C0C0]/50 transition-all duration-300 flex items-center justify-center gap-2 group text-sm"
                 >
                   <span className="truncate">Szczegółowe specyfikacje</span>
@@ -116,10 +128,14 @@ export const PricingCard: React.FC<PricingCardProps> = ({
           </div>
         </div>
 
-        {/* BACK SIDE — absolute to overlay, same size as front */}
+        {/* BACK SIDE — absolute to overlay, same size as front; click flips to front */}
         <div
+          role="button"
+          tabIndex={0}
+          onClick={flipToFront}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipToFront(); } }}
           className={`
-            absolute top-0 left-0 right-0 bottom-0 backdrop-blur-md rounded-2xl overflow-hidden
+            absolute top-0 left-0 right-0 bottom-0 backdrop-blur-md rounded-2xl overflow-hidden cursor-pointer
             border bg-gradient-to-br from-[#C0C0C0]/10 via-[#0A0A0A] to-[#C0C0C0]/5 border-[#C0C0C0]/40
             backface-hidden rotate-y-180
           `}
@@ -132,7 +148,8 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             <div className="flex justify-between items-center mb-4 sm:mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-white">{title}</h3>
               <button
-                onClick={() => setIsFlipped(false)}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); setIsFlipped(false); }}
                 className="p-2 rounded-lg border border-[#C0C0C0]/30 text-[#C0C0C0] hover:bg-[#C0C0C0]/10 hover:border-[#C0C0C0]/50 transition-all duration-300"
               >
                 <RotateCcw className="w-5 h-5" />
@@ -155,14 +172,22 @@ export const PricingCard: React.FC<PricingCardProps> = ({
               ))}
             </div>
 
-            <div className="border-t border-[#C0C0C0]/20 pt-4 sm:pt-6">
+            <div className="border-t border-[#C0C0C0]/20 pt-4 sm:pt-6" onClick={(e) => e.stopPropagation()}>
               <div className="text-sm text-white/60 mb-2">Koszt sprzętu</div>
               <span className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#C0C0C0] to-white bg-clip-text text-transparent">
                 €{price}
               </span>
               <span className="text-white/60 ml-2">netto</span>
 
-              <MetallicButton className="w-full mt-4">Zamówić moduł</MetallicButton>
+              <MetallicButton className="w-full mt-4">{t('packages.orderModule')}</MetallicButton>
+              <Link
+                to={detailsLink}
+                onClick={(e) => e.stopPropagation()}
+                className="mt-3 w-full px-4 py-2.5 rounded-xl border border-[#C0C0C0]/30 text-white/90 hover:bg-[#C0C0C0]/10 hover:border-[#C0C0C0]/50 transition-all duration-300 flex items-center justify-center gap-2 group text-sm"
+              >
+                <span className="truncate">{t('packages.goToSpecification')}</span>
+                <ChevronRight className="w-4 h-4 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
         </div>

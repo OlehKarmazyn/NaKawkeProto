@@ -50,7 +50,7 @@ export const Privacy: React.FC = () => {
               <p className="mb-2">
                 Kontakt w sprawach ochrony danych osobowych:
                 <br />
-                📧 nakawke.pl@gmail.com
+                📧 biuro@nakawke.pl
               </p>
             </section>
 
@@ -220,7 +220,7 @@ export const Privacy: React.FC = () => {
               </ul>
               <p className="mb-4">
                 Aby skorzystać z przysługujących Ci praw, skontaktuj się z nami pod adresem
-                e-mail: <strong>nakawke.pl@gmail.com</strong>
+                e-mail: <strong>biuro@nakawke.pl</strong>
               </p>
               <p>
                 Odpowiemy na Twoje żądanie bez zbędnej zwłoki, nie później niż w terminie{' '}
@@ -258,7 +258,7 @@ export const Privacy: React.FC = () => {
               <p>
                 W razie pytań dotyczących przetwarzania Twoich danych osobowych prosimy o kontakt:
                 <br />
-                📧 <strong>nakawke.pl@gmail.com</strong>
+                📧 <strong>biuro@nakawke.pl</strong>
                 <br />
                 ✉️ <strong>51-607 Wrocław, ul. Tadeusza Czackiego 57</strong>
               </p>

@@ -68,7 +68,7 @@ export const HowItWorks: React.FC = () => {
                         <Icon className="w-6 h-6 text-[#C0C0C0]" />
                       </div>
 
-                      <div className="text-sm font-bold text-[#C0C0C0]/60 mb-2">
+                      <div className="text-sm font-bold text-[#728D90] mb-2">
                         {t('howItWorks.stepLabel', { number: step.number })}
                       </div>
 

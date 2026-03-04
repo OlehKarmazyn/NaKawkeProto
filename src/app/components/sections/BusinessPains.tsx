@@ -65,13 +65,18 @@ export const BusinessPains: React.FC = () => {
                         return null;
                       }
 
-                      const [firstWord, ...restWords] = trimmed.split(' ');
-                      const restText = restWords.join(' ');
+                      const colonIndex = trimmed.indexOf(': ');
+                      const label = colonIndex >= 0 ? trimmed.slice(0, colonIndex) : trimmed;
+                      const value = colonIndex >= 0 ? trimmed.slice(colonIndex + 2) : '';
 
                       return (
                         <span className="text-sm text-white break-words">
-                          <span className="text-[#87AEA6] font-semibold">{firstWord}</span>
-                          {restText ? ` ${restText}` : null}
+                          <span className="text-[#87AEA6] font-semibold">{label}</span>
+                          {value ? (
+                            <>
+                              : <span className="font-medium italic">{value}</span>
+                            </>
+                          ) : null}
                         </span>
                       );
                     })()}

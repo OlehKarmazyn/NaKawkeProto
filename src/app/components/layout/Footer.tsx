@@ -24,7 +24,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="relative pt-12 pb-6 border-t border-[#C0C0C0]/20">
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-4 gap-6 mb-6">
+        <div className="grid mb-6 gap-y-6 gap-x-10 md:grid-cols-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <img src={logo} alt={t('footer.logoAlt')} className="h-8 w-auto" />
@@ -33,11 +33,11 @@ export const Footer: React.FC = () => {
             <p className="text-white/60 text-sm leading-snug mb-3">
               {t('footer.tagline')}
             </p>
-            <p className="text-white/70 text-sm">
-              {t('footer.companyName')} &nbsp;|&nbsp; {t('footer.nip')}
+            <p className="text-white font-semibold text-sm mb-0.5">
+              {t('footer.contactName')}
             </p>
-            <p className="text-white/60 text-sm mt-1">
-              {t('footer.address')}
+            <p className="text-white/70 text-sm mb-3">
+              {t('footer.businessType')}
             </p>
             <p className="text-white/60 text-sm mt-1">
               <a href={`mailto:${t('footer.email')}`} className="hover:text-[#C0C0C0] transition-colors">
@@ -50,7 +50,7 @@ export const Footer: React.FC = () => {
             </p>
           </div>
 
-          <div>
+          <div className="md:mx-auto">
             <h4 className="text-white font-semibold mb-2 text-sm">{t('footer.product')}</h4>
             <ul className="space-y-1 text-white/60 text-sm">
               <li>
@@ -93,7 +93,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="md:mx-auto">
             <h4 className="text-white font-semibold mb-2 text-sm">{t('footer.company')}</h4>
             <ul className="space-y-1 text-white/60 text-sm">
               <li>
@@ -117,7 +117,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="md:mx-auto">
             <h4 className="text-white font-semibold mb-2 text-sm">{t('footer.legal')}</h4>
             <ul className="space-y-1 text-white/60 text-sm">
               <li>

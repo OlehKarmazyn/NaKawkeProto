@@ -5,16 +5,43 @@ import { GlassCard } from '@/app/components/ui/GlassCard';
 import { CheckCircle2 } from 'lucide-react';
 import mainMachineImage from '@/assets/simple-automat.webp';
 
+const BULLET_LINE_HEIGHT = 20;
+
 interface BulletPointProps {
-  text: string;
+  boldText: string;
+  restText: string;
 }
 
-const BulletPoint: React.FC<BulletPointProps> = ({ text }) => (
-  <div className="flex items-center self-stretch mb-4 gap-[7px] w-full max-md:max-w-full">
-    <div className="bg-white w-2 h-2 rounded-[26843500px]" />
-    <div className="flex flex-1 flex-col pr-8">
-      <span className="text-[#ADD2C7] text-base leading-relaxed">
-        {text}
+const BulletPoint: React.FC<BulletPointProps> = ({ boldText, restText }) => (
+  <div className="flex items-center self-stretch gap-[7px] w-full max-md:max-w-full" style={{ lineHeight: `${BULLET_LINE_HEIGHT}px` }}>
+    <div className="bg-white w-2 h-2 rounded-[26843500px] shrink-0" />
+    <div
+      className="flex-1 min-w-0 pr-8"
+      style={{ lineHeight: `${BULLET_LINE_HEIGHT}px`, letterSpacing: 0 }}
+    >
+      <span
+        style={{
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 700,
+          fontSize: '18px',
+          lineHeight: `${BULLET_LINE_HEIGHT}px`,
+          letterSpacing: 0,
+          color: '#ADD2C7',
+        }}
+      >
+        {boldText}{' '}
+      </span>
+      <span
+        style={{
+          fontFamily: 'Inter, sans-serif',
+          fontWeight: 400,
+          fontSize: '14px',
+          lineHeight: `${BULLET_LINE_HEIGHT}px`,
+          letterSpacing: 0,
+          color: '#ffffff',
+        }}
+      >
+        {restText}
       </span>
     </div>
   </div>
@@ -42,10 +69,24 @@ const BusinessDescription: React.FC = () => {
     <section className="pt-6 mt-7 w-full leading-7 text-gray-200 border-t border-white/10 max-md:max-w-full">
       <div className="flex gap-2.5 justify-center items-center w-full max-md:max-w-full">
         <p className="flex-1 self-stretch my-auto basis-0 max-md:max-w-full text-base leading-relaxed">
-          <span className="font-semibold" style={{ color: 'var(--color-gold)' }}>
+          <span
+            className="font-bold"
+            style={{
+              fontFamily: '"Playfair Display", serif',
+              fontSize: '20px',
+              color: 'var(--color-gold)',
+            }}
+          >
             {t('common.siteName')}
           </span>{' '}
-          <span className="font-normal text-white/90">
+          <span
+            className="text-white/90"
+            style={{
+              fontFamily: 'Inter, sans-serif',
+              fontWeight: 400,
+              fontSize: '16px',
+            }}
+          >
             {t('about.intro1')}{' '}
             {t('about.intro2')}
           </span>
@@ -65,7 +106,7 @@ const BenefitsList: React.FC = () => {
 
   return (
     <section className="pt-3 mt-7 w-full font-semibold border-t border-white/10 min-h-[173px] max-md:max-w-full">
-      <div className="space-y-3">
+      <div className="space-y-1.5">
         {benefits.map((benefit) => (
           <BenefitItem key={benefit} text={benefit} />
         ))}
@@ -95,19 +136,19 @@ const ProfitCard: React.FC = () => {
   );
 };
 
+const HEADLINE_KEYS = [1, 2, 3, 4] as const;
+
 const BusinessFeatures: React.FC = () => {
   const { t } = useTranslation();
-  const features = [
-    t('about.headline1'),
-    t('about.headline2'),
-    t('about.headline3'),
-    t('about.headline4'),
-  ];
 
   return (
-    <div className="w-full text-lg leading-none max-md:max-w-full">
-      {features.map((feature) => (
-        <BulletPoint key={feature} text={feature} />
+    <div className="w-full max-md:max-w-full flex flex-col gap-y-4">
+      {HEADLINE_KEYS.map((n) => (
+        <BulletPoint
+          key={n}
+          boldText={t(`about.headline${n}Bold`)}
+          restText={t(`about.headline${n}Rest`)}
+        />
       ))}
     </div>
   );

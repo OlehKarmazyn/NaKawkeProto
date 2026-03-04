@@ -1,35 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
-import {
-  Check,
-  X,
-  Package,
-  HeadphonesIcon,
-  TrendingUp,
-  ShieldCheck,
-  Sparkles,
-  Users,
-} from 'lucide-react';
+import { Check, X, Sparkles } from 'lucide-react';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { SECTION_IDS } from '@/app/shared/constants/navigation';
 
 const COMPARISON_ROW_KEYS = [1, 2, 3, 4, 5, 6] as const;
 
-const SERVICE_ICONS = [
-  Package,
-  HeadphonesIcon,
-  TrendingUp,
-  ShieldCheck,
-  Sparkles,
-  Users,
-] as const;
-
 function scrollToSection(id: string): void {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 }
 
-/** Comparison section: Na Kawkę vs traditional franchise + included support + CTA. */
+/** Comparison section: Na Kawkę vs traditional franchise + CTA. */
 export const FranchiseComparison: React.FC = () => {
   const { t } = useTranslation();
 
@@ -102,51 +84,6 @@ export const FranchiseComparison: React.FC = () => {
                     <span>{t(`franchiseComparison.row${rowNum}Franchise`)}</span>
                   </span>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* What's Included */}
-        <div className="max-w-6xl mx-auto mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
-            <h3 className="text-4xl font-bold text-white mb-4">
-              {t('franchiseComparison.supportTitle')}
-              <span className="text-[#C0C0C0]">{t('franchiseComparison.supportTitleHighlight')}</span>
-            </h3>
-            <p className="text-xl text-white/70">
-              {t('franchiseComparison.supportSubtitle')}
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {SERVICE_ICONS.map((Icon, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
-                className="backdrop-blur-md bg-white/5 border border-[#C0C0C0]/20 rounded-xl p-6 hover:border-[#C0C0C0]/40 hover:bg-white/10 transition-all duration-300 group"
-              >
-                <div
-                  className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#C0C0C0]/20 to-[#C0C0C0]/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-                  aria-hidden="true"
-                >
-                  <Icon className="w-7 h-7 text-[#C0C0C0]" />
-                </div>
-                <h4 className="text-xl font-bold text-white mb-3">
-                  {t(`franchiseComparison.service${index + 1}Title`)}
-                </h4>
-                <p className="text-white/70 leading-relaxed">
-                  {t(`franchiseComparison.service${index + 1}Desc`)}
-                </p>
               </motion.div>
             ))}
           </div>
