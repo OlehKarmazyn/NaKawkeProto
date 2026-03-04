@@ -30,6 +30,19 @@ export const Navigation: React.FC = () => {
     });
   }, [scrollY]);
 
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = originalOverflow;
+    }
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isMobileMenuOpen]);
+
   // Scroll spy: active section is the one that *contains* the trigger line below the header.
   // So we switch only when the line actually enters/leaves a section (no flash on short sections).
   // Exception: "kontakt" highlights when its CTA block is visible in the viewport.
@@ -233,7 +246,7 @@ export const Navigation: React.FC = () => {
           x: isMobileMenuOpen ? 0 : '100%',
         }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className={`fixed top-20 right-0 bottom-0 w-full sm:w-80 bg-[#0A0A0A]/95 backdrop-blur-xl border-l border-[#C0C0C0]/20 z-40 lg:hidden ${
+        className={`fixed top-20 right-0 bottom-0 w-full sm:w-80 bg-[#0A0A0A]/95 backdrop-blur-xl border-l border-[#C0C0C0]/20 z-40 lg:hidden overflow-y-auto overscroll-contain ${
           isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >

@@ -52,7 +52,7 @@ interface BenefitItemProps {
 }
 
 const BenefitItem: React.FC<BenefitItemProps> = ({ text }) => (
-  <div className="flex flex-wrap gap-3 items-center w-full rounded-xl min-h-[50px] max-md:max-w-full">
+  <div className="flex gap-3 items-center w-full rounded-xl min-h-[50px] max-md:max-w-full">
     <CheckCircle2 className="w-5 h-5 text-[var(--color-gold)] flex-shrink-0" />
     <div className="flex flex-col justify-center items-start self-stretch py-px my-auto">
       <div className="z-10 max-md:max-w-full text-white font-semibold">
