@@ -42,25 +42,7 @@ export default defineConfig({
         '/uk/pakiet-standard',
         '/uk/pakiet-premium',
       ],
-      // Sitemap frequency:
-      // - Package pages: weekly
-      // - Other pages (including auto-detected): monthly
-      changefreq: {
-        '/pl/pakiet-standard': 'weekly',
-        '/pl/pakiet-premium': 'weekly',
-        '/en/pakiet-standard': 'weekly',
-        '/en/pakiet-premium': 'weekly',
-        '/uk/pakiet-standard': 'weekly',
-        '/uk/pakiet-premium': 'weekly',
-        '/pl/': 'monthly',
-        '/en/': 'monthly',
-        '/uk/': 'monthly',
-        '*': 'monthly',
-      },
-      // Sitemap priority:
-      // - Language roots: 1.0
-      // - Package pages: 0.8
-      // - All other routes: 0.5
+      // Language roots 1.0, package pages 0.8, other 0.5
       priority: {
         '/pl/': 1.0,
         '/en/': 1.0,
