@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.webp';
 import { SECTION_IDS } from '@/app/shared/constants/navigation';
 import { DEVELOPER_NAME } from '@/app/shared/constants/seo';
 import { useLangPath, pathWithoutLang } from '@/hooks/useLangPath';

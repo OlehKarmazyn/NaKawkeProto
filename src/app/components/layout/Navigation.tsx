@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { motion, useScroll } from 'motion/react';
 import { Menu, X } from 'lucide-react';
-import logo from '@/assets/logo.png';
+import logo from '@/assets/logo.webp';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { LanguageSwitcher } from '@/app/components/ui/LanguageSwitcher';
 import { NAV_LINKS } from '@/app/shared/constants/navigation';

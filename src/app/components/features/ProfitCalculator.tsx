@@ -41,10 +41,13 @@ export const ProfitCalculator: React.FC = () => {
 
         <div>
           <div className="flex justify-between items-center mb-3">
-            <label className="text-white/80 font-medium">{t('calculator.modulesLabel')}</label>
+            <label htmlFor="calculator-modules" className="text-white/80 font-medium">
+              {t('calculator.modulesLabel')}
+            </label>
             <span className="text-2xl font-bold text-[#C0C0C0]">{modules}</span>
           </div>
           <input
+            id="calculator-modules"
             type="range"
             min="1"
             max="10"
@@ -63,10 +66,13 @@ export const ProfitCalculator: React.FC = () => {
 
         <div>
           <div className="flex justify-between items-center mb-3">
-            <label className="text-white/80 font-medium">{t('calculator.drinksLabel')}</label>
+            <label htmlFor="calculator-drinks" className="text-white/80 font-medium">
+              {t('calculator.drinksLabel')}
+            </label>
             <span className="text-2xl font-bold text-[#C0C0C0]">{drinksPerDay}</span>
           </div>
           <input
+            id="calculator-drinks"
             type="range"
             min="10"
             max="210"
@@ -85,10 +91,13 @@ export const ProfitCalculator: React.FC = () => {
 
         <div>
           <div className="flex justify-between items-center mb-3">
-            <label className="text-white/80 font-medium">{t('calculator.monthsLabel')}</label>
+            <label htmlFor="calculator-months" className="text-white/80 font-medium">
+              {t('calculator.monthsLabel')}
+            </label>
             <span className="text-2xl font-bold text-[#C0C0C0]">{months}</span>
           </div>
           <input
+            id="calculator-months"
             type="range"
             min="1"
             max="12"

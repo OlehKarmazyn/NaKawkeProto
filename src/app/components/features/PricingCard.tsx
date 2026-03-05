@@ -168,6 +168,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
                 type="button"
                 onClick={(e) => { e.stopPropagation(); setIsFlipped(false); }}
                 className="p-2 rounded-lg border border-[#C0C0C0]/30 text-[#C0C0C0] hover:bg-[#C0C0C0]/10 hover:border-[#C0C0C0]/50 transition-all duration-300"
+                aria-label={t('packages.backToPricing')}
               >
                 <RotateCcw className="w-5 h-5" />
               </button>
