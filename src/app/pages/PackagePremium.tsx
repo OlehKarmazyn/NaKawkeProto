@@ -28,22 +28,20 @@ import { SITE_BASE_URL } from '@/app/shared/constants/seo';
 import premiumImage from '@/assets/premium-automat.webp';
 
 const SPEC_KEYS = [
-  // Order aligned with provided spec list:
+  // Order aligned with provided spec list (voice support removed):
   // 1) Liczba napojów
   // 2) Dodatkowe pojemniki
-  // 3) Wsparcie głosowe
-  // 4) Stacja syropowa
-  // 5) Wydawanie kubków
-  // 6) Łączność i telemetria
-  // 7) Pojemnik na kawę
-  // 8) Ekran dotykowy
-  // 9) Lodówka
-  // 10) Bloki zaparzające
-  // 11) Pojemnik na odpady
-  // 12) Wsparcie
+  // 3) Stacja syropowa
+  // 4) Wydawanie kubków
+  // 5) Łączność i telemetria
+  // 6) Pojemnik na kawę
+  // 7) Ekran dotykowy
+  // 8) Lodówka
+  // 9) Bloki zaparzające
+  // 10) Pojemnik na odpady
+  // 11) Wsparcie
   'spec1',
   'spec3',
-  'spec5',
   'spec7',
   'spec9',
   'spec11',
@@ -54,32 +52,30 @@ const SPEC_KEYS = [
   'spec10',
   'spec12',
 ] as const;
-const BENEFIT_KEYS = [1, 2, 3, 4, 5, 6, 7, 8] as const;
+const BENEFIT_KEYS = [1, 2, 3, 4, 6, 7, 8] as const;
 
 const SPEC_ICON_MAP: Record<(typeof SPEC_KEYS)[number], LucideIcon> = {
   // 1) Liczba napojów
   spec1: Coffee,
   // 2) Dodatkowe pojemniki
   spec3: Boxes,
-  // 3) Wsparcie głosowe
-  spec5: Volume2,
-  // 4) Stacja syropowa
+  // 3) Stacja syropowa
   spec7: Droplets,
-  // 5) Wydawanie kubków
+  // 4) Wydawanie kubków
   spec9: CupSoda,
-  // 6) Łączność i telemetria
+  // 5) Łączność i telemetria
   spec11: Wifi,
-  // 7) Pojemnik na kawę
+  // 6) Pojemnik na kawę
   spec2: Boxes,
-  // 8) Ekran dotykowy
+  // 7) Ekran dotykowy
   spec4: Smartphone,
-  // 9) Lodówka
+  // 8) Lodówka
   spec6: Snowflake,
-  // 10) Bloki zaparzające
+  // 9) Bloki zaparzające
   spec8: Cog,
-  // 11) Pojemnik na odpady
+  // 10) Pojemnik na odpady
   spec10: Trash2,
-  // 12) Wsparcie
+  // 11) Wsparcie
   spec12: ShieldCheck,
 };
 

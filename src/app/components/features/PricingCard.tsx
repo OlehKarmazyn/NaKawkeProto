@@ -4,6 +4,11 @@ import { Check, ChevronRight, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
+import { SECTION_IDS } from '@/app/shared/constants/navigation';
+
+function scrollToSection(id: string): void {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+}
 
 interface PricingCardProps {
   title: string;
@@ -110,7 +115,12 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             {/* Buttons — stack on mobile; order + link stopPropagation so they do not flip card */}
             <div className="space-y-2">
               <div onClick={(e) => e.stopPropagation()}>
-                <MetallicButton className="w-full">{t('packages.orderModule')}</MetallicButton>
+                <MetallicButton
+                  className="w-full"
+                  onClick={() => scrollToSection(SECTION_IDS.contact)}
+                >
+                  {t('packages.orderModule')}
+                </MetallicButton>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
                 <button
@@ -186,7 +196,12 @@ export const PricingCard: React.FC<PricingCardProps> = ({
               </span>
               <span className="text-white/60 ml-2">{t('packages.netto')}</span>
 
-              <MetallicButton className="w-full mt-4">{t('packages.orderModule')}</MetallicButton>
+              <MetallicButton
+                className="w-full mt-4"
+                onClick={() => scrollToSection(SECTION_IDS.contact)}
+              >
+                {t('packages.orderModule')}
+              </MetallicButton>
               <Link
                 to={detailsLink}
                 onClick={(e) => e.stopPropagation()}
