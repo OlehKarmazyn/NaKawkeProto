@@ -3,8 +3,6 @@ import { Outlet, useParams, useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useLangFromUrl } from '@/hooks/useLangFromUrl';
 
-const PRIVACY_PATH = 'polityka-prywatnosci';
-
 /**
  * Layout for all /:lang/* routes. Syncs i18n with URL lang, redirects en/uk away from
  * polityka-prywatnosci to /pl/polityka-prywatnosci. Renders Outlet only after i18n
@@ -19,10 +17,6 @@ export function LangLayout() {
   const [langReady, setLangReady] = useState(false);
 
   useEffect(() => {
-    if (currentLang !== 'pl' && pathname.endsWith(PRIVACY_PATH)) {
-      navigate('/pl/polityka-prywatnosci', { replace: true });
-      return;
-    }
     if (i18n.language?.startsWith(currentLang)) {
       setLangReady(true);
       return;
