@@ -12,6 +12,8 @@ export const Footer: React.FC = () => {
   const navigate = useNavigate();
   const path = useLangPath();
   const isHome = pathWithoutLang(pathname) === '/' || pathWithoutLang(pathname) === '';
+  const instagramUrl = t('footer.instagramUrl');
+  const facebookUrl = t('footer.facebookUrl');
 
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     e.preventDefault();
@@ -154,13 +156,23 @@ export const Footer: React.FC = () => {
             </p>
           </div>
           <div className="flex gap-4">
-            <a href="https://www.instagram.com/nakawke/" target="_blank" rel="noopener noreferrer" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm"
+            >
               Instagram
             </a>
             <a href="#" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
               Telegram
             </a>
-            <a href="#" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
+            <a
+              href={facebookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm"
+            >
               Facebook
             </a>
           </div>

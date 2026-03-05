@@ -49,7 +49,9 @@
     "cookies": "Polityka Cookies",
     "copyright": "© {{year}} Na Kawkę. Wszelkie prawa zastrzeżone.",
     "developedBy": "Stworzone z pomocą {{company}}",
-    "logoAlt": "Na Kawkę"
+    "logoAlt": "Na Kawkę",
+    "instagramUrl": "https://www.instagram.com/nakawke/",
+    "facebookUrl": "#"
   },
   "common": {
     "siteName": "Na Kawkę",
@@ -165,7 +167,10 @@
     "month_one": "miesiąc",
     "month_few": "miesiące",
     "month_many": "miesięcy",
-    "cta": "Otrzymaj szczegółowy plan"
+    "cta": "Otrzymaj szczegółowy plan",
+    "pricePerDrink": "8.5",
+    "costPerDrink": "2",
+    "rentPerMonth": "1000"
   },
   "pricing": {
     "ariaLabel": "Cennik i kontakt",

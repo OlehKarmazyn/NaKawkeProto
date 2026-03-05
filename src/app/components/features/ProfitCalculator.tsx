@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
-
-/** Calculation constants (real data per location). */
-const pricePerDrink = 8.5;
-const costPerDrink = 2;
-const rentPerMonth = 1000;
 
 export const ProfitCalculator: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [modules, setModules] = useState(1);
   const [drinksPerDay, setDrinksPerDay] = useState(25);
   const [months, setMonths] = useState(1);
+
+  const { pricePerDrink, costPerDrink, rentPerMonth } = useMemo(() => {
+    const parseNumber = (value: string | number, fallback: number): number => {
+      if (typeof value === 'number') return value;
+      if (typeof value !== 'string') return fallback;
+      const normalized = value.replace(',', '.');
+      const parsed = Number(normalized);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    const price = parseNumber(t('calculator.pricePerDrink'), 8.5);
+    const cost = parseNumber(t('calculator.costPerDrink'), 2);
+    const rent = parseNumber(t('calculator.rentPerMonth'), 1000);
+
+    return { pricePerDrink: price, costPerDrink: cost, rentPerMonth: rent };
+  }, [t]);
 
   const monthlyRevenue = drinksPerDay * pricePerDrink * 30 * modules;
   const monthlyCosts = drinksPerDay * costPerDrink * 30 * modules;

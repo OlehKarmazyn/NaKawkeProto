@@ -49,7 +49,9 @@
     "cookies": "Політика cookies",
     "copyright": "© {{year}} Na Kawkę. Усі права захищені.",
     "developedBy": "Розроблено при допомозі {{company}}",
-    "logoAlt": "Na Kawkę"
+    "logoAlt": "Na Kawkę",
+    "instagramUrl": "https://www.instagram.com/nakawke/",
+    "facebookUrl": "#"
   },
   "common": {
     "siteName": "Na Kawkę",
@@ -165,7 +167,10 @@
     "month_one": "місяць",
     "month_few": "місяці",
     "month_many": "місяців",
-    "cta": "Отримати детальний план"
+    "cta": "Отримати детальний план",
+    "pricePerDrink": "8.5",
+    "costPerDrink": "2",
+    "rentPerMonth": "1000"
   },
   "pricing": {
     "ariaLabel": "Ціни та контакт",
