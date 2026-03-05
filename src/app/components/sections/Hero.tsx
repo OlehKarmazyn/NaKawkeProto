@@ -8,6 +8,7 @@ import heroMainContainer from '@/assets/multi-automats.webp';
 /** Hero section of the main page: headline, offer, CTA, vending machines image. */
 export const Hero: React.FC = () => {
   const { t } = useTranslation();
+
   return (
     <section
       className="relative flex items-center overflow-hidden pt-24 sm:pt-28 pb-24 sm:pb-28"

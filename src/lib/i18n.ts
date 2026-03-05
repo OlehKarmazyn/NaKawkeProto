@@ -46,6 +46,32 @@ export async function initI18n(): Promise<void> {
 const SESSION_STORAGE_KEY = 'pb_translations';
 const CACHE_TTL_MS = 5 * 60 * 1000;
 
+function unflattenTranslations(flat: Record<string, string>): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+
+  Object.entries(flat).forEach(([key, value]) => {
+    const parts = key.split('.');
+    let current: Record<string, unknown> = result;
+
+    parts.forEach((part, index) => {
+      const isLast = index === parts.length - 1;
+
+      if (isLast) {
+        current[part] = value;
+        return;
+      }
+
+      if (!current[part] || typeof current[part] !== 'object') {
+        current[part] = {};
+      }
+
+      current = current[part] as Record<string, unknown>;
+    });
+  });
+
+  return result;
+}
+
 interface CachedTranslations {
   timestamp: number;
   data: {
@@ -99,20 +125,34 @@ export async function loadRemoteTranslations(): Promise<void> {
   const cached = readCache();
 
   if (cached) {
-    i18n.addResourceBundle('pl', 'translation', cached.data.pl, true, true);
-    i18n.addResourceBundle('en', 'translation', cached.data.en, true, true);
-    i18n.addResourceBundle('uk', 'translation', cached.data.uk, true, true);
+    const plNested = unflattenTranslations(cached.data.pl);
+    const enNested = unflattenTranslations(cached.data.en);
+    const ukNested = unflattenTranslations(cached.data.uk);
+
+    i18n.addResourceBundle('pl', 'translation', plNested, true, true);
+    i18n.addResourceBundle('en', 'translation', enNested, true, true);
+    i18n.addResourceBundle('uk', 'translation', ukNested, true, true);
+
+    const currentLang = i18n.language || DEFAULT_LANG;
+    await i18n.changeLanguage(currentLang);
     return;
   }
 
   try {
     const remote = await fetchContentTranslations();
 
-    i18n.addResourceBundle('pl', 'translation', remote.pl, true, true);
-    i18n.addResourceBundle('en', 'translation', remote.en, true, true);
-    i18n.addResourceBundle('uk', 'translation', remote.uk, true, true);
+    const plNested = unflattenTranslations(remote.pl);
+    const enNested = unflattenTranslations(remote.en);
+    const ukNested = unflattenTranslations(remote.uk);
+
+    i18n.addResourceBundle('pl', 'translation', plNested, true, true);
+    i18n.addResourceBundle('en', 'translation', enNested, true, true);
+    i18n.addResourceBundle('uk', 'translation', ukNested, true, true);
 
     writeCache(remote);
+
+    const currentLang = i18n.language || DEFAULT_LANG;
+    await i18n.changeLanguage(currentLang);
   } catch (error) {
     // PocketBase is optional for rendering; static JSON remains as fallback.
     if (import.meta.env.DEV) {
