@@ -24,8 +24,8 @@ export const Footer: React.FC = () => {
     }
   };
 
-  // Phone assembled in JS so it's not in static HTML; data-nosnippet keeps it out of search snippets
-  const phone = '+48' + ' 518' + ' 128' + ' 149';
+  // Phone from i18n (PocketBase can override); assembled in JS so not in static HTML; data-nosnippet keeps it out of search snippets
+  const phone = t('footer.phone');
 
   return (
     <footer className="relative pt-12 pb-6 border-t border-[#C0C0C0]/20">

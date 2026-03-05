@@ -34,6 +34,7 @@
     "nip": "NIP: 8982291752",
     "address": "51-607 Wrocław, ul. Tadeusza Czackiego 57",
     "email": "biuro@nakawke.pl",
+    "phone": "+48 518 128 149",
     "product": "Produkt",
     "company": "Firma",
     "legal": "Prawne",
@@ -360,6 +361,21 @@
     "ctaSubtitle": "Dołącz do przedsiębiorców, którzy wybrali własny biznes bez ograniczeń franczyzy. Pomożemy Ci na każdym etapie — od uruchomienia po rozwój.",
     "ctaStart": "Rozpocznij swój biznes",
     "ctaCalculation": "Otrzymaj pełne wyliczenie"
+  },
+  "chat": {
+    "title": "Asystent Na Kawkę",
+    "placeholder": "Zadaj pytanie...",
+    "send": "Wyślij",
+    "questionsLeft": "Pozostało pytań: {{count}}",
+    "limitReached": "Limit pytań wyczerpany. Skontaktuj się z nami bezpośrednio.",
+    "sessionExpired": "Czas sesji (60 min) minął. Odśwież stronę, aby kontynuować.",
+    "waitCooldown": "Poczekaj chwilę przed kolejnym pytaniem.",
+    "rateLimitReached": "Zbyt wiele zapytań z tego adresu. Spróbuj ponownie za kilka minut.",
+    "errorMessage": "Coś poszło nie tak. Spróbuj ponownie.",
+    "ariaLabel": "Otwórz chat z asystentem",
+    "welcome": "Cześć! Jestem asystentem Na Kawkę. Zapytaj mnie o pakiety, ROI lub szczegóły współpracy.",
+    "contactFormCta": "Lub wypełnij formularz na stronie.",
+    "contactBlock": "Jeśli potrzebujesz więcej informacji — skontaktuj się z nami:\n📞 {{phone}}\n📧 {{email}}\nlub wypełnij formularz na stronie."
   },
   "seo": {
     "homeTitle": "Autonomiczny biznes kawowy",

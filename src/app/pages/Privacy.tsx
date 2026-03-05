@@ -45,16 +45,18 @@ export const Privacy: React.FC = () => {
                 Administratorem Twoich danych osobowych jest:
               </p>
               <p className="mb-4 font-medium">
-                Ihor Vovchuk
+                {t('footer.contactName')}
                 <br />
-                z siedzibą: 51-607 Wrocław, ul. Tadeusza Czackiego 57
+                z siedzibą: {t('footer.address')}
                 <br />
-                NIP: 8982291752
+                {t('footer.nip')}
               </p>
               <p className="mb-2">
                 Kontakt w sprawach ochrony danych osobowych:
                 <br />
-                📧 biuro@nakawke.pl
+                📧 {t('footer.email')}
+                <br />
+                📞 {t('footer.phone')}
               </p>
             </section>
 
@@ -224,7 +226,7 @@ export const Privacy: React.FC = () => {
               </ul>
               <p className="mb-4">
                 Aby skorzystać z przysługujących Ci praw, skontaktuj się z nami pod adresem
-                e-mail: <strong>biuro@nakawke.pl</strong>
+                e-mail: <strong>{t('footer.email')}</strong> lub telefonicznie: <strong>{t('footer.phone')}</strong>
               </p>
               <p>
                 Odpowiemy na Twoje żądanie bez zbędnej zwłoki, nie później niż w terminie{' '}
@@ -262,9 +264,11 @@ export const Privacy: React.FC = () => {
               <p>
                 W razie pytań dotyczących przetwarzania Twoich danych osobowych prosimy o kontakt:
                 <br />
-                📧 <strong>biuro@nakawke.pl</strong>
+                📧 <strong>{t('footer.email')}</strong>
                 <br />
-                ✉️ <strong>51-607 Wrocław, ul. Tadeusza Czackiego 57</strong>
+                📞 <strong>{t('footer.phone')}</strong>
+                <br />
+                ✉️ <strong>{t('footer.address')}</strong>
               </p>
             </section>
           </article>

@@ -34,6 +34,7 @@
     "nip": "NIP: 8982291752",
     "address": "51-607 Wrocław, ul. Tadeusza Czackiego 57",
     "email": "biuro@nakawke.pl",
+    "phone": "+48 518 128 149",
     "product": "Product",
     "company": "Company",
     "legal": "Legal",
@@ -360,6 +361,21 @@
     "ctaSubtitle": "Join entrepreneurs who chose their own business without franchise limits. We're with you every step of the way — from launch to scale.",
     "ctaStart": "Start your coffee business",
     "ctaCalculation": "Get full ROI calculation"
+  },
+  "chat": {
+    "title": "Na Kawkę Assistant",
+    "placeholder": "Ask a question...",
+    "send": "Send",
+    "questionsLeft": "Questions left: {{count}}",
+    "limitReached": "Question limit reached. Please contact us directly.",
+    "sessionExpired": "Session time (60 min) has ended. Refresh the page to continue.",
+    "waitCooldown": "Please wait a moment before your next question.",
+    "rateLimitReached": "Too many requests from this address. Try again in a few minutes.",
+    "errorMessage": "Something went wrong. Please try again.",
+    "ariaLabel": "Open assistant chat",
+    "welcome": "Hi! I'm the Na Kawkę assistant. Ask me about packages, ROI, or partnership details.",
+    "contactFormCta": "Or fill in the form on the site.",
+    "contactBlock": "If you need more info — get in touch:\n📞 {{phone}}\n📧 {{email}}\nor fill in the form on the site."
   },
   "seo": {
     "homeTitle": "Autonomous coffee business",

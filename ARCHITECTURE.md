@@ -42,7 +42,7 @@ src/
 │   │   ├── ui/                   # Primitives: Button, Card, Input, LanguageSwitcher…
 │   │   ├── layout/               # Navigation, Footer, PageWrapper
 │   │   ├── sections/             # Hero, WhatIsNaKawke, BusinessPains, Autonomy, FranchiseComparison…
-│   │   ├── features/             # PricingCard, ProfitCalculator…
+│   │   ├── features/             # PricingCard, ProfitCalculator, ChatWidget…
 │   │   ├── seo/                  # PageMeta (title, description, canonical, OG, hreflang), StructuredData
 │   │   └── figma/                # ImageWithFallback
 │   ├── pages/                    # Home, PackageStandard, PackagePremium
@@ -51,14 +51,14 @@ src/
 │   ├── App.tsx
 │   └── routes.tsx
 │
-├── hooks/                        # useContactForm, useRoiCalc, useScrollSpy…
-├── services/                     # telegram.ts, leads.ts, content.ts
+├── hooks/                        # useContactForm, useRoiCalc, useScrollSpy, useChatWidget…
+├── services/                     # telegram.ts, leads.ts, content.ts, chat.ts
 ├── lib/                          # pocketbase.ts, i18n.ts
 ├── locales/
 │   ├── pl/translation.json       # Polish — primary, source of truth
 │   ├── en/translation.json       # English
 │   └── uk/translation.json       # Ukrainian
-├── types/                        # Lead, Package, ApiResponse…
+├── types/                        # Lead, ChatMessage, ChatWidgetState…
 ├── styles/                       # index.css, tailwind.css, theme.css, fonts.css
 ├── assets/
 │   ├── images/                   # WebP / AVIF source images
@@ -215,8 +215,17 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 | `VITE_TELEGRAM_CHAT_ID`   | `services/telegram.ts`       | Target chat for lead notifications    |
 | `VITE_POCKETBASE_URL`     | `lib/pocketbase.ts`          | PocketBase instance URL               |
 | `VITE_SITE_URL`           | `constants/seo.ts`, sitemap  | Base URL for canonical / OG / sitemap |
-| `PB_ADMIN_EMAIL`          | `scripts/seed-content.ts`    | PocketBase admin email for seeding    |
-| `PB_ADMIN_PASSWORD`       | `scripts/seed-content.ts`    | PocketBase admin password for seeding |
+| `VITE_OPENAI_API_KEY`     | `services/chat.ts`           | OpenAI API key for chat (when not using proxy) |
+| `VITE_CHAT_PROXY_URL`     | `services/chat.ts`           | Optional. Chat proxy URL (e.g. /api/chat) for IP rate limiting |
+| `PB_ADMIN_EMAIL`          | `scripts/seed-content.ts`   | PocketBase admin email for seeding    |
+| `PB_ADMIN_PASSWORD`       | `scripts/seed-content.ts`   | PocketBase admin password for seeding |
+| `OPENAI_API_KEY`          | `api/chat.ts` (serverless)  | OpenAI key on proxy server            |
+| `POCKETBASE_URL`          | `api/chat.ts`               | PocketBase URL on proxy server        |
+| `POCKETBASE_ADMIN_EMAIL`  | `api/chat.ts`               | Admin auth for rate_limits             |
+| `POCKETBASE_ADMIN_PASSWORD` | `api/chat.ts`             | Admin auth for rate_limits             |
+| `RATE_LIMIT_SALT`         | `api/chat.ts`               | Optional. Salt for IP hashing         |
+| `RATE_LIMIT_MAX`          | `api/chat.ts`               | Optional. Max requests per window (default 20) |
+| `RATE_LIMIT_WINDOW_MS`    | `api/chat.ts`               | Optional. Window length in ms (default 600000) |
 
 > ⚠️ Never commit `.env` to version control. Provide `.env.example` with placeholder values.
 
@@ -238,6 +247,7 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 | Telegram Bot API  | Instant lead notifications to admin chat                 | `services/telegram.ts`                   |
 | PocketBase        | Lead persistence, status management (CRM-lite)           | `services/leads.ts`, `lib/pocketbase.ts` |
 | Umami             | Privacy-friendly analytics (visits, page views)           | `components/seo/Analytics.tsx`           |
+| OpenAI            | Chat widget (gpt-4o-mini, document-based Q&A)            | `services/chat.ts`                      |
 | i18next ecosystem | Multilingual UI (PL / EN / UK), browser language detect  | `lib/i18n.ts`, `locales/`               |
 | Figma (optional)  | Asset imports via Vite plugin                            | `components/figma/`                      |
 
@@ -245,6 +255,23 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 
 - **Script:** `https://umami.digital-office.pl/script.js`, website ID in `Analytics.tsx`.
 - **Stub when local:** The script is injected only when **not** in development. When the project runs locally (`pnpm dev` / `vite`), `import.meta.env.DEV` is `true` and the analytics script is **not** loaded — no tracking in local/dev environment. In production build the script is loaded as usual.
+
+### Chat widget (OpenAI)
+
+- **Purpose:** Floating AI assistant on the site for document-based Q&A (packages, ROI, cooperation). Answers only from the provided business document; no hallucination.
+- **Placement:** `<ChatWidget />` is mounted once in `App.tsx` (outside router), so it is visible on all pages.
+- **Component:** `app/components/features/ChatWidget/ChatWidget.tsx` — floating button (bottom-right), dialog panel (full-screen on mobile &lt;640px, 360×500px on desktop), message list, input, question counter. Styling: silver/dark theme (Tailwind), Motion for open/close. All UI text via `t()`.
+- **Hook:** `hooks/useChatWidget.ts` — state (isOpen, messages, input, status, questionCount, sessionStartedAt, lastSentAt, rateLimitReached), toggle, sendMessage, setInput, sessionExpired, inCooldown, cooldownRemainingMs. **Anti-spam (client):** (1) **Session TTL** — 60 minutes from first message, then input disabled; (2) **Cooldown** — 3 seconds between sends; (3) **Question cap** — 20 questions per conversation. On server 429 (proxy rate limit), `rateLimitReached` is set and a dedicated message is shown.
+- **Service:** `services/chat.ts`:
+  - If `VITE_CHAT_PROXY_URL` is set: POSTs to proxy with `{ messages, contactBlockSuffix, isFirstMessage }`; proxy returns `{ content }` or 429. Client throws `Error('RATE_LIMIT')` on 429.
+  - Else: calls OpenAI `gpt-4o-mini` directly (client-side). Builds messages from system prompt + document + sanitized history.
+  - **Document source:** `text_for_bot_ai.txt` at project root (imported at build time via `?raw`). This file is the single source of truth for the bot’s knowledge; update it to change answers.
+  - Input sanitization: strip HTML, angle brackets, cap message length (500 chars).
+  - **Contact block:** Appended **only after the first bot reply**, in code (not by the model). Built in the hook from `t('footer.phone')`, `t('footer.email')`, `t('chat.contactBlock')` (with `{{phone}}`, `{{email}}`). Format: intro line, then 📞 phone, 📧 email, then “or fill the form” — all from locales (PL/EN/UK), so PocketBase can override.
+- **Types:** `types/chat.ts` — `ChatMessage` (role, content), `ChatWidgetState` (isOpen, messages, input, status, questionCount, sessionStartedAt, lastSentAt, rateLimitReached).
+- **Env:** `VITE_OPENAI_API_KEY` — required when not using proxy; `VITE_CHAT_PROXY_URL` — optional, when set chat requests go through the proxy (recommended for IP rate limiting and hiding the API key).
+- **Proxy (optional):** `api/chat.ts` — Vercel serverless (or any Node server with request IP). Gets client IP from `x-forwarded-for` / `x-real-ip`, hashes it (SHA-256 + optional `RATE_LIMIT_SALT`), checks/updates PocketBase `rate_limits` collection; if over limit returns 429; else calls OpenAI and returns `{ content }`. Env on server: `OPENAI_API_KEY`, `POCKETBASE_URL`, `POCKETBASE_ADMIN_EMAIL`, `POCKETBASE_ADMIN_PASSWORD`, optional `RATE_LIMIT_SALT`, `RATE_LIMIT_MAX` (default 20), `RATE_LIMIT_WINDOW_MS` (default 600000). IP is stored only as hash (GDPR-friendly).
+- **i18n keys (chat):** `chat.title`, `chat.placeholder`, `chat.send`, `chat.questionsLeft`, `chat.limitReached`, `chat.sessionExpired`, `chat.waitCooldown`, `chat.rateLimitReached`, `chat.errorMessage`, `chat.ariaLabel`, `chat.welcome`, `chat.contactFormCta`, `chat.contactBlock` (with `{{phone}}`, `{{email}}`). Contact block uses `footer.phone` and `footer.email` (same as Footer and Privacy).
 
 ### PocketBase Collection: `leads`
 
@@ -258,6 +285,18 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 | `source`       | Text     | Page slug or UTM                                   |
 | `lang`         | Text     | Active language at submission (`pl` / `en` / `uk`) |
 | `created`      | DateTime | Auto (PocketBase)                                  |
+
+### PocketBase Collection: `rate_limits` (chat proxy)
+
+Used only by the optional chat proxy (`api/chat.ts`). Access: admin-only (no public rules). Create manually in PocketBase Admin.
+
+| Field          | Type     | Notes                                      |
+|----------------|----------|--------------------------------------------|
+| `ip_hash`      | Text     | Required. SHA-256 hash of (salt + IP).     |
+| `count`       | Number   | Required. Requests in current window.       |
+| `window_start` | DateTime | Required. Start of the rate-limit window.  |
+
+Logic: if no record or `window_start` older than `RATE_LIMIT_WINDOW_MS`, reset to count=1; else if count >= `RATE_LIMIT_MAX` return 429; else increment count. Storing only `ip_hash` (not raw IP) avoids storing personal data under GDPR.
 
 ---
 
@@ -310,6 +349,8 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 | 2025-03-01 | Umami analytics added; script loaded only in production; stub when running locally (no script in dev). |
 | 2026-03-04 | v3.1 — Migrated to language-prefixed URLs (`/pl/`, `/en/`, `/uk/`). Root `/` redirects to `/pl/`. Removed localStorage as language source. ADR-008 revised. Sitemap and hreflang updated for per-language URLs. Privacy page only at `/pl/polityka-prywatnosci`. |
 | 2026-03-05 | v3.2 — Connected i18n to PocketBase `content` collection with sessionStorage cache and static JSON fallback. |
+| 2026-03-05 | v3.3 — Added ChatWidget (OpenAI gpt-4o-mini, document-based Q&A), useChatWidget hook, chat.ts service, VITE_OPENAI_API_KEY, text_for_bot_ai.txt, contact block after first reply only, chat i18n keys. |
+| 2026-03-05 | v3.4 — Chat anti-spam: client 10-min session TTL, 3-s cooldown, 20-question cap; optional proxy api/chat.ts with PocketBase rate_limits by IP hash (GDPR-friendly), VITE_CHAT_PROXY_URL, rate_limits collection. |
 
 ---
 
