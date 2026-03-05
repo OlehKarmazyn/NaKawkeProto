@@ -52,7 +52,7 @@ src/
 │   └── routes.tsx
 │
 ├── hooks/                        # useContactForm, useRoiCalc, useScrollSpy…
-├── services/                     # telegram.ts, leads.ts
+├── services/                     # telegram.ts, leads.ts, content.ts
 ├── lib/                          # pocketbase.ts, i18n.ts
 ├── locales/
 │   ├── pl/translation.json       # Polish — primary, source of truth
@@ -80,6 +80,7 @@ src/
 | `app/components/seo/`      | PageMeta (canonical, OG, hreflang), StructuredData   | react-helmet-async           |
 | `hooks/`                   | Stateful logic (form, calc, scroll)                    | services, types              |
 | `services/`                | External API calls (Telegram, PocketBase)              | lib, types                   |
+| `services/content.ts`      | PocketBase `content` collection translations           | lib/pocketbase, lib/i18n     |
 | `lib/`                     | Third-party SDK instances (PocketBase, i18n)           | —                            |
 | `locales/`                 | Translation JSON files. Polish is the source of truth  | —                            |
 | `app/shared/constants/`    | App-wide constants                                     | —                            |
@@ -92,13 +93,33 @@ src/
 ### Page Rendering
 ```mermaid
 graph TD
-    A[Browser] --> B[React Router]
+    A[Browser] --> I[i18n init + static JSON]
+    I --> C1[Load PocketBase content translations]
+    C1 -->|success| C2[Cache in sessionStorage (5min TTL)]
+    C1 -->|fail| B[React Router] 
+    C2 --> B[React Router]
     B --> C[Page Component]
     C --> D[PageMeta / StructuredData]
     C --> E[Layout: Navigation + Footer]
     C --> F[Section Components]
     F --> G[Feature / UI Components]
     G --> H[Local state or props + i18next t()]
+```
+
+### Translations Loading
+```mermaid
+graph TD
+    A[App start] --> B[initI18n()]
+    B --> C[i18next loads static JSON from /locales]
+    C --> D[loadRemoteTranslations()]
+    D --> E[Check sessionStorage cache (5 min TTL)]
+    E -->|cache hit| F[i18n.addResourceBundle override with cached PocketBase values]
+    E -->|cache miss| G[Fetch PocketBase content collection]
+    G --> H[Normalize to {pl, en, uk} maps]
+    H --> I[i18n.addResourceBundle override with PocketBase values]
+    G -->|PocketBase unavailable| J[Silent fallback to static JSON]
+    I --> K[Render <App /> with ready translations]
+    F --> K
 ```
 
 ### Language Switching
@@ -127,6 +148,22 @@ graph TD
 ```
 
 Both operations run in parallel via `Promise.allSettled`. User sees success if at least one succeeds. Error is shown only if both fail.
+
+### Content Translations (PocketBase)
+
+- On app start, `initI18n()` initializes i18next with static JSON resources from `src/locales/`.
+- Immediately after, `loadRemoteTranslations()`:
+  - Reads cached translations from `sessionStorage` (`pb_translations`) if present and younger than 5 minutes.
+  - Otherwise fetches the `content` collection from PocketBase via `services/content.ts`:
+    - Fields: `key`, `pl`, `en`, `uk`.
+    - Shapes data into per-language maps: `{ pl: { 'hero.title': '...', ... }, en: { ... }, uk: { ... } }`.
+  - Calls `i18n.addResourceBundle(lang, 'translation', data[lang], true, true)` for each language:
+    - `true, true` → deep merge and override static JSON values with PocketBase values.
+  - Caches the merged data in `sessionStorage` with a 5-minute TTL to avoid refetching on every navigation.
+- If PocketBase is unavailable or returns an error:
+  - The error is logged in development.
+  - The app continues to use only static JSON translations without crashing.
+  - Because translations are loaded before the first render, there is no flash of untranslated content.
 
 ---
 
@@ -178,6 +215,8 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 | `VITE_TELEGRAM_CHAT_ID`   | `services/telegram.ts`       | Target chat for lead notifications    |
 | `VITE_POCKETBASE_URL`     | `lib/pocketbase.ts`          | PocketBase instance URL               |
 | `VITE_SITE_URL`           | `constants/seo.ts`, sitemap  | Base URL for canonical / OG / sitemap |
+| `PB_ADMIN_EMAIL`          | `scripts/seed-content.ts`    | PocketBase admin email for seeding    |
+| `PB_ADMIN_PASSWORD`       | `scripts/seed-content.ts`    | PocketBase admin password for seeding |
 
 > ⚠️ Never commit `.env` to version control. Provide `.env.example` with placeholder values.
 
@@ -270,7 +309,14 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 | 2025-03-01 | v3.0 — Added i18n (PL/EN/UK), LanguageSwitcher, hreflang, locales/ directory, `lang` field in leads collection, ADR-008. |
 | 2025-03-01 | Umami analytics added; script loaded only in production; stub when running locally (no script in dev). |
 | 2026-03-04 | v3.1 — Migrated to language-prefixed URLs (`/pl/`, `/en/`, `/uk/`). Root `/` redirects to `/pl/`. Removed localStorage as language source. ADR-008 revised. Sitemap and hreflang updated for per-language URLs. Privacy page only at `/pl/polityka-prywatnosci`. |
+| 2026-03-05 | v3.2 — Connected i18n to PocketBase `content` collection with sessionStorage cache and static JSON fallback. |
 
 ---
 
 > ⚠️ When changing structure, adding integrations, new patterns, or env vars — update this file first.
+
+---
+
+## 🧾 Scripts
+
+- `scripts/seed-content.ts` — one-time seed script, populates PocketBase `content` collection from translation JSON files. Safe to re-run (skips existing keys).
