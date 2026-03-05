@@ -98,7 +98,7 @@ export const ProfitCalculator: React.FC = () => {
         <div className="pb-6 border-b border-[#C0C0C0]/20">
           <div className="text-white/60 text-sm mb-2">{t('calculator.monthlyRevenue')}</div>
           <div className="text-3xl font-bold text-[#C0C0C0]">
-            {monthlyRevenue.toLocaleString(locale)} zł
+            {monthlyRevenue.toLocaleString(locale)} {t('common.currency')}
           </div>
         </div>
 
@@ -106,13 +106,13 @@ export const ProfitCalculator: React.FC = () => {
           <div className="flex justify-between items-center">
             <span className="text-white/70">{t('calculator.rent')}</span>
             <span className="text-lg font-semibold text-white/90">
-              {totalRent.toLocaleString(locale)} zł
+              {totalRent.toLocaleString(locale)} {t('common.currency')}
             </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-white/70">{t('calculator.products')}</span>
             <span className="text-lg font-semibold text-white/90">
-              {monthlyCosts.toLocaleString(locale)} zł
+              {monthlyCosts.toLocaleString(locale)} {t('common.currency')}
             </span>
           </div>
         </div>
@@ -120,7 +120,7 @@ export const ProfitCalculator: React.FC = () => {
         <div className="pt-6 border-t border-[#C0C0C0]/20">
           <div className="text-white/60 text-sm mb-2">{profitLabel}</div>
           <div className="text-4xl font-bold text-[#C0C0C0] mb-6">
-            {totalProfit.toLocaleString(locale)} zł
+            {totalProfit.toLocaleString(locale)} {t('common.currency')}
           </div>
           <MetallicButton>{t('calculator.cta')}</MetallicButton>
         </div>

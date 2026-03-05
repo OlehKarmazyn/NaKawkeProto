@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo.png';
 import { SECTION_IDS } from '@/app/shared/constants/navigation';
+import { DEVELOPER_NAME } from '@/app/shared/constants/seo';
 import { useLangPath, pathWithoutLang } from '@/hooks/useLangPath';
 
 export const Footer: React.FC = () => {
@@ -128,7 +129,6 @@ export const Footer: React.FC = () => {
                   {t('footer.privacy')}
                 </Link>
               </li>
-              <li className="hover:text-[#C0C0C0] transition-colors cursor-pointer">{t('footer.terms')}</li>
             </ul>
           </div>
         </div>
@@ -149,7 +149,7 @@ export const Footer: React.FC = () => {
                 rel="noopener noreferrer"
                 className="hover:text-[#C0C0C0] transition-colors"
               >
-                {t('footer.developedBy', { company: 'Digital Office' })}
+                {t('footer.developedBy', { company: DEVELOPER_NAME })}
               </a>
             </p>
           </div>

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { useLangPath } from '@/hooks/useLangPath';
 import { Navigation } from '@/app/components/layout/Navigation';
 import { Footer } from '@/app/components/layout/Footer';
 import { PageMeta } from '@/app/components/seo/PageMeta';
-import { SITE_NAME } from '@/app/shared/constants/seo';
+import { PRIVACY_META, SITE_NAME } from '@/app/shared/constants/seo';
 
 /**
  * Polityka prywatności — tylko po polsku, bez przełącznika języka.
@@ -12,11 +13,12 @@ import { SITE_NAME } from '@/app/shared/constants/seo';
  */
 export const Privacy: React.FC = () => {
   const path = useLangPath();
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-[#0A0A0A] overflow-x-hidden">
       <PageMeta
-        title="Polityka Prywatności"
-        description="Polityka prywatności serwisu Na Kawkę — informacje o przetwarzaniu danych osobowych, plikach cookies i prawach użytkownika."
+        title={PRIVACY_META.title}
+        description={PRIVACY_META.description}
         canonicalPath="/polityka-prywatnosci"
         robotsNoIndex
       />
@@ -269,7 +271,7 @@ export const Privacy: React.FC = () => {
 
           <p className="mt-12 pt-6 border-t border-[#C0C0C0]/20">
             <Link to={path('/')} className="text-[#C0C0C0] hover:text-white transition-colors">
-              ← Powrót na stronę główną {SITE_NAME}
+              {t('privacy.backToHome')} {SITE_NAME}
             </Link>
           </p>
         </div>

@@ -48,19 +48,19 @@ export const Hero: React.FC = () => {
             <div className="grid grid-cols-3 gap-8 mt-12">
               <div>
                 <div className="text-3xl font-bold bg-gradient-to-r from-[#87AEA6] to-[#D8D8D8] bg-clip-text text-transparent mb-1">
-                  3000 zł
+                  {t('hero.statProfitValue', { currency: t('common.currency') })}
                 </div>
                 <div className="text-sm text-white/60">{t('hero.statProfit')}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold bg-gradient-to-r from-[#87AEA6] to-[#D8D8D8] bg-clip-text text-transparent mb-1">
-                  24/7
+                  {t('hero.stat24_7Value')}
                 </div>
                 <div className="text-sm text-white/60">{t('hero.stat24_7')}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold bg-gradient-to-r from-[#87AEA6] to-[#D8D8D8] bg-clip-text text-transparent mb-1">
-                  0 zł
+                  {t('hero.statRoyaltyValue', { currency: t('common.currency') })}
                 </div>
                 <div className="text-sm text-white/60">{t('hero.statRoyalty')}</div>
               </div>

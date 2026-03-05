@@ -6,3 +6,11 @@ export const SITE_BASE_URL =
 export const DEFAULT_OG_IMAGE = `${SITE_BASE_URL}/multi-automats.webp`;
 
 export const SITE_NAME = 'Na Kawkę';
+
+export const DEVELOPER_NAME = 'Digital Office';
+
+export const PRIVACY_META = {
+  title: 'Polityka Prywatności | Na Kawkę',
+  description:
+    'Polityka prywatności serwisu Na Kawkę — informacje o przetwarzaniu danych osobowych, plikach cookies i prawach użytkownika.',
+};

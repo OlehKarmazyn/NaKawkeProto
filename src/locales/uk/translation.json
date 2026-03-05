@@ -8,6 +8,9 @@
     "statProfit": "середній прибуток/міс.",
     "stat24_7": "Робота 24/7 без персоналу",
     "statRoyalty": "Роялті на місяць",
+    "statProfitValue": "3000 {{currency}}",
+    "stat24_7Value": "24/7",
+    "statRoyaltyValue": "0 {{currency}}",
     "imageAlt": "Na Kawkę — кавові автомати"
   },
   "nav": {
@@ -49,7 +52,10 @@
     "logoAlt": "Na Kawkę"
   },
   "common": {
-    "siteName": "Na Kawkę"
+    "siteName": "Na Kawkę",
+    "currency": "zł",
+    "close": "Закрити",
+    "imageError": "Помилка завантаження зображення"
   },
   "about": {
     "ariaLabel": "Про нас — Na Kawkę",

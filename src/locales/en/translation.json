@@ -8,6 +8,9 @@
     "statProfit": "avg. profit/month",
     "stat24_7": "24/7 without staff",
     "statRoyalty": "Royalty per month",
+    "statProfitValue": "3000 {{currency}}",
+    "stat24_7Value": "24/7",
+    "statRoyaltyValue": "0 {{currency}}",
     "imageAlt": "Na Kawkę — coffee vending machines"
   },
   "nav": {
@@ -49,7 +52,10 @@
     "logoAlt": "Na Kawkę"
   },
   "common": {
-    "siteName": "Na Kawkę"
+    "siteName": "Na Kawkę",
+    "currency": "zł",
+    "close": "Close",
+    "imageError": "Error loading image"
   },
   "about": {
     "ariaLabel": "About us — Na Kawkę",

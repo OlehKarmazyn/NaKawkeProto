@@ -8,6 +8,9 @@
     "statProfit": "średni zysk/mies.",
     "stat24_7": "Praca bez personelu",
     "statRoyalty": "Royalty miesięcznie",
+    "statProfitValue": "3000 {{currency}}",
+    "stat24_7Value": "24/7",
+    "statRoyaltyValue": "0 {{currency}}",
     "imageAlt": "Na Kawkę — automaty kawowe"
   },
   "nav": {
@@ -49,7 +52,10 @@
     "logoAlt": "Na Kawkę"
   },
   "common": {
-    "siteName": "Na Kawkę"
+    "siteName": "Na Kawkę",
+    "currency": "zł",
+    "close": "Zamknij",
+    "imageError": "Błąd ładowania obrazu"
   },
   "about": {
     "ariaLabel": "O nas — Na Kawkę",
@@ -360,5 +366,8 @@
     "standardDescription": "Pakiet Standard — Jetinno JL22, 12 napojów, €4,500 netto. Idealny start w autonomicznym biznesie kawowym. Zwrot 8–12 miesięcy.",
     "premiumTitle": "Pakiet Premium",
     "premiumDescription": "Pakiet Premium — Jetinno JL300, do 24 napojów z zimnymi, €6,500 netto. Maksymalne przychody, pełna autonomia."
+  },
+  "privacy": {
+    "backToHome": "← Powrót na stronę główną"
   }
 }
