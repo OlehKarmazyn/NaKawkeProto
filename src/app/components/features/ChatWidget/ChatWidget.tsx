@@ -141,64 +141,43 @@ export const ChatWidget: React.FC = () => {
               {t('chat.questionsLeft', { count: questionsLeft })}
             </div>
 
-            {/* Input area */}
+            {/* Input area — always show field; block (disable) when limit/rate/session, error text only in messages list */}
             <div className="flex-shrink-0 p-4 pt-0">
-              {limitReached ? (
-                <p
-                  className="text-sm text-[#C0C0C0]/80 py-2"
-                  role="status"
+              <div className="flex gap-2 items-end">
+                <textarea
+                  ref={textareaRef}
+                  value={state.input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder={t('chat.placeholder')}
+                  rows={1}
+                  className="
+                    flex-1 min-h-[44px] max-h-24 py-2.5 px-3 rounded-xl
+                    bg-white/5 border border-[#C0C0C0]/30 text-white
+                    placeholder:text-[#C0C0C0]/60 resize-none
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C0C0]/50
+                    disabled:opacity-70 disabled:cursor-not-allowed
+                  "
+                  aria-label={t('chat.placeholder')}
+                  aria-disabled={inputBlocked}
+                  disabled={state.status === 'loading' || inputBlocked}
+                />
+                <button
+                  type="button"
+                  onClick={sendMessage}
+                  disabled={sendDisabled}
+                  title={inCooldown ? t('chat.waitCooldown') : undefined}
+                  className="
+                    flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center
+                    rounded-xl bg-[#C0C0C0] text-[#0A0A0A] hover:bg-[#a8a8a8]
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C0C0]
+                  "
+                  aria-label={t('chat.send')}
                 >
-                  {t('chat.limitReached')}
-                </p>
-              ) : sessionExpired ? (
-                <p
-                  className="text-sm text-[#C0C0C0]/80 py-2"
-                  role="status"
-                >
-                  {t('chat.sessionExpired')}
-                </p>
-              ) : state.rateLimitReached ? (
-                <p
-                  className="text-sm text-[#C0C0C0]/80 py-2"
-                  role="status"
-                >
-                  {t('chat.rateLimitReached')}
-                </p>
-              ) : (
-                <div className="flex gap-2 items-end">
-                  <textarea
-                    ref={textareaRef}
-                    value={state.input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder={t('chat.placeholder')}
-                    rows={1}
-                    className="
-                      flex-1 min-h-[44px] max-h-24 py-2.5 px-3 rounded-xl
-                      bg-white/5 border border-[#C0C0C0]/30 text-white
-                      placeholder:text-[#C0C0C0]/60 resize-none
-                      focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C0C0]/50
-                    "
-                    aria-label={t('chat.placeholder')}
-                    disabled={state.status === 'loading' || inputBlocked}
-                  />
-                  <button
-                    type="button"
-                    onClick={sendMessage}
-                    disabled={sendDisabled}
-                    title={inCooldown ? t('chat.waitCooldown') : undefined}
-                    className="
-                      flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center
-                      rounded-xl bg-[#C0C0C0] text-[#0A0A0A] hover:bg-[#a8a8a8]
-                      disabled:opacity-50 disabled:cursor-not-allowed
-                      focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C0C0]
-                    "
-                    aria-label={t('chat.send')}
-                  >
-                    <Send className="w-5 h-5" />
-                  </button>
-                </div>
-              )}
+                  <Send className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </motion.div>
         )}

@@ -11,8 +11,16 @@ const COOLDOWN_MS = 3000;
 
 const proxyUrl = (import.meta.env.VITE_CHAT_PROXY_URL as string | undefined)?.trim();
 
+/** Detect question language so contact block matches (pl / en / uk). */
+function detectQuestionLanguage(text: string): 'pl' | 'en' | 'uk' {
+  const trimmed = text.trim();
+  if (/[\u0400-\u04FF]/.test(trimmed)) return 'uk'; // Cyrillic
+  if (/[ąęółńćźżĄĘÓŁŃĆŹŻ]/.test(trimmed)) return 'pl'; // Polish diacritics
+  return 'en';
+}
+
 export function useChatWidget() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [state, setState] = useState<ChatWidgetState>({
     isOpen: false,
     messages: [],
@@ -73,12 +81,17 @@ export function useChatWidget() {
 
     try {
       let reply = await sendChatMessage(newHistory);
-      const contactBlockSuffix = t('chat.contactBlock', {
-        phone: t('footer.phone'),
-        email: t('footer.email'),
-      });
-      if (newHistory.length === 1 && contactBlockSuffix.trim()) {
-        reply = `${reply.trim()}\n\n---\n${contactBlockSuffix.trim()}`;
+      // Contact block only after first reply; use the same language as the question
+      if (newHistory.length === 1) {
+        const questionLang = detectQuestionLanguage(userMessage.content);
+        const tQuestion = i18n.getFixedT(questionLang);
+        const contactBlockSuffix = tQuestion('chat.contactBlock', {
+          phone: tQuestion('footer.phone'),
+          email: tQuestion('footer.email'),
+        });
+        if (contactBlockSuffix.trim()) {
+          reply = `${reply.trim()}\n\n---\n${contactBlockSuffix.trim()}`;
+        }
       }
       setState((s) => ({
         ...s,
