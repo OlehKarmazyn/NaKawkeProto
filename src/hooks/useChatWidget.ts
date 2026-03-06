@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { sendChatMessage } from '@/services/chat';
+import { sendChatMessage, getChatUsage } from '@/services/chat';
 import type { ChatMessage, ChatWidgetState } from '@/types/chat';
 
 const MAX_QUESTIONS = 20;
@@ -8,6 +8,8 @@ const MAX_QUESTIONS = 20;
 const SESSION_TTL_MS = 60 * 60 * 1000;
 /** Minimum delay between two sent messages (anti‑spam). */
 const COOLDOWN_MS = 3000;
+
+const proxyUrl = (import.meta.env.VITE_CHAT_PROXY_URL as string | undefined)?.trim();
 
 export function useChatWidget() {
   const { t } = useTranslation();
@@ -27,6 +29,16 @@ export function useChatWidget() {
     state.sessionStartedAt !== null && now - state.sessionStartedAt > SESSION_TTL_MS;
   const cooldownRemaining = Math.max(0, COOLDOWN_MS - (now - state.lastSentAt));
   const inCooldown = state.lastSentAt > 0 && cooldownRemaining > 0;
+
+  // Sync questionCount with proxy usage on load (so after reload we show correct "questions left")
+  useEffect(() => {
+    if (!proxyUrl) return;
+    getChatUsage().then((usage) => {
+      if (usage) {
+        setState((s) => ({ ...s, questionCount: usage.used }));
+      }
+    });
+  }, []);
 
   const toggle = useCallback(() => {
     setState((s) => ({ ...s, isOpen: !s.isOpen }));

@@ -94,10 +94,61 @@ async function checkAndIncrementRateLimit(ipHash: string): Promise<boolean> {
   return true;
 }
 
+/**
+ * Reads from PocketBase the record by ip_hash without incrementing.
+ * Returns { used, max }; max = RATE_LIMIT_MAX.
+ * If no record or window expired — used: 0.
+ * If PocketBase not configured or any error — { used: 0, max }.
+ */
+async function getRateLimitUsage(ipHash: string): Promise<{ used: number; max: number }> {
+  const max = RATE_LIMIT_MAX;
+  try {
+    const pbUrl = process.env.POCKETBASE_URL;
+    const email = process.env.POCKETBASE_ADMIN_EMAIL;
+    const password = process.env.POCKETBASE_ADMIN_PASSWORD;
+    if (!pbUrl || !email || !password) {
+      return { used: 0, max };
+    }
+
+    const { default: PocketBase } = await import('pocketbase');
+    const pb = new PocketBase(pbUrl);
+    await pb.admins.authWithPassword(email, password);
+
+    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString();
+
+    const existing = await pb
+      .collection('rate_limits')
+      .getList(1, 1, { filter: `ip_hash = "${ipHash}"` });
+
+    const raw = existing.items[0];
+    const record = raw as unknown as
+      | { count: number; window_start: string }
+      | undefined;
+
+    if (!record || record.window_start < windowStart) {
+      return { used: 0, max };
+    }
+
+    return { used: record.count, max };
+  } catch {
+    return { used: 0, max };
+  }
+}
+
 export default async function handler(
   req: ChatRequest,
   res: ChatResponse
 ): Promise<void> {
+  const ip = getClientIp(req);
+  const ipHash = hashIp(ip);
+
+  // GET — return current usage for this IP (so client can show correct "questions left" after reload)
+  if (req.method === 'GET') {
+    const usage = await getRateLimitUsage(ipHash);
+    res.status(200).json(usage);
+    return;
+  }
+
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
@@ -122,9 +173,6 @@ export default async function handler(
     res.status(400).json({ error: 'messages array required' });
     return;
   }
-
-  const ip = getClientIp(req);
-  const ipHash = hashIp(ip);
 
   const allowed = await checkAndIncrementRateLimit(ipHash);
   if (!allowed) {

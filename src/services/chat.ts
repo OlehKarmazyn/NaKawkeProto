@@ -43,6 +43,27 @@ ${DOCUMENT_CONTEXT}
 --- КІНЕЦЬ ДОКУМЕНТА ---
 `.trim();
 
+/**
+ * Fetches current rate-limit usage from proxy (GET). Use on load so "questions left" matches server.
+ * Returns null when proxy is not configured.
+ */
+export async function getChatUsage(): Promise<{ used: number; max: number } | null> {
+  const proxyUrl = (import.meta.env.VITE_CHAT_PROXY_URL as string | undefined)?.trim();
+  if (!proxyUrl) return null;
+
+  const response = await fetch(proxyUrl, { method: 'GET' });
+  if (!response.ok) return null;
+
+  const data = (await response.json()) as { used?: number; max?: number };
+  if (
+    typeof data.used !== 'number' ||
+    typeof data.max !== 'number'
+  ) {
+    return null;
+  }
+  return { used: data.used, max: data.max };
+}
+
 /** Build OpenAI-ready messages (system + sanitized history). */
 function buildMessages(
   history: ChatMessage[],
