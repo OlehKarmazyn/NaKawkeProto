@@ -237,6 +237,19 @@
     transform: rotateY(180deg);
   }
 
+  /* Heartbeat pulse animation for footer Digital Office branding */
+  @keyframes pulse-heartbeat {
+    0%, 100% { transform: scale(1); }
+    15%, 45% { transform: scale(1.015); }
+    30%, 60% { transform: scale(1); }
+  }
+  .animate-pulse-heartbeat {
+    animation: pulse-heartbeat 2s ease-in-out infinite;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+  }
+
   /* Safari-only: counter-rotate back content to fix text mirroring during flip */
   @supports (-webkit-touch-callout: none) {
     .pricing-card-back-inner {

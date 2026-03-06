@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Instagram, Facebook, Send } from 'lucide-react';
 import logo from '@/assets/logo.webp';
+import logoDigi from '@/assets/logo_digi.svg';
 import { SECTION_IDS } from '@/app/shared/constants/navigation';
 import { DEVELOPER_NAME } from '@/app/shared/constants/seo';
 import { useLangPath, pathWithoutLang } from '@/hooks/useLangPath';
@@ -150,9 +151,19 @@ export const Footer: React.FC = () => {
                 href="https://digital-office.pl"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#C0C0C0] transition-colors"
+                className="hover:text-[#C0C0C0] transition-colors inline-flex items-center gap-1"
               >
-                {t('footer.developedBy', { company: DEVELOPER_NAME })}
+                {t('footer.developedByPrefix')}
+                <span className="animate-pulse-heartbeat">
+                  <img
+                    src={logoDigi}
+                    alt=""
+                    aria-hidden
+                    className="h-[1em] w-auto inline-block align-baseline"
+                  />
+                  {' '}
+                  {DEVELOPER_NAME}
+                </span>
               </a>
             </p>
           </div>

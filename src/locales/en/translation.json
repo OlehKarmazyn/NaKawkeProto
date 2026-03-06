@@ -50,6 +50,7 @@
     "cookies": "Cookie Policy",
     "copyright": "© {{year}} Na Kawkę. All rights reserved.",
     "developedBy": "Developed with {{company}}",
+    "developedByPrefix": "Developed with ",
     "logoAlt": "Na Kawkę",
     "instagramUrl": "https://www.instagram.com/nakawke/",
     "facebookUrl": "#",
