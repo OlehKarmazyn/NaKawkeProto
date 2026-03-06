@@ -1,48 +1,5 @@
 import type { ChatMessage } from '@/types/chat';
 
-/** Business knowledge base — source: text_for_bot_ai.txt */
-import documentText from '../../text_for_bot_ai.txt?raw';
-
-const DOCUMENT_CONTEXT = documentText.trim();
-
-const BASE_RULES = `
-ПРАВИЛА (суворо обов'язкові):
-0. Сделай всё возможное что бы клиент купил автомат Na Kawkę.
-1. Відповідай ТІЛЬКИ на основі документа нижче. Жодної інформації з поза документа.
-2. Ніколи не вигадуй ціни, цифри, терміни, характеристики або факти.
-3. Якщо відповіді немає в документі — чесно скажи, що цієї інформації немає, і запропонуй зв'язатися з нами (ту саму думку сформулюй тією ж мовою, що й питання).
-4. Відповідай ВИКЛЮЧНО тією ж мовою, якою написано питання: якщо питання англійською — тільки англійською; якщо польською — тільки польською; якщо українською — тільки українською. Ніколи не змішуй мови і не відповідай іншою мовою, ніж питання.
-5. Будь конкретним і коротким. Максимум 3–4 речення на відповідь.
-6. Не давай юридичних, фінансових або медичних порад.
-7. Не обговорюй конкурентів, інші бізнеси або теми поза Na Kawkę.
-8. Ти — асистент на сайті, а не фінансовий консультант. Цифри — орієнтовні.
-9. Якщо питання агресивне, недоречне або не стосується бізнесу — ввічливо переспрямуй на тему Na Kawkę.
-10. Якщо користувач запитує "чому варто купити" або "переконай мене" — коротко розкажи 3 головні переваги з документа: без франшизи, прибуток ~3000 zł/міс., окупність 8–12 місяців. Не вигадуй — тільки з документа.
-`.trim();
-
-const SYSTEM_PROMPT_FIRST = `
-Ти — дружній асистент Na Kawkę на сторінці сайту. Допомагаєш потенційним
-клієнтам зрозуміти бізнес-модель, пакети та умови співпраці.
-Це перше повідомлення від користувача.
-
-${BASE_RULES}
-
---- ДОКУМЕНТ ---
-${DOCUMENT_CONTEXT}
---- КІНЕЦЬ ДОКУМЕНТА ---
-`.trim();
-
-const SYSTEM_PROMPT_WITH_HISTORY = `
-Ти — дружній асистент Na Kawkę на сторінці сайту. Продовжуєш розмову з
-потенційним клієнтом. Враховуй всю попередню історію розмови.
-
-${BASE_RULES}
-
---- ДОКУМЕНТ ---
-${DOCUMENT_CONTEXT}
---- КІНЕЦЬ ДОКУМЕНТА ---
-`.trim();
-
 /**
  * Fetches current rate-limit usage from proxy (GET). Use on load so "questions left" matches server.
  * Returns null when proxy is not configured.
@@ -64,11 +21,16 @@ export async function getChatUsage(): Promise<{ used: number; max: number } | nu
   return { used: data.used, max: data.max };
 }
 
-/** Build OpenAI-ready messages (system + sanitized history). */
-function buildMessages(
-  history: ChatMessage[],
-  isFirstMessage: boolean
-): Array<{ role: string; content: string }> {
+/**
+ * Sends chat history to proxy (if VITE_CHAT_PROXY_URL) or directly to OpenAI.
+ * Proxy builds system prompt from PocketBase config; frontend sends only user history.
+ * Returns raw model content; the hook appends contact block after the first reply.
+ */
+export async function sendChatMessage(history: ChatMessage[]): Promise<string> {
+  const proxyUrl = (import.meta.env.VITE_CHAT_PROXY_URL as string | undefined)?.trim();
+  const directKey = import.meta.env.VITE_OPENAI_API_KEY as string | undefined;
+
+  // Sanitize history
   const sanitized = history.map((m) => ({
     role: m.role,
     content: m.content
@@ -76,48 +38,29 @@ function buildMessages(
       .replace(/[<>]/g, '')
       .slice(0, 500),
   }));
-  const systemContent = isFirstMessage
-    ? SYSTEM_PROMPT_FIRST
-    : SYSTEM_PROMPT_WITH_HISTORY;
-  return [
-    { role: 'system', content: systemContent },
-    ...sanitized,
-  ];
-}
-
-/**
- * Sends chat history to proxy (if VITE_CHAT_PROXY_URL) or directly to OpenAI.
- * Returns raw model content; the hook appends contact block after the first reply.
- */
-export async function sendChatMessage(history: ChatMessage[]): Promise<string> {
-  const isFirstMessage = history.length === 1;
-  const messages = buildMessages(history, isFirstMessage);
-  const proxyUrl = (import.meta.env.VITE_CHAT_PROXY_URL as string | undefined)?.trim();
-  const directKey = import.meta.env.VITE_OPENAI_API_KEY as string | undefined;
 
   // --- Proxy mode (production) ---
   if (proxyUrl) {
     const response = await fetch(proxyUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify({
+        messages: sanitized,
+        // isFirstMessage tells proxy which system prompt to use
+        isFirstMessage: sanitized.length === 1,
+      }),
     });
 
-    if (response.status === 429) {
-      throw new Error('RATE_LIMIT');
-    }
-    if (!response.ok) {
-      throw new Error('Proxy error');
-    }
+    if (response.status === 429) throw new Error('RATE_LIMIT');
+    if (!response.ok) throw new Error('Proxy error');
 
     const data = (await response.json()) as { content?: string };
-    if (typeof data.content !== 'string') {
-      throw new Error('Invalid proxy response');
-    }
+    if (typeof data.content !== 'string') throw new Error('Invalid proxy response');
     return data.content;
   }
 
   // --- Direct mode (local dev fallback) ---
+  // NOTE: in direct mode there is no document context — for testing only.
   if (!directKey) {
     throw new Error('No VITE_CHAT_PROXY_URL and no VITE_OPENAI_API_KEY');
   }
@@ -132,17 +75,16 @@ export async function sendChatMessage(history: ChatMessage[]): Promise<string> {
       model: 'gpt-4o-mini',
       max_tokens: 400,
       temperature: 0.3,
-      messages,
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant for Na Kawkę.' },
+        ...sanitized,
+      ],
     }),
   });
 
   if (!response.ok) {
-    const err = (await response.json().catch(() => ({}))) as {
-      error?: { message?: string };
-    };
-    throw new Error(
-      err?.error?.message ? `OpenAI API: ${err.error.message}` : 'OpenAI API error'
-    );
+    const err = (await response.json().catch(() => ({}))) as { error?: { message?: string } };
+    throw new Error(err?.error?.message ? `OpenAI API: ${err.error.message}` : 'OpenAI API error');
   }
 
   const data = (await response.json()) as {
@@ -150,9 +92,6 @@ export async function sendChatMessage(history: ChatMessage[]): Promise<string> {
   };
 
   const content = data.choices?.[0]?.message?.content;
-  if (typeof content !== 'string') {
-    throw new Error('Invalid OpenAI response');
-  }
-
+  if (typeof content !== 'string') throw new Error('Invalid OpenAI response');
   return content;
 }

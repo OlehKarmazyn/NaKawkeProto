@@ -262,15 +262,15 @@ Both operations run in parallel via `Promise.allSettled`. User sees success if a
 - **Placement:** `<ChatWidget />` is mounted once in `App.tsx` (outside router), so it is visible on all pages.
 - **Component:** `app/components/features/ChatWidget/ChatWidget.tsx` — floating button (bottom-right), dialog panel (full-screen on mobile &lt;640px, 360×500px on desktop), message list, input, question counter. Styling: silver/dark theme (Tailwind), Motion for open/close. All UI text via `t()`.
 - **Hook:** `hooks/useChatWidget.ts` — state (isOpen, messages, input, status, questionCount, sessionStartedAt, lastSentAt, rateLimitReached), toggle, sendMessage, setInput, sessionExpired, inCooldown, cooldownRemainingMs. **Anti-spam (client):** (1) **Session TTL** — 60 minutes from first message, then input disabled; (2) **Cooldown** — 3 seconds between sends; (3) **Question cap** — 20 questions per conversation. On server 429 (proxy rate limit), `rateLimitReached` is set and a dedicated message is shown.
-- **Service:** `services/chat.ts`:
-  - If `VITE_CHAT_PROXY_URL` is set: POSTs to proxy with `{ messages, contactBlockSuffix, isFirstMessage }`; proxy returns `{ content }` or 429. Client throws `Error('RATE_LIMIT')` on 429.
-  - Else: calls OpenAI `gpt-4o-mini` directly (client-side). Builds messages from system prompt + document + sanitized history.
-  - **Document source:** `text_for_bot_ai.txt` at project root (imported at build time via `?raw`). This file is the single source of truth for the bot’s knowledge; update it to change answers.
+- **Service:** `services/chat.ts` (thin client):
+  - If `VITE_CHAT_PROXY_URL` is set: POSTs to proxy with `{ messages, isFirstMessage }`; proxy builds system prompt from PocketBase config and returns `{ content }` or 429. Client throws `Error('RATE_LIMIT')` on 429.
+  - Else: calls OpenAI `gpt-4o-mini` directly with a minimal system prompt; no document context (local testing only).
+  - **Document:** Lives in PocketBase `chat_config` → `document_text`; proxy loads it and builds the system prompt. Frontend does not store document or prompts.
   - Input sanitization: strip HTML, angle brackets, cap message length (500 chars).
   - **Contact block:** Appended **only after the first bot reply**, in code (not by the model). Built in the hook from `t('footer.phone')`, `t('footer.email')`, `t('chat.contactBlock')` (with `{{phone}}`, `{{email}}`). Format: intro line, then 📞 phone, 📧 email, then “or fill the form” — all from locales (PL/EN/UK), so PocketBase can override.
 - **Types:** `types/chat.ts` — `ChatMessage` (role, content), `ChatWidgetState` (isOpen, messages, input, status, questionCount, sessionStartedAt, lastSentAt, rateLimitReached).
 - **Env:** `VITE_OPENAI_API_KEY` — required when not using proxy; `VITE_CHAT_PROXY_URL` — optional, when set chat requests go through the proxy (recommended for IP rate limiting and hiding the API key).
-- **Proxy (optional):** `api/chat.ts` — Vercel serverless (or any Node server with request IP). Gets client IP from `x-forwarded-for` / `x-real-ip`, hashes it (SHA-256 + optional `RATE_LIMIT_SALT`), checks/updates PocketBase `rate_limits` collection; if over limit returns 429; else calls OpenAI and returns `{ content }`. Env on server: `OPENAI_API_KEY`, `POCKETBASE_URL`, `POCKETBASE_ADMIN_EMAIL`, `POCKETBASE_ADMIN_PASSWORD`, optional `RATE_LIMIT_SALT`, `RATE_LIMIT_MAX` (default 20), `RATE_LIMIT_WINDOW_MS` (default 600000). IP is stored only as hash (GDPR-friendly).
+- **Proxy (optional):** Loads chat config (including `document_text`) from PocketBase `chat_config`; builds system prompt via `buildSystemPrompt(isFirstMessage)`. Accepts POST body `{ messages, isFirstMessage }`; prepends system message and calls OpenAI; returns `{ content }` or 429. Rate limiting: client IP from `x-forwarded-for` / `x-real-ip`, hashed (SHA-256 + optional `RATE_LIMIT_SALT`), PocketBase `rate_limits` collection. Env on server: `OPENAI_API_KEY`, `POCKETBASE_URL`, admin credentials, optional `RATE_LIMIT_SALT`, `RATE_LIMIT_MAX`, `RATE_LIMIT_WINDOW_MS`. IP stored only as hash (GDPR-friendly).
 - **i18n keys (chat):** `chat.title`, `chat.placeholder`, `chat.send`, `chat.questionsLeft`, `chat.limitReached`, `chat.sessionExpired`, `chat.waitCooldown`, `chat.rateLimitReached`, `chat.errorMessage`, `chat.ariaLabel`, `chat.welcome`, `chat.contactFormCta`, `chat.contactBlock` (with `{{phone}}`, `{{email}}`). Contact block uses `footer.phone` and `footer.email` (same as Footer and Privacy).
 
 ### PocketBase Collection: `leads`
@@ -351,6 +351,7 @@ Logic: if no record or `window_start` older than `RATE_LIMIT_WINDOW_MS`, reset t
 | 2026-03-05 | v3.2 — Connected i18n to PocketBase `content` collection with sessionStorage cache and static JSON fallback. |
 | 2026-03-05 | v3.3 — Added ChatWidget (OpenAI gpt-4o-mini, document-based Q&A), useChatWidget hook, chat.ts service, VITE_OPENAI_API_KEY, text_for_bot_ai.txt, contact block after first reply only, chat i18n keys. |
 | 2026-03-05 | v3.4 — Chat anti-spam: client 10-min session TTL, 3-s cooldown, 20-question cap; optional proxy api/chat.ts with PocketBase rate_limits by IP hash (GDPR-friendly), VITE_CHAT_PROXY_URL, rate_limits collection. |
+| 2026-03-06 | v3.5 — Chat thin client: removed document and prompts from frontend; `chat.ts` sends only `{ messages, isFirstMessage }`; proxy builds system prompt from PocketBase `chat_config` (document_text). Deleted `text_for_bot_ai.txt`. |
 
 ---
 
