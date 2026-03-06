@@ -222,6 +222,16 @@ export const ChatWidget: React.FC = () => {
       <motion.button
         type="button"
         onClick={toggle}
+        animate={
+          !state.isOpen
+            ? { scale: [1, 1.08, 1, 1.08, 1] }
+            : { scale: 1 }
+        }
+        transition={
+          !state.isOpen
+            ? { duration: 2, repeat: Infinity, ease: 'easeInOut' }
+            : { duration: 0.2 }
+        }
         className={`
           relative min-w-[56px] min-h-[56px] items-center justify-center
           rounded-full bg-[#C0C0C0] text-[#0A0A0A] shadow-[0_0_24px_rgba(192,192,192,0.4)]
