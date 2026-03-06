@@ -70,8 +70,6 @@ export const PricingCard: React.FC<PricingCardProps> = ({
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
-            transform: 'rotateY(0deg)',
-            WebkitTransform: 'rotateY(0deg)',
           }}
         >
           {/* Image — larger area for automats, responsive height */}
@@ -162,15 +160,8 @@ export const PricingCard: React.FC<PricingCardProps> = ({
             WebkitTransform: 'rotateY(180deg)',
           }}
         >
-          {/* Inner wrapper: counter-rotates content to fix Safari text mirroring bug */}
-          <div
-            className="w-full h-full flex flex-col"
-            style={{
-              transform: 'rotateY(180deg)',
-              WebkitTransform: 'rotateY(180deg)',
-            }}
-          >
-          <div className="p-4 sm:p-6 lg:p-8 h-full flex flex-col">
+          <div className="pricing-card-back-inner w-full h-full flex flex-col">
+            <div className="p-4 sm:p-6 lg:p-8 h-full flex flex-col">
             <div className="flex justify-between items-center mb-4 sm:mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-white">{title}</h3>
               <button
@@ -221,7 +212,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
                 <ChevronRight className="w-4 h-4 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
-          </div>
+            </div>
           </div>
         </div>
       </div>

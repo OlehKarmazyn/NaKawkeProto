@@ -236,4 +236,12 @@
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
+
+  /* Safari-only: counter-rotate back content to fix text mirroring during flip */
+  @supports (-webkit-touch-callout: none) {
+    .pricing-card-back-inner {
+      transform: rotateY(180deg);
+      -webkit-transform: rotateY(180deg);
+    }
+  }
 }
