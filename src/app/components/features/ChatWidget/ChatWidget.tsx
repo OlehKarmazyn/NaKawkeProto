@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageCircle, X, Send } from 'lucide-react';
@@ -50,10 +50,42 @@ export const ChatWidget: React.FC = () => {
   } = useChatWidget();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [bottomOffset, setBottomOffset] = useState(24); // px
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [state.messages, state.status]);
+
+  // Prevent chat widget from overlapping the footer on scroll.
+  useEffect(() => {
+    const updatePosition = () => {
+      const footer = document.querySelector('footer');
+      if (!footer) {
+        setBottomOffset(24);
+        return;
+      }
+
+      const rect = footer.getBoundingClientRect();
+      const viewportHeight =
+        window.innerHeight || document.documentElement.clientHeight || 0;
+
+      if (rect.top < viewportHeight) {
+        const overlap = viewportHeight - rect.top;
+        setBottomOffset(24 + overlap);
+      } else {
+        setBottomOffset(24);
+      }
+    };
+
+    updatePosition();
+    window.addEventListener('scroll', updatePosition);
+    window.addEventListener('resize', updatePosition);
+
+    return () => {
+      window.removeEventListener('scroll', updatePosition);
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, []);
 
   const questionsLeft = MAX_QUESTIONS - state.questionCount;
   const limitReached = state.questionCount >= MAX_QUESTIONS;
@@ -75,7 +107,10 @@ export const ChatWidget: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 sm:bottom-8 sm:right-8">
+    <div
+      className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 sm:bottom-8 sm:right-8"
+      style={{ bottom: bottomOffset }}
+    >
       <AnimatePresence>
         {state.isOpen && (
           <motion.div
@@ -187,11 +222,12 @@ export const ChatWidget: React.FC = () => {
       <motion.button
         type="button"
         onClick={toggle}
-        className="
-          relative min-w-[56px] min-h-[56px] flex items-center justify-center
+        className={`
+          relative min-w-[56px] min-h-[56px] items-center justify-center
           rounded-full bg-[#C0C0C0] text-[#0A0A0A] shadow-[0_0_24px_rgba(192,192,192,0.4)]
           hover:bg-[#a8a8a8] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C0C0]
-        "
+          ${state.isOpen ? 'hidden sm:flex' : 'flex'}
+        `}
         aria-label={t('chat.ariaLabel')}
       >
         {state.isOpen ? (
