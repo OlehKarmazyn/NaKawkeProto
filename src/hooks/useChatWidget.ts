@@ -11,23 +11,6 @@ const COOLDOWN_MS = 3000;
 
 const proxyUrl = (import.meta.env.VITE_CHAT_PROXY_URL as string | undefined)?.trim();
 
-/**
- * Detect question language so contact block matches (pl / en / uk).
- * Falls back to current UI language when script is ambiguous (e.g. "Gotowy biznes?" has no diacritics).
- */
-function detectQuestionLanguage(
-  text: string,
-  fallbackLang: string
-): 'pl' | 'en' | 'uk' {
-  const trimmed = text.trim();
-  if (/[\u0400-\u04FF]/.test(trimmed)) return 'uk'; // Cyrillic
-  if (/[ąęółńćźżĄĘÓŁŃĆŹŻ]/.test(trimmed)) return 'pl'; // Polish diacritics
-  // Ambiguous (e.g. "Gotowy biznes?"): use current page language
-  if (fallbackLang === 'uk') return 'uk';
-  if (fallbackLang === 'pl') return 'pl';
-  return 'en';
-}
-
 export function useChatWidget() {
   const { t, i18n } = useTranslation();
   const [state, setState] = useState<ChatWidgetState>({
@@ -90,14 +73,14 @@ export function useChatWidget() {
 
     try {
       let reply = await sendChatMessage(newHistory);
-      // Contact block only after first reply; use question language or current UI language as fallback
+      // Contact block only after first reply; use current page language
       if (newHistory.length === 1) {
-        const currentLang = i18n.language?.split('-')[0] ?? 'pl';
-        const questionLang = detectQuestionLanguage(userMessage.content, currentLang);
-        const tQuestion = i18n.getFixedT(questionLang);
-        const contactBlockSuffix = tQuestion('chat.contactBlock', {
-          phone: tQuestion('footer.phone'),
-          email: tQuestion('footer.email'),
+        const lang = i18n.language?.split('-')[0] ?? 'pl';
+        const contactLang = (lang === 'uk' || lang === 'en' ? lang : 'pl') as 'pl' | 'en' | 'uk';
+        const tContact = i18n.getFixedT(contactLang);
+        const contactBlockSuffix = tContact('chat.contactBlock', {
+          phone: tContact('footer.phone'),
+          email: tContact('footer.email'),
         });
         if (contactBlockSuffix.trim()) {
           reply = `${reply.trim()}\n\n---\n${contactBlockSuffix.trim()}`;

@@ -52,7 +52,11 @@
     "developedBy": "Розроблено при допомозі {{company}}",
     "logoAlt": "Na Kawkę",
     "instagramUrl": "https://www.instagram.com/nakawke/",
-    "facebookUrl": "#"
+    "facebookUrl": "#",
+    "telegramUrl": "#",
+    "socialInstagram": "Instagram",
+    "socialTelegram": "Telegram",
+    "socialFacebook": "Facebook"
   },
   "common": {
     "siteName": "Na Kawkę",

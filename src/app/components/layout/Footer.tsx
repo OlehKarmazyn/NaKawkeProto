@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Instagram, Facebook, Send } from 'lucide-react';
 import logo from '@/assets/logo.webp';
 import { SECTION_IDS } from '@/app/shared/constants/navigation';
 import { DEVELOPER_NAME } from '@/app/shared/constants/seo';
@@ -160,20 +161,28 @@ export const Footer: React.FC = () => {
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm"
+              className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
+              aria-label={t('footer.socialInstagram')}
             >
-              Instagram
+              <Instagram className="w-5 h-5" aria-hidden />
             </a>
-            <a href="#" className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm">
-              Telegram
+            <a
+              href={t('footer.telegramUrl')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
+              aria-label={t('footer.socialTelegram')}
+            >
+              <Send className="w-5 h-5" aria-hidden />
             </a>
             <a
               href={facebookUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/60 hover:text-[#C0C0C0] transition-colors text-sm"
+              className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
+              aria-label={t('footer.socialFacebook')}
             >
-              Facebook
+              <Facebook className="w-5 h-5" aria-hidden />
             </a>
           </div>
         </div>

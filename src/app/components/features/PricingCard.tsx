@@ -39,17 +39,17 @@ export const PricingCard: React.FC<PricingCardProps> = ({
   const flipToFront = () => setIsFlipped(false);
 
   return (
-    <div className="perspective-1000">
+    <div style={{ perspective: '1000px' }}>
       <div
-        className={`
-          relative w-full transition-transform duration-700 transform-style-3d
-          ${isFlipped ? 'rotate-y-180' : ''}
-        `}
         style={{
           transformStyle: 'preserve-3d',
           WebkitTransformStyle: 'preserve-3d',
+          transition: 'transform 0.7s',
+          WebkitTransition: '-webkit-transform 0.7s',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
           WebkitTransform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          position: 'relative',
+          width: '100%',
         }}
       >
         {/* FRONT SIDE — relative so card height is driven by content; click flips to back */}
@@ -60,7 +60,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipToBack(); } }}
           className={`
             relative w-full flex flex-col backdrop-blur-md rounded-2xl overflow-hidden cursor-pointer
-            border transition-all duration-300 backface-hidden
+            border transition-all duration-300
             ${isRecommended
               ? 'bg-gradient-to-br from-[#C0C0C0]/10 via-[#a8a8a8]/5 to-[#C0C0C0]/10 border-[#C0C0C0]/40 shadow-[0_0_40px_rgba(192,192,192,0.2)]'
               : 'bg-white/5 border-[#C0C0C0]/20'
@@ -152,7 +152,6 @@ export const PricingCard: React.FC<PricingCardProps> = ({
           className={`
             absolute top-0 left-0 right-0 bottom-0 backdrop-blur-md rounded-2xl overflow-hidden cursor-pointer
             border bg-gradient-to-br from-[#C0C0C0]/10 via-[#0A0A0A] to-[#C0C0C0]/5 border-[#C0C0C0]/40
-            backface-hidden rotate-y-180
           `}
           style={{
             backfaceVisibility: 'hidden',
