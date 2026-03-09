@@ -45,7 +45,7 @@ export const Privacy: React.FC = () => {
                 Administratorem Twoich danych osobowych jest:
               </p>
               <p className="mb-4 font-medium">
-                {t('footer.contactName')}
+                {t('footer.firmName')}
                 <br />
                 z siedzibą: {t('footer.address')}
                 <br />
