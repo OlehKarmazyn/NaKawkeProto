@@ -3,9 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Instagram, Facebook, Send } from 'lucide-react';
 import logo from '@/assets/logo.webp';
-import logoDigi from '@/assets/logo_digi.svg';
+import logoDigitalOffice from '@/assets/digital-office-logo.svg';
 import { SECTION_IDS } from '@/app/shared/constants/navigation';
-import { DEVELOPER_NAME } from '@/app/shared/constants/seo';
 import { useLangPath, pathWithoutLang } from '@/hooks/useLangPath';
 
 export const Footer: React.FC = () => {
@@ -137,65 +136,60 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-[#C0C0C0]/10 flex flex-col md:flex-row justify-between items-center gap-3">
-          <div className="flex flex-col items-center md:items-start gap-1">
-            <p className="text-white/40 text-xs">
-              <Link to={path('/polityka-prywatnosci')} className="hover:text-[#C0C0C0] transition-colors">
-                {t('footer.privacy')}
-              </Link>
-              {' · '}
-              {t('footer.copyright', { year: new Date().getFullYear() })}
-            </p>
-            <p className="text-white/40 text-xs">
+        <div className="pt-4 border-t border-[#C0C0C0]/10 flex flex-col gap-3">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div className="inline-flex justify-start items-center gap-2.5">
+              <span className="text-white text-xs font-normal leading-5">
+                {t('footer.createdBy')}
+              </span>
               <a
                 href="https://digital-office.pl"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#C0C0C0] transition-colors inline-flex items-center gap-1"
+                className="hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f] rounded"
               >
-                {t('footer.developedByPrefix')}
-                <span className="animate-pulse-heartbeat">
-                  <img
-                    src={logoDigi}
-                    alt=""
-                    aria-hidden
-                    className="h-[1em] w-auto inline-block align-baseline"
-                  />
-                  {' '}
-                  {DEVELOPER_NAME}
-                </span>
+                <img
+                  src={logoDigitalOffice}
+                  alt={t('footer.createdByLogoAlt')}
+                  width={128}
+                  height={32}
+                  className="h-8 w-auto"
+                />
               </a>
-            </p>
+            </div>
+            <div className="flex gap-4">
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
+                aria-label={t('footer.socialInstagram')}
+              >
+                <Instagram className="w-5 h-5" aria-hidden />
+              </a>
+              <a
+                href={t('footer.telegramUrl')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
+                aria-label={t('footer.socialTelegram')}
+              >
+                <Send className="w-5 h-5" aria-hidden />
+              </a>
+              <a
+                href={facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
+                aria-label={t('footer.socialFacebook')}
+              >
+                <Facebook className="w-5 h-5" aria-hidden />
+              </a>
+            </div>
           </div>
-          <div className="flex gap-4">
-            <a
-              href={instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
-              aria-label={t('footer.socialInstagram')}
-            >
-              <Instagram className="w-5 h-5" aria-hidden />
-            </a>
-            <a
-              href={t('footer.telegramUrl')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
-              aria-label={t('footer.socialTelegram')}
-            >
-              <Send className="w-5 h-5" aria-hidden />
-            </a>
-            <a
-              href={facebookUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/60 hover:text-[#C0C0C0] transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-[#C0C0C0] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]"
-              aria-label={t('footer.socialFacebook')}
-            >
-              <Facebook className="w-5 h-5" aria-hidden />
-            </a>
-          </div>
+          <p className="text-white/40 text-xs text-center">
+            {t('footer.copyright', { year: new Date().getFullYear() })}
+          </p>
         </div>
       </div>
     </footer>

@@ -50,6 +50,8 @@
     "terms": "Правила",
     "cookies": "Політика cookies",
     "copyright": "© {{year}} Na Kawkę. Усі права захищені.",
+    "createdBy": "Створено",
+    "createdByLogoAlt": "Digital Office",
     "developedBy": "Розроблено при допомозі {{company}}",
     "developedByPrefix": "Розроблено при допомозі ",
     "logoAlt": "Na Kawkę",
