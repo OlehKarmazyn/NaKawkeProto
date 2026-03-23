@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo.webp';
 import { ScrollToTop } from './components/layout/ScrollToTop';
 import { LangLayout } from './components/layout/LangLayout';
+import { FloatingContactButton } from './components/features/FloatingContactButton';
 
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const PackageStandard = lazy(() => import('./pages/PackageStandard').then((m) => ({ default: m.PackageStandard })));
@@ -25,6 +26,7 @@ function RootLayout() {
     <>
       <ScrollToTop />
       <Outlet />
+      <FloatingContactButton />
     </>
   );
 }
