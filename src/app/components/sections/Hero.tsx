@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { MetallicButton } from '@/app/components/ui/MetallicButton';
 import { ChevronDown } from 'lucide-react';
+import { SECTION_IDS } from '@/app/shared/constants/navigation';
 import heroMainContainer from '@/assets/multi-automats.webp';
 
 /** Hero section of the main page: headline, offer, CTA, vending machines image. */
@@ -42,7 +43,14 @@ export const Hero: React.FC = () => {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <MetallicButton>{t('nav.cta')}</MetallicButton>
+              <MetallicButton
+                type="button"
+                onClick={() =>
+                  document.getElementById(SECTION_IDS.contact)?.scrollIntoView({ behavior: 'smooth' })
+                }
+              >
+                {t('nav.cta')}
+              </MetallicButton>
             </div>
 
             {/* Stats */}
