@@ -1,7 +1,9 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { RouterProvider } from 'react-router';
 import { Analytics } from './components/seo/Analytics';
+import { GTM } from './components/seo/GTM';
 import { SetDocumentLang } from './components/seo/SetDocumentLang';
+import { CookieBanner } from './components/ui/CookieBanner';
 import { router } from './routes';
 
 export default function App() {
@@ -9,7 +11,9 @@ export default function App() {
     <HelmetProvider>
       <SetDocumentLang />
       <Analytics />
+      <GTM />
       <RouterProvider router={router} />
+      <CookieBanner />
     </HelmetProvider>
   );
 }

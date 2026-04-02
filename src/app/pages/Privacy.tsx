@@ -33,7 +33,7 @@ export const Privacy: React.FC = () => {
               <p className="text-white/70 text-sm">
                 <strong>Obowiązuje od:</strong> 25.02.2026
                 <br />
-                <strong>Ostatnia aktualizacja:</strong> 01.03.2026
+                <strong>Ostatnia aktualizacja:</strong> 02.04.2026
               </p>
             </header>
 
@@ -171,17 +171,49 @@ export const Privacy: React.FC = () => {
 
             <section aria-labelledby="cookies-heading" className="mb-12">
               <h2 id="cookies-heading" className="text-2xl font-semibold text-white mb-4">
-                VI. Pliki cookies
+                VI. Pliki cookies i narzędzia marketingowe
               </h2>
               <p className="mb-4">
-                Strona <strong>nakawke.pl</strong> <strong>nie używa</strong> plików cookies
-                (ciasteczek) do śledzenia użytkowników ani celów marketingowych.
+                Strona <strong>nakawke.pl</strong> używa plików cookies oraz podobnych technologii
+                w celach analitycznych i marketingowych. Pliki cookies są zapisywane w Twojej
+                przeglądarce wyłącznie po wyrażeniu zgody za pośrednictwem banera wyświetlanego
+                przy pierwszej wizycie.
               </p>
+              <h3 className="text-xl font-medium text-white mt-6 mb-2">
+                Google Tag Manager
+              </h3>
+              <p className="mb-4">
+                Na stronie korzystamy z <strong>Google Tag Managera</strong> (Google LLC) —
+                narzędzia służącego do zarządzania skryptami analitycznymi i marketingowymi.
+                GTM nie zbiera samodzielnie danych o użytkownikach, lecz uruchamia inne narzędzia
+                po udzieleniu przez Ciebie zgody. Więcej informacji: <strong>google.com/tagmanager</strong>.
+              </p>
+              <h3 className="text-xl font-medium text-white mt-6 mb-2">
+                Meta Pixel (Facebook Pixel)
+              </h3>
+              <p className="mb-4">
+                Za pośrednictwem GTM wdrożyliśmy <strong>Meta Pixel</strong> (Meta Platforms, Inc.).
+                Jest to narzędzie remarketingowe, które pozwala mierzyć skuteczność reklam
+                wyświetlanych na Facebooku i Instagramie oraz docierać z reklamami do osób, które
+                odwiedziły naszą stronę. Meta Pixel może zbierać informacje o Twoim urządzeniu,
+                przeglądarce oraz działaniach na stronie (np. odwiedzane podstrony).
+              </p>
+              <p className="mb-4">
+                Dane zbierane przez Meta Pixel są przetwarzane przez Meta Platforms zgodnie z ich
+                polityką prywatności dostępną na <strong>facebook.com/policy</strong>. Przetwarzanie
+                odbywa się na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO). Możesz ją
+                wycofać w dowolnym momencie, czyszcząc pliki cookies w przeglądarce lub klikając
+                „Odrzuć" w banerze cookie przy ponownej wizycie.
+              </p>
+              <h3 className="text-xl font-medium text-white mt-6 mb-2">
+                localStorage — preferencje językowe
+              </h3>
               <p>
-                Jedyne techniczne mechanizmy przechowywania danych w przeglądarce to{' '}
-                <code className="bg-white/10 px-1 rounded">localStorage</code> wykorzystywany do
-                zapamiętania wybranego przez użytkownika języka interfejsu (PL / EN / UK). Nie
-                stanowi to danych osobowych w rozumieniu RODO.
+                Niezależnie od zgody na cookies, strona używa{' '}
+                <code className="bg-white/10 px-1 rounded">localStorage</code> do zapamiętania
+                wybranego języka interfejsu (PL / EN / UK) oraz Twojej decyzji dotyczącej zgody
+                na cookies. Dane te pozostają wyłącznie w Twojej przeglądarce i nie są
+                przesyłane na żadne serwery.
               </p>
             </section>
 
