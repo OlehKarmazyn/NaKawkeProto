@@ -1,37 +1,32 @@
 import { useEffect } from 'react';
 import { useCookieConsent } from '@/hooks/useCookieConsent';
 
-const AW_ID = 'AW-18063421764';
-
 /**
- * Injects Google Ads (gtag.js) conversion tracking script only after
- * the user has accepted cookies. Skipped in development.
+ * Updates Google Consent Mode v2 when the user accepts or rejects cookies.
+ * The gtag.js script itself is loaded unconditionally in index.html so that
+ * Google can always detect the tag on the page.
  */
 export function GoogleAds() {
   const { consent } = useCookieConsent();
 
   useEffect(() => {
-    if (import.meta.env.DEV) return;
-    if (consent !== 'accepted') return;
+    if (typeof window.gtag !== 'function') return;
 
-    const script1 = document.createElement('script');
-    script1.async = true;
-    script1.src = `https://www.googletagmanager.com/gtag/js?id=${AW_ID}`;
-    document.head.appendChild(script1);
-
-    const script2 = document.createElement('script');
-    script2.innerHTML = `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '${AW_ID}');
-    `;
-    document.head.appendChild(script2);
-
-    return () => {
-      script1.remove();
-      script2.remove();
-    };
+    if (consent === 'accepted') {
+      window.gtag('consent', 'update', {
+        ad_storage:         'granted',
+        ad_user_data:       'granted',
+        ad_personalization: 'granted',
+        analytics_storage:  'granted',
+      });
+    } else if (consent === 'rejected') {
+      window.gtag('consent', 'update', {
+        ad_storage:         'denied',
+        ad_user_data:       'denied',
+        ad_personalization: 'denied',
+        analytics_storage:  'denied',
+      });
+    }
   }, [consent]);
 
   return null;
