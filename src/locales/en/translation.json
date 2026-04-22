@@ -24,7 +24,12 @@
     "loading": "Loading…",
     "loadingAria": "Loading",
     "languageAria": "Choose language",
-    "languageOption": "Language: {{label}}"
+    "languageOption": "Language: {{label}}",
+    "appErrorAria": "Application error",
+    "appErrorTitle": "Page failed to load",
+    "appErrorDescription": "After a site update, some cached files can become outdated. Refresh to load the latest version.",
+    "appErrorReload": "Refresh page",
+    "appErrorUnknown": "Unknown error"
   },
   "footer": {
     "tagline": "Premium autonomous coffee solutions for modern businesses.",

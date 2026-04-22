@@ -24,7 +24,12 @@
     "loading": "Ładowanie…",
     "loadingAria": "Ładowanie",
     "languageAria": "Wybierz język",
-    "languageOption": "Język: {{label}}"
+    "languageOption": "Język: {{label}}",
+    "appErrorAria": "Błąd aplikacji",
+    "appErrorTitle": "Nie udało się wczytać strony",
+    "appErrorDescription": "Czasami po aktualizacji strony część plików jest już nieaktualna. Odśwież, aby załadować najnowszą wersję.",
+    "appErrorReload": "Odśwież stronę",
+    "appErrorUnknown": "Nieznany błąd"
   },
   "footer": {
     "tagline": "Premium autonomiczne rozwiązania kawowe dla nowoczesnych biznesów.",
