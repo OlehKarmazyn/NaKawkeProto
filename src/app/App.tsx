@@ -1,5 +1,6 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { RouterProvider } from 'react-router';
+import { CookieConsentProvider } from '@/hooks/useCookieConsent';
 import { Analytics } from './components/seo/Analytics';
 import { GoogleAds } from './components/seo/GoogleAds';
 import { GTM } from './components/seo/GTM';
@@ -10,12 +11,14 @@ import { router } from './routes';
 export default function App() {
   return (
     <HelmetProvider>
-      <SetDocumentLang />
-      <Analytics />
-      <GTM />
-      <GoogleAds />
-      <RouterProvider router={router} />
-      <CookieBanner />
+      <CookieConsentProvider>
+        <SetDocumentLang />
+        <Analytics />
+        <GTM />
+        <GoogleAds />
+        <RouterProvider router={router} />
+        <CookieBanner />
+      </CookieConsentProvider>
     </HelmetProvider>
   );
 }
